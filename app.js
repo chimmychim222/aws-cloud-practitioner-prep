@@ -901,7 +901,7 @@
     if (!track || !prevBtn || !nextBtn) return;
 
     const cards = track.querySelectorAll('.testimonial-card');
-    const cardsPerPage = window.innerWidth <= 768 ? 1 : 2;
+    const cardsPerPage = window.innerWidth <= 600 ? 1 : window.innerWidth <= 768 ? 2 : 3;
     const totalPages = Math.ceil(cards.length / cardsPerPage);
     let currentPage = 0;
     let autoPlayInterval;

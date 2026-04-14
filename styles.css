@@ -1315,6 +1315,31 @@ fieldset { border: none; }
   margin-top: 1rem;
 }
 
+/* Free card */
+.test-option-free {
+  border-color: #037F0C;
+  background: linear-gradient(180deg, #F0FFF0 0%, #fff 40%);
+}
+.test-option-free:hover {
+  border-color: #025a09;
+}
+.test-option-free-label {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: linear-gradient(90deg, #037F0C, #2E7D32);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 0;
+  text-align: center;
+}
+.test-option-free .test-option-badge {
+  margin-top: 1rem;
+  background: #037F0C;
+}
+
 /* Lock icon overlay */
 .test-option-lock {
   position: absolute;

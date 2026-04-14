@@ -94,10 +94,11 @@
       });
     });
 
-    // Test option cards — gated by payment
+    // Test option cards — free tests bypass payment, others gated
     $$('.test-start-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (!hasPaid()) { showPaymentModal(); return; }
+        const isFree = btn.dataset.free === 'true';
+        if (!isFree && !hasPaid()) { showPaymentModal(); return; }
         const numQ = parseInt(btn.dataset.questions, 10) || 65;
         const timeS = parseInt(btn.dataset.time, 10) || 5400;
         startPracticeTest(numQ, timeS);

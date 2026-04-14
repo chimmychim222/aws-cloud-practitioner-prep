@@ -957,31 +957,26 @@
     const dotsContainer = $('#carousel-dots');
     if (!track || !prevBtn || !nextBtn || !carousel) return;
 
-    const cards = track.querySelectorAll('.testimonial-card');
+    const allCards = Array.from(track.querySelectorAll('.testimonial-card'));
     let cardsPerPage, totalPages, currentPage = 0, autoPlayInterval;
 
     function getCardsPerPage() {
-      const w = window.innerWidth;
+      var w = window.innerWidth;
       if (w <= 600) return 1;
       if (w <= 768) return 2;
       return 3;
     }
 
-    function getPageScrollLeft(page) {
-      if (!cards[0]) return 0;
-      const gap = 24;
-      const cardWidth = cards[0].offsetWidth + gap;
-      return page * cardsPerPage * cardWidth;
-    }
-
     function buildDots() {
       if (!dotsContainer) return;
       dotsContainer.innerHTML = '';
-      for (let i = 0; i < totalPages; i++) {
-        const dot = document.createElement('button');
+      for (var i = 0; i < totalPages; i++) {
+        var dot = document.createElement('button');
         dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
         dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
-        dot.addEventListener('click', function() { goToPage(i); resetAutoPlay(); });
+        (function(idx) {
+          dot.addEventListener('click', function() { goToPage(idx); resetAutoPlay(); });
+        })(i);
         dotsContainer.appendChild(dot);
       }
     }
@@ -993,17 +988,20 @@
       });
     }
 
+    function renderPage() {
+      // Show only the cards for the current page
+      track.innerHTML = '';
+      var start = currentPage * cardsPerPage;
+      for (var i = start; i < start + cardsPerPage && i < allCards.length; i++) {
+        track.appendChild(allCards[i].cloneNode(true));
+      }
+    }
+
     function setup() {
       cardsPerPage = getCardsPerPage();
-      totalPages = Math.ceil(cards.length / cardsPerPage);
+      totalPages = Math.ceil(allCards.length / cardsPerPage);
       currentPage = 0;
-
-      // Use native scroll for all viewports
-      track.style.transform = 'none';
-      track.style.overflowX = 'auto';
-      track.style.scrollBehavior = 'smooth';
-      track.scrollLeft = 0;
-
+      renderPage();
       buildDots();
     }
 
@@ -1011,8 +1009,7 @@
       currentPage = page;
       if (currentPage >= totalPages) currentPage = 0;
       if (currentPage < 0) currentPage = totalPages - 1;
-      var target = getPageScrollLeft(currentPage);
-      track.scrollTo({ left: target, behavior: 'instant' });
+      renderPage();
       updateDots();
     }
 
@@ -1040,27 +1037,32 @@
     }
 
     // Pause on hover and touch
-    track.addEventListener('mouseenter', function() { clearInterval(autoPlayInterval); });
-    track.addEventListener('mouseleave', function() { startAutoPlay(); });
-    track.addEventListener('touchstart', function() { clearInterval(autoPlayInterval); }, { passive: true });
-    track.addEventListener('touchend', function() {
+    carousel.addEventListener('mouseenter', function() { clearInterval(autoPlayInterval); });
+    carousel.addEventListener('mouseleave', function() { startAutoPlay(); });
+    carousel.addEventListener('touchstart', function() { clearInterval(autoPlayInterval); }, { passive: true });
+    carousel.addEventListener('touchend', function() {
       setTimeout(resetAutoPlay, 3000);
     }, { passive: true });
 
-    // Update dots on manual scroll
-    track.addEventListener('scroll', function() {
-      if (!cards[0]) return;
-      var gap = 24;
-      var cardWidth = cards[0].offsetWidth + gap;
-      var page = Math.round(track.scrollLeft / (cardsPerPage * cardWidth));
-      if (page !== currentPage && page >= 0 && page < totalPages) {
-        currentPage = page;
-        updateDots();
+    // Touch swipe
+    var touchStartX = 0;
+    carousel.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    carousel.addEventListener('touchend', function(e) {
+      var diff = touchStartX - e.changedTouches[0].screenX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          goToPage(currentPage < totalPages - 1 ? currentPage + 1 : 0);
+        } else {
+          goToPage(currentPage > 0 ? currentPage - 1 : totalPages - 1);
+        }
+        resetAutoPlay();
       }
     }, { passive: true });
 
     // Recalculate on resize
-    let resizeTimer;
+    var resizeTimer;
     window.addEventListener('resize', function() {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function() {

@@ -79,13 +79,33 @@
       if (btn) btn.addEventListener('click', () => { initTraining(); showView('training'); });
     });
 
-    // Test buttons — gated by payment
+    // Test buttons — scroll to test selection section
     ['#hero-start-test', '#start-test-btn'].forEach(sel => {
       const btn = $(sel);
       if (btn) btn.addEventListener('click', () => {
-        if (hasPaid()) { startPracticeTest(); } else { showPaymentModal(); }
+        const section = document.querySelector('.test-selection-section');
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (hasPaid()) {
+          startPracticeTest();
+        } else {
+          showPaymentModal();
+        }
       });
     });
+
+    // Test option cards — gated by payment
+    $$('.test-start-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!hasPaid()) { showPaymentModal(); return; }
+        const numQ = parseInt(btn.dataset.questions, 10) || 65;
+        const timeS = parseInt(btn.dataset.time, 10) || 5400;
+        startPracticeTest(numQ, timeS);
+      });
+    });
+
+    // Update test card lock states on load
+    updateTestCardLocks();
 
     // Domain items click — go to training
     $$('.domain-item').forEach(item => {
@@ -104,12 +124,15 @@
     $('#nav-home-btn').addEventListener('click', () => showView('home'));
     $('#nav-training-btn').addEventListener('click', () => { initTraining(); showView('training'); });
     $('#nav-test-btn').addEventListener('click', () => {
-      if (!hasPaid()) { showPaymentModal(); return; }
       if (state.testQuestions.length > 0 && !state.testSubmitted) {
         showView('test');
-      } else {
-        startPracticeTest();
+        return;
       }
+      showView('home');
+      setTimeout(() => {
+        const section = document.querySelector('.test-selection-section');
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     });
 
     // Mobile menu toggle
@@ -223,14 +246,27 @@
   // ============================================================
   // PRACTICE TEST
   // ============================================================
-  function startPracticeTest() {
+  function startPracticeTest(numQuestions, timeSeconds) {
+    numQuestions = numQuestions || 65;
+    timeSeconds = timeSeconds || 5400;
+
     const bank = window.questionBank;
     if (!bank || bank.length === 0) { alert('Question bank not loaded.'); return; }
 
     const byDomain = { 1: [], 2: [], 3: [], 4: [] };
     bank.forEach(q => { if (byDomain[q.domain]) byDomain[q.domain].push(q); });
 
-    const counts = { 1: 16, 2: 20, 3: 22, 4: 7 };
+    // Scale domain weights to match requested question count
+    const weights = { 1: 0.24, 2: 0.30, 3: 0.34, 4: 0.12 };
+    const counts = {};
+    let total = 0;
+    for (const d of [1, 2, 3, 4]) {
+      counts[d] = Math.round(numQuestions * weights[d]);
+      total += counts[d];
+    }
+    // Adjust rounding differences on domain 3
+    counts[3] += (numQuestions - total);
+
     let selected = [];
     for (const d of [1, 2, 3, 4]) {
       selected = selected.concat(shuffle(byDomain[d]).slice(0, counts[d]));
@@ -240,7 +276,7 @@
     state.testAnswers = {};
     state.flaggedQuestions = new Set();
     state.currentQuestionIndex = 0;
-    state.timeRemaining = 90 * 60;
+    state.timeRemaining = timeSeconds;
     state.testSubmitted = false;
     state.reviewFilter = 'all';
 
@@ -974,6 +1010,20 @@
     return localStorage.getItem('aws_ccp_paid') === 'true';
   }
 
+  function updateTestCardLocks() {
+    const paid = hasPaid();
+    $$('.test-option-card').forEach(card => {
+      const lockEl = card.querySelector('.test-option-lock');
+      if (paid) {
+        card.classList.add('unlocked');
+        if (lockEl) lockEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>';
+      } else {
+        card.classList.remove('unlocked');
+        if (lockEl) lockEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+      }
+    });
+  }
+
   function showPaymentModal() {
     const modal = $('#payment-modal');
     if (modal) {
@@ -1024,6 +1074,7 @@
       window.history.replaceState({}, '', window.location.pathname);
       // Show success message
       showPaymentSuccess();
+      updateTestCardLocks();
     }
   }
 

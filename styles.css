@@ -1241,3 +1241,160 @@ fieldset { border: none; }
   from { transform: translateY(-100%); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+/* ============================================
+   Test Selection / Duration Cards
+   ============================================ */
+.test-selection-section {
+  padding: 80px 0;
+  background: var(--bg-secondary, #F5F7FA);
+}
+.test-selection-section .section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--aws-squid-ink);
+  margin-bottom: 0.5rem;
+}
+.test-selection-section .section-subtitle {
+  text-align: center;
+  color: var(--text-muted, #666);
+  font-size: 1.05rem;
+  margin-bottom: 2.5rem;
+}
+.test-options-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.test-option-card {
+  position: relative;
+  background: var(--bg-primary, #fff);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 2px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.test-option-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  border-color: var(--aws-orange);
+}
+.test-option-card.unlocked {
+  border-color: rgba(3, 127, 12, 0.3);
+}
+.test-option-card.unlocked:hover {
+  border-color: #037F0C;
+}
+
+/* Featured (90-min) card */
+.test-option-featured {
+  border-color: var(--aws-orange);
+  background: linear-gradient(180deg, #FFF8F0 0%, #fff 40%);
+}
+.test-option-recommended {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: var(--aws-orange);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 0;
+}
+.test-option-featured .test-option-badge {
+  margin-top: 1rem;
+}
+
+/* Lock icon overlay */
+.test-option-lock {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted, #999);
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+.test-option-lock svg { width: 20px; height: 20px; }
+.test-option-card.unlocked .test-option-lock {
+  color: #037F0C;
+  opacity: 1;
+}
+.test-option-card.unlocked .test-option-lock svg {
+  /* Swap to unlocked icon via JS */
+}
+
+/* Badge */
+.test-option-badge {
+  display: inline-block;
+  background: var(--aws-squid-ink);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+.test-option-featured .test-option-badge {
+  background: var(--aws-orange);
+}
+
+/* Time display */
+.test-option-time {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--aws-squid-ink);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.test-option-unit {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+.test-option-questions {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--aws-squid-ink);
+  margin-bottom: 0.5rem;
+}
+.test-option-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted, #666);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+.test-option-card .test-start-btn {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .test-options-grid { grid-template-columns: repeat(2, 1fr); max-width: 600px; }
+}
+@media (max-width: 600px) {
+  .test-options-grid { grid-template-columns: 1fr; max-width: 360px; }
+  .test-selection-section { padding: 50px 0; }
+  .test-option-card { padding: 1.5rem 1.25rem; }
+  .test-option-time { font-size: 2.5rem; }
+}

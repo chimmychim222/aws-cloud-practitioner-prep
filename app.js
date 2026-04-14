@@ -947,132 +947,23 @@
   }
 
   // ============================================================
-  // TESTIMONIALS CAROUSEL
+  // TESTIMONIALS CAROUSEL — continuous marquee
   // ============================================================
   function initCarousel() {
-    const carousel = $('#testimonials-carousel');
     const track = $('#testimonials-track');
-    const prevBtn = $('#carousel-prev');
-    const nextBtn = $('#carousel-next');
-    const dotsContainer = $('#carousel-dots');
-    if (!track || !prevBtn || !nextBtn || !carousel) return;
+    if (!track) return;
 
-    const allCards = Array.from(track.querySelectorAll('.testimonial-card'));
-    let cardsPerPage, totalPages, currentPage = 0, autoPlayInterval;
+    // Duplicate all cards so the scroll loops seamlessly
+    const originalHTML = track.innerHTML;
+    track.innerHTML = originalHTML + originalHTML;
 
-    function getCardsPerPage() {
-      var w = window.innerWidth;
-      if (w <= 600) return 1;
-      if (w <= 768) return 2;
-      return 3;
-    }
+    // Pause on hover
+    track.addEventListener('mouseenter', function() { track.style.animationPlayState = 'paused'; });
+    track.addEventListener('mouseleave', function() { track.style.animationPlayState = 'running'; });
 
-    function buildDots() {
-      if (!dotsContainer) return;
-      dotsContainer.innerHTML = '';
-      for (var i = 0; i < totalPages; i++) {
-        var dot = document.createElement('button');
-        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
-        (function(idx) {
-          dot.addEventListener('click', function() { goToPage(idx); resetAutoPlay(); });
-        })(i);
-        dotsContainer.appendChild(dot);
-      }
-    }
-
-    function updateDots() {
-      if (!dotsContainer) return;
-      dotsContainer.querySelectorAll('.carousel-dot').forEach(function(d, i) {
-        d.classList.toggle('active', i === currentPage);
-      });
-    }
-
-    function renderPage() {
-      // Show only the cards for the current page
-      track.innerHTML = '';
-      var start = currentPage * cardsPerPage;
-      for (var i = start; i < start + cardsPerPage && i < allCards.length; i++) {
-        track.appendChild(allCards[i].cloneNode(true));
-      }
-    }
-
-    function setup() {
-      cardsPerPage = getCardsPerPage();
-      totalPages = Math.ceil(allCards.length / cardsPerPage);
-      currentPage = 0;
-      renderPage();
-      buildDots();
-    }
-
-    function goToPage(page) {
-      currentPage = page;
-      if (currentPage >= totalPages) currentPage = 0;
-      if (currentPage < 0) currentPage = totalPages - 1;
-      renderPage();
-      updateDots();
-    }
-
-    prevBtn.addEventListener('click', function() {
-      goToPage(currentPage > 0 ? currentPage - 1 : totalPages - 1);
-      resetAutoPlay();
-    });
-
-    nextBtn.addEventListener('click', function() {
-      goToPage(currentPage < totalPages - 1 ? currentPage + 1 : 0);
-      resetAutoPlay();
-    });
-
-    // Auto-play
-    function startAutoPlay() {
-      clearInterval(autoPlayInterval);
-      autoPlayInterval = setInterval(function() {
-        goToPage(currentPage < totalPages - 1 ? currentPage + 1 : 0);
-      }, 5000);
-    }
-
-    function resetAutoPlay() {
-      clearInterval(autoPlayInterval);
-      startAutoPlay();
-    }
-
-    // Pause on hover and touch
-    carousel.addEventListener('mouseenter', function() { clearInterval(autoPlayInterval); });
-    carousel.addEventListener('mouseleave', function() { startAutoPlay(); });
-    carousel.addEventListener('touchstart', function() { clearInterval(autoPlayInterval); }, { passive: true });
-    carousel.addEventListener('touchend', function() {
-      setTimeout(resetAutoPlay, 3000);
-    }, { passive: true });
-
-    // Touch swipe
-    var touchStartX = 0;
-    carousel.addEventListener('touchstart', function(e) {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    carousel.addEventListener('touchend', function(e) {
-      var diff = touchStartX - e.changedTouches[0].screenX;
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          goToPage(currentPage < totalPages - 1 ? currentPage + 1 : 0);
-        } else {
-          goToPage(currentPage > 0 ? currentPage - 1 : totalPages - 1);
-        }
-        resetAutoPlay();
-      }
-    }, { passive: true });
-
-    // Recalculate on resize
-    var resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function() {
-        setup();
-        startAutoPlay();
-      }, 250);
-    });
-
-    setup();
-    startAutoPlay();
+    // Pause on touch
+    track.addEventListener('touchstart', function() { track.style.animationPlayState = 'paused'; }, { passive: true });
+    track.addEventListener('touchend', function() { track.style.animationPlayState = 'running'; }, { passive: true });
   }
 
   // ============================================================

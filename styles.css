@@ -1524,3 +1524,205 @@ fieldset { border: none; }
   .test-option-time { font-size: 2.8rem; }
   .test-selection-section .section-title { font-size: 1.8rem; }
 }
+
+/* ============================================
+   Auth Header Button & User Menu
+   ============================================ */
+.auth-header-wrap {
+  position: relative;
+  margin-left: auto;
+}
+.auth-header-btn {
+  background: var(--aws-orange);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+.auth-header-btn:hover {
+  background: #e68a00;
+  transform: translateY(-1px);
+}
+.auth-header-btn.logged-in {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem;
+}
+.auth-avatar {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+}
+.user-menu {
+  position: absolute;
+  top: calc(100% + 8px); right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.08);
+  min-width: 220px;
+  z-index: 2000;
+  overflow: hidden;
+}
+.user-menu.hidden { display: none; }
+.user-menu-info {
+  padding: 16px 18px 12px;
+}
+.user-menu-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--aws-squid-ink);
+}
+.user-menu-email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.user-menu-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+}
+.user-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 18px;
+  border: none;
+  background: none;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.user-menu-item:hover {
+  background: #f5f5f5;
+  color: #d32f2f;
+}
+
+/* ============================================
+   Auth Modal
+   ============================================ */
+.auth-modal-content {
+  max-width: 420px;
+}
+.auth-modal-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.auth-modal-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--aws-squid-ink);
+  margin: 0 0 0.25rem;
+}
+.auth-modal-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+.auth-tabs {
+  display: flex;
+  background: #f0f2f5;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+}
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.auth-tab.active {
+  background: #fff;
+  color: var(--aws-squid-ink);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.auth-form.hidden { display: none; }
+.auth-field {
+  margin-bottom: 1rem;
+}
+.auth-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.auth-field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+.auth-field input:focus {
+  outline: none;
+  border-color: var(--aws-orange);
+  box-shadow: 0 0 0 3px rgba(255,153,0,0.12);
+}
+.auth-submit {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 13px;
+  font-size: 0.95rem;
+}
+.auth-error {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+  border: 1px solid #fecaca;
+}
+.auth-error.hidden { display: none; }
+.auth-forgot-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--aws-orange);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.auth-forgot-btn:hover { text-decoration: underline; }
+
+/* ============================================
+   Test User Badge
+   ============================================ */
+.test-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.test-user-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--aws-orange);
+}
+
+/* Auth responsive */
+@media (max-width: 600px) {
+  .auth-modal-content { margin: 10px; }
+  .auth-header-btn { padding: 6px 14px; font-size: 0.8rem; }
+  .auth-header-btn.logged-in { width: 34px; height: 34px; }
+}

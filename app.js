@@ -94,9 +94,14 @@
       });
     });
 
-    // Test option cards — free tests bypass payment, others gated
+    // Test option cards — require login, free tests bypass payment, others gated
     $$('.test-start-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        // Must be logged in for any test
+        if (window.AppAuth && !window.AppAuth.isLoggedIn()) {
+          window.showAuthModal('signup');
+          return;
+        }
         const isFree = btn.dataset.free === 'true';
         if (!isFree && !hasPaid()) { showPaymentModal(); return; }
         const numQ = parseInt(btn.dataset.questions, 10) || 65;
@@ -104,6 +109,9 @@
         startPracticeTest(numQ, timeS);
       });
     });
+
+    // Expose globally for firebase-auth.js
+    window.updateTestCardLocks = updateTestCardLocks;
 
     // Update test card lock states on load
     updateTestCardLocks();
@@ -1093,7 +1101,10 @@
   // PAYMENT / STRIPE
   // ============================================================
   function hasPaid() {
-    return localStorage.getItem('aws_ccp_paid') === 'true';
+    if (window.AppAuth && window.AppAuth.ready) {
+      return window.AppAuth.hasPaid();
+    }
+    return false;
   }
 
   function updateTestCardLocks() {
@@ -1114,6 +1125,11 @@
   }
 
   function showPaymentModal() {
+    // Must be logged in to pay
+    if (window.AppAuth && !window.AppAuth.isLoggedIn()) {
+      window.showAuthModal('login');
+      return;
+    }
     const modal = $('#payment-modal');
     if (modal) {
       modal.classList.remove('hidden');
@@ -1154,25 +1170,8 @@
       }
     });
 
-    // Check for Stripe success redirect
-    // After Stripe payment, redirect user back with ?paid=success in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('paid') === 'success' || urlParams.get('session_id')) {
-      localStorage.setItem('aws_ccp_paid', 'true');
-      // Clean URL
-      window.history.replaceState({}, '', window.location.pathname);
-      // Show success message
-      showPaymentSuccess();
-      updateTestCardLocks();
-    }
-  }
-
-  function showPaymentSuccess() {
-    const banner = document.createElement('div');
-    banner.className = 'payment-success-banner';
-    banner.innerHTML = '<span>✓ Payment successful! You now have full access to all practice tests.</span><button class="banner-close" onclick="this.parentElement.remove()">×</button>';
-    document.body.insertBefore(banner, document.body.firstChild);
-    setTimeout(() => banner.remove(), 8000);
+    // Stripe redirect is now handled by firebase-auth.js
+    // which writes paid status to Firestore instead of localStorage
   }
 
   // ============================================================

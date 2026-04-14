@@ -1,0 +1,1058 @@
+// ============================================================
+// AWS Certified Cloud Practitioner (CLF-C02) Practice App
+// Main Application Logic
+// ============================================================
+
+(function () {
+  'use strict';
+
+  // ---- State ----
+  const state = {
+    currentView: 'home',
+    currentDomain: '1',
+    currentTopic: '1.1',
+    // Practice Test
+    testQuestions: [],
+    testAnswers: {},
+    flaggedQuestions: new Set(),
+    currentQuestionIndex: 0,
+    timerInterval: null,
+    timeRemaining: 90 * 60,
+    testSubmitted: false,
+    reviewFilter: 'all',
+    // Quick Quiz
+    quizQuestions: [],
+    quizAnswers: {},
+    quizCurrentIndex: 0,
+    quizChecked: false,
+    quizCorrectCount: 0,
+  };
+
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => [...document.querySelectorAll(sel)];
+
+  // ============================================================
+  // VIEW NAVIGATION
+  // ============================================================
+  function showView(viewId) {
+    $$('.view').forEach(v => v.classList.remove('active-view'));
+    const view = $(`#${viewId}-view`);
+    if (view) view.classList.add('active-view');
+
+    $$('.nav-link').forEach(btn => btn.classList.remove('active'));
+    const navMap = { home: 'nav-home-btn', training: 'nav-training-btn', test: 'nav-test-btn' };
+    const navBtn = navMap[viewId] ? $(`#${navMap[viewId]}`) : null;
+    if (navBtn) navBtn.classList.add('active');
+
+    state.currentView = viewId;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Close mobile nav
+    const headerNav = $('#header-nav');
+    const menuBtn = $('#mobile-menu-btn');
+    if (headerNav) headerNav.classList.remove('open');
+    if (menuBtn) menuBtn.classList.remove('open');
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function arraysEqual(a, b) {
+    if (a.length !== b.length) return false;
+    const sa = [...a].sort(), sb = [...b].sort();
+    return sa.every((v, i) => v === sb[i]);
+  }
+
+  // ============================================================
+  // HOME VIEW
+  // ============================================================
+  function initHome() {
+    // Training buttons
+    ['#hero-start-training', '#start-training-btn'].forEach(sel => {
+      const btn = $(sel);
+      if (btn) btn.addEventListener('click', () => { initTraining(); showView('training'); });
+    });
+
+    // Test buttons — gated by payment
+    ['#hero-start-test', '#start-test-btn'].forEach(sel => {
+      const btn = $(sel);
+      if (btn) btn.addEventListener('click', () => {
+        if (hasPaid()) { startPracticeTest(); } else { showPaymentModal(); }
+      });
+    });
+
+    // Domain items click — go to training
+    $$('.domain-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const d = item.dataset.domain;
+        if (d && window.trainingContent && window.trainingContent[d]) {
+          state.currentDomain = d;
+          state.currentTopic = Object.keys(window.trainingContent[d].topics)[0];
+          initTraining();
+          showView('training');
+        }
+      });
+    });
+
+    // Nav buttons
+    $('#nav-home-btn').addEventListener('click', () => showView('home'));
+    $('#nav-training-btn').addEventListener('click', () => { initTraining(); showView('training'); });
+    $('#nav-test-btn').addEventListener('click', () => {
+      if (!hasPaid()) { showPaymentModal(); return; }
+      if (state.testQuestions.length > 0 && !state.testSubmitted) {
+        showView('test');
+      } else {
+        startPracticeTest();
+      }
+    });
+
+    // Mobile menu toggle
+    const menuBtn = $('#mobile-menu-btn');
+    if (menuBtn) {
+      menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('open');
+        $('#header-nav').classList.toggle('open');
+      });
+    }
+
+    // Animate domain bars on scroll
+    animateDomainBars();
+  }
+
+  function animateDomainBars() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fills = entry.target.querySelectorAll('.domain-bar-fill');
+          fills.forEach(fill => {
+            const targetWidth = fill.dataset.width;
+            if (targetWidth) {
+              setTimeout(() => { fill.style.width = targetWidth; }, 200);
+            }
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const grid = $('.domains-grid');
+    if (grid) observer.observe(grid);
+  }
+
+  // ============================================================
+  // TRAINING VIEW
+  // ============================================================
+  function initTraining() {
+    renderTrainingSidebar();
+    loadTrainingTopic(state.currentDomain, state.currentTopic);
+  }
+
+  function renderTrainingSidebar() {
+    const nav = $('#training-sidebar-nav');
+    if (!nav || !window.trainingContent) return;
+    nav.innerHTML = '';
+
+    for (const domainId of Object.keys(window.trainingContent)) {
+      const domain = window.trainingContent[domainId];
+      const wrapper = document.createElement('div');
+      wrapper.className = 'sidebar-domain';
+
+      const btn = document.createElement('button');
+      btn.className = 'sidebar-domain-btn' + (domainId === state.currentDomain ? ' active' : '');
+      btn.innerHTML = `<span class="sidebar-domain-label">Domain ${domainId}: ${domain.name}</span><span class="sidebar-domain-weight">${domain.weight}%</span>`;
+      btn.addEventListener('click', () => {
+        $$('.sidebar-domain-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const topics = wrapper.querySelector('.sidebar-topics');
+        if (topics) topics.classList.toggle('open');
+      });
+
+      const topics = document.createElement('div');
+      topics.className = 'sidebar-topics' + (domainId === state.currentDomain ? ' open' : '');
+
+      for (const topicId of Object.keys(domain.topics)) {
+        const topic = domain.topics[topicId];
+        const tBtn = document.createElement('button');
+        tBtn.className = 'sidebar-topic-btn' + (topicId === state.currentTopic && domainId === state.currentDomain ? ' active' : '');
+        tBtn.textContent = `${topicId}: ${topic.title}`;
+        tBtn.addEventListener('click', () => {
+          state.currentDomain = domainId;
+          state.currentTopic = topicId;
+          loadTrainingTopic(domainId, topicId);
+          $$('.sidebar-topic-btn').forEach(b => b.classList.remove('active'));
+          tBtn.classList.add('active');
+        });
+        topics.appendChild(tBtn);
+      }
+
+      wrapper.appendChild(btn);
+      wrapper.appendChild(topics);
+      nav.appendChild(wrapper);
+    }
+  }
+
+  function loadTrainingTopic(domainId, topicId) {
+    const content = window.trainingContent;
+    if (!content || !content[domainId]) return;
+    const domain = content[domainId];
+    const topic = domain.topics[topicId];
+    if (!topic) return;
+
+    const title = $('#training-topic-title');
+    const badge = $('#training-domain-badge');
+    const area = $('#training-content-area');
+
+    if (title) title.textContent = topic.title;
+    if (badge) badge.textContent = `Domain ${domainId}: ${domain.name} (${domain.weight}%)`;
+    if (area) { area.innerHTML = topic.content; area.scrollTop = 0; }
+  }
+
+  function initTrainingEvents() {
+    const quizBtn = $('#start-quick-quiz-btn');
+    if (quizBtn) quizBtn.addEventListener('click', () => startQuickQuiz(state.currentDomain, state.currentTopic));
+
+    const backBtn = $('#training-home-btn');
+    if (backBtn) backBtn.addEventListener('click', () => showView('home'));
+  }
+
+  // ============================================================
+  // PRACTICE TEST
+  // ============================================================
+  function startPracticeTest() {
+    const bank = window.questionBank;
+    if (!bank || bank.length === 0) { alert('Question bank not loaded.'); return; }
+
+    const byDomain = { 1: [], 2: [], 3: [], 4: [] };
+    bank.forEach(q => { if (byDomain[q.domain]) byDomain[q.domain].push(q); });
+
+    const counts = { 1: 16, 2: 20, 3: 22, 4: 7 };
+    let selected = [];
+    for (const d of [1, 2, 3, 4]) {
+      selected = selected.concat(shuffle(byDomain[d]).slice(0, counts[d]));
+    }
+
+    state.testQuestions = shuffle(selected);
+    state.testAnswers = {};
+    state.flaggedQuestions = new Set();
+    state.currentQuestionIndex = 0;
+    state.timeRemaining = 90 * 60;
+    state.testSubmitted = false;
+    state.reviewFilter = 'all';
+
+    renderNavigatorGrid();
+    renderTestQuestion();
+    startTimer();
+    showView('test');
+  }
+
+  function renderTestQuestion() {
+    const q = state.testQuestions[state.currentQuestionIndex];
+    if (!q) return;
+    const idx = state.currentQuestionIndex;
+
+    // Counter + progress
+    const counter = $('#test-question-counter');
+    if (counter) counter.textContent = `Question ${idx + 1} of ${state.testQuestions.length}`;
+    const bar = $('#test-progress-bar');
+    if (bar) bar.style.width = ((idx + 1) / state.testQuestions.length * 100) + '%';
+
+    // Tags
+    const domainTag = $('#test-domain-tag');
+    if (domainTag) domainTag.textContent = `Domain ${q.domain}: ${q.domainName}`;
+    const typeTag = $('#test-type-tag');
+    if (typeTag) typeTag.textContent = q.type === 'multiple-response' ? 'Multiple Response' : 'Multiple Choice';
+
+    // Question
+    const text = $('#test-question-text');
+    if (text) text.textContent = q.question;
+
+    // Instruction
+    const instr = $('#test-question-instruction');
+    if (instr) {
+      if (q.type === 'multiple-response') {
+        instr.textContent = `(Select ${q.correctAnswers.length} answers)`;
+        instr.classList.remove('hidden');
+      } else {
+        instr.textContent = '';
+        instr.classList.add('hidden');
+      }
+    }
+
+    // Options
+    const container = $('#test-answer-options');
+    if (!container) return;
+    container.innerHTML = '';
+    const inputType = q.type === 'multiple-response' ? 'checkbox' : 'radio';
+    const existing = state.testAnswers[idx] || [];
+
+    q.options.forEach((opt, i) => {
+      const label = document.createElement('label');
+      label.className = 'answer-option' + (existing.includes(i) ? ' selected' : '');
+
+      const input = document.createElement('input');
+      input.type = inputType;
+      input.name = 'test-answer';
+      input.value = i;
+      input.checked = existing.includes(i);
+      input.className = 'answer-input';
+
+      const span = document.createElement('span');
+      span.className = 'answer-text';
+      span.textContent = opt;
+
+      label.appendChild(input);
+      label.appendChild(span);
+
+      if (!state.testSubmitted) {
+        label.addEventListener('click', (e) => {
+          if (e.target !== input) { e.preventDefault(); input.checked = !input.checked; }
+          handleTestAnswer(i, input.checked, inputType);
+        });
+      }
+
+      container.appendChild(label);
+    });
+
+    // Flag button
+    const flagBtn = $('#flag-question-btn');
+    if (flagBtn) {
+      if (state.flaggedQuestions.has(idx)) {
+        flagBtn.classList.add('flagged');
+        flagBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M2 1v12h1.5V8.5h7L9 6l1.5-2.5h-7V1H2z"/></svg> Unflag';
+      } else {
+        flagBtn.classList.remove('flagged');
+        flagBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M2 1v12h1.5V8.5h7L9 6l1.5-2.5h-7V1H2z"/></svg> Flag for Review';
+      }
+    }
+
+    // Prev/Next
+    const prevBtn = $('#prev-question-btn');
+    const nextBtn = $('#next-question-btn');
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.textContent = idx === state.testQuestions.length - 1 ? 'Finish' : 'Next →';
+
+    // Explanation (review mode)
+    const explEl = $('#question-explanation');
+    if (explEl) {
+      if (state.testSubmitted) {
+        const ua = state.testAnswers[idx] || [];
+        const correct = arraysEqual(ua, q.correctAnswers);
+        explEl.innerHTML = `<div class="explanation-box ${correct ? 'correct' : 'incorrect'}">
+          <p class="explanation-status">${correct ? '✓ Correct' : '✗ Incorrect'}</p>
+          <p class="explanation-correct-answer"><strong>Correct answer${q.correctAnswers.length > 1 ? 's' : ''}:</strong> ${q.correctAnswers.map(i => q.options[i]).join(', ')}</p>
+          <p class="explanation-text">${q.explanation}</p>
+        </div>`;
+        explEl.classList.remove('hidden');
+
+        container.querySelectorAll('.answer-option').forEach((label, i) => {
+          const inp = label.querySelector('input');
+          if (inp) inp.disabled = true;
+          label.style.pointerEvents = 'none';
+          if (q.correctAnswers.includes(i)) label.classList.add('option-correct');
+          if (ua.includes(i) && !q.correctAnswers.includes(i)) label.classList.add('option-incorrect');
+        });
+      } else {
+        explEl.classList.add('hidden');
+        explEl.innerHTML = '';
+      }
+    }
+
+    updateNavigatorGrid();
+    updateNavigatorSummary();
+  }
+
+  function handleTestAnswer(optIdx, checked, type) {
+    const idx = state.currentQuestionIndex;
+    if (type === 'radio') {
+      state.testAnswers[idx] = [optIdx];
+    } else {
+      if (!state.testAnswers[idx]) state.testAnswers[idx] = [];
+      const arr = state.testAnswers[idx];
+      if (checked && !arr.includes(optIdx)) arr.push(optIdx);
+      if (!checked) { const i = arr.indexOf(optIdx); if (i > -1) arr.splice(i, 1); }
+    }
+    // Visual
+    $$('#test-answer-options .answer-option').forEach(label => {
+      const inp = label.querySelector('input');
+      label.classList.toggle('selected', inp && inp.checked);
+    });
+    updateNavigatorGrid();
+    updateNavigatorSummary();
+  }
+
+  function renderNavigatorGrid() {
+    const grid = $('#navigator-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    state.testQuestions.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'navigator-item';
+      btn.textContent = i + 1;
+      btn.addEventListener('click', () => { state.currentQuestionIndex = i; renderTestQuestion(); });
+      grid.appendChild(btn);
+    });
+  }
+
+  function updateNavigatorGrid() {
+    $$('#navigator-grid .navigator-item').forEach((btn, i) => {
+      btn.classList.remove('current', 'answered', 'flagged');
+      if (i === state.currentQuestionIndex) btn.classList.add('current');
+      if (state.testAnswers[i] && state.testAnswers[i].length > 0) btn.classList.add('answered');
+      if (state.flaggedQuestions.has(i)) btn.classList.add('flagged');
+    });
+  }
+
+  function updateNavigatorSummary() {
+    const answered = Object.keys(state.testAnswers).filter(k => state.testAnswers[k].length > 0).length;
+    const el1 = $('#answered-count'), el2 = $('#flagged-count'), el3 = $('#unanswered-count');
+    if (el1) el1.textContent = answered;
+    if (el2) el2.textContent = state.flaggedQuestions.size;
+    if (el3) el3.textContent = state.testQuestions.length - answered;
+  }
+
+  // Timer
+  function startTimer() {
+    clearInterval(state.timerInterval);
+    updateTimerDisplay();
+    state.timerInterval = setInterval(() => {
+      state.timeRemaining--;
+      updateTimerDisplay();
+      if (state.timeRemaining <= 0) { clearInterval(state.timerInterval); submitTest(); }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const el = $('#test-timer');
+    if (!el) return;
+    const m = Math.floor(state.timeRemaining / 60);
+    const s = state.timeRemaining % 60;
+    el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    el.classList.toggle('timer-warning', state.timeRemaining <= 300 && state.timeRemaining > 60);
+    el.classList.toggle('timer-danger', state.timeRemaining <= 60);
+  }
+
+  // Submit
+  function submitTest() {
+    clearInterval(state.timerInterval);
+    state.testSubmitted = true;
+    calculateResults();
+    showView('results');
+  }
+
+  function calculateResults() {
+    let totalCorrect = 0;
+    const dr = { 1: { c: 0, t: 0 }, 2: { c: 0, t: 0 }, 3: { c: 0, t: 0 }, 4: { c: 0, t: 0 } };
+
+    state.testQuestions.forEach((q, i) => {
+      const ua = state.testAnswers[i] || [];
+      const correct = arraysEqual(ua, q.correctAnswers);
+      if (correct) totalCorrect++;
+      dr[q.domain].t++;
+      if (correct) dr[q.domain].c++;
+    });
+
+    const ratio = totalCorrect / state.testQuestions.length;
+    const scaled = Math.round(100 + ratio * 900);
+    const passed = scaled >= 700;
+
+    // Score circle animation
+    const scoreValue = $('#score-value');
+    const scoreCircle = $('#score-circle');
+    const ringFill = $('#score-ring-fill');
+    if (scoreValue) animateNumber(scoreValue, 0, scaled, 1500);
+    if (scoreCircle) scoreCircle.className = 'score-circle ' + (passed ? 'score-circle--passed' : 'score-circle--failed');
+    if (ringFill) {
+      const circumference = 2 * Math.PI * 54; // ~339.29
+      const offset = circumference * (1 - ratio);
+      setTimeout(() => { ringFill.style.strokeDashoffset = offset; }, 100);
+    }
+
+    const scoreStatus = $('#score-status');
+    if (scoreStatus) {
+      scoreStatus.textContent = passed ? 'PASSED' : 'NOT PASSED';
+      scoreStatus.className = 'score-status ' + (passed ? 'score-passed' : 'score-failed');
+    }
+    const correctEl = $('#correct-count'), totalEl = $('#total-count');
+    if (correctEl) correctEl.textContent = totalCorrect;
+    if (totalEl) totalEl.textContent = state.testQuestions.length;
+
+    // Domain bars
+    for (const d of [1, 2, 3, 4]) {
+      const pct = dr[d].t > 0 ? Math.round((dr[d].c / dr[d].t) * 100) : 0;
+      const pctEl = $(`#domain-${d}-percent`);
+      const barEl = $(`#domain-${d}-bar`);
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (barEl) {
+        barEl.style.width = '0%';
+        barEl.className = 'domain-breakdown-bar ' + (pct >= 70 ? 'bar-pass' : 'bar-fail');
+        setTimeout(() => { barEl.style.width = pct + '%'; }, 400);
+      }
+    }
+
+    renderReviewList();
+  }
+
+  function renderReviewList() {
+    const list = $('#review-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    state.testQuestions.forEach((q, i) => {
+      const ua = state.testAnswers[i] || [];
+      const correct = arraysEqual(ua, q.correctAnswers);
+      const flagged = state.flaggedQuestions.has(i);
+
+      if (state.reviewFilter === 'correct' && !correct) return;
+      if (state.reviewFilter === 'incorrect' && correct) return;
+      if (state.reviewFilter === 'flagged' && !flagged) return;
+
+      const card = document.createElement('div');
+      card.className = `review-card ${correct ? 'review-correct' : 'review-incorrect'}`;
+      card.innerHTML = `
+        <div class="review-card-header">
+          <span class="review-q-number">Q${i + 1}</span>
+          <span class="review-domain-tag">Domain ${q.domain}</span>
+          ${flagged ? '<span class="review-flagged-tag">Flagged</span>' : ''}
+          <span class="review-status ${correct ? 'status-correct' : 'status-incorrect'}">${correct ? '✓ Correct' : '✗ Incorrect'}</span>
+        </div>
+        <p class="review-question-text">${q.question}</p>
+        <div class="review-answers">
+          ${q.options.map((opt, j) => {
+            let cls = 'review-option';
+            if (q.correctAnswers.includes(j)) cls += ' review-option-correct';
+            if (ua.includes(j) && !q.correctAnswers.includes(j)) cls += ' review-option-incorrect';
+            if (ua.includes(j)) cls += ' review-option-selected';
+            return `<div class="${cls}">${opt}</div>`;
+          }).join('')}
+        </div>
+        <div class="review-explanation" style="display:none"><strong>Explanation:</strong> ${q.explanation}</div>`;
+
+      card.addEventListener('click', () => {
+        const expl = card.querySelector('.review-explanation');
+        expl.style.display = expl.style.display === 'none' ? 'block' : 'none';
+      });
+
+      list.appendChild(card);
+    });
+  }
+
+  function animateNumber(el, from, to, duration) {
+    const start = performance.now();
+    (function update(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(from + (to - from) * eased);
+      if (p < 1) requestAnimationFrame(update);
+    })(start);
+  }
+
+  function initTestEvents() {
+    $('#prev-question-btn').addEventListener('click', () => {
+      if (state.currentQuestionIndex > 0) { state.currentQuestionIndex--; renderTestQuestion(); }
+    });
+    $('#next-question-btn').addEventListener('click', () => {
+      if (state.currentQuestionIndex < state.testQuestions.length - 1) {
+        state.currentQuestionIndex++;
+        renderTestQuestion();
+      } else if (!state.testSubmitted) {
+        confirmSubmit();
+      }
+    });
+    $('#flag-question-btn').addEventListener('click', () => {
+      const idx = state.currentQuestionIndex;
+      state.flaggedQuestions.has(idx) ? state.flaggedQuestions.delete(idx) : state.flaggedQuestions.add(idx);
+      renderTestQuestion();
+    });
+    $('#submit-test-btn').addEventListener('click', confirmSubmit);
+
+    // Review filters
+    $$('.review-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('.review-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.reviewFilter = btn.dataset.filter;
+        renderReviewList();
+      });
+    });
+
+    $('#retake-test-btn').addEventListener('click', startPracticeTest);
+    $('#results-home-btn').addEventListener('click', () => showView('home'));
+  }
+
+  function confirmSubmit() {
+    const unanswered = state.testQuestions.length - Object.keys(state.testAnswers).filter(k => state.testAnswers[k].length > 0).length;
+    const msg = unanswered > 0
+      ? `You have ${unanswered} unanswered question${unanswered > 1 ? 's' : ''}. Submit anyway?`
+      : 'Are you sure you want to submit your test?';
+    if (confirm(msg)) submitTest();
+  }
+
+  // ============================================================
+  // QUICK QUIZ
+  // ============================================================
+  function startQuickQuiz(domainId, topicId) {
+    const bank = window.questionBank;
+    if (!bank) return;
+    let eligible = bank.filter(q => q.domain === parseInt(domainId));
+    if (topicId) {
+      const filtered = eligible.filter(q => q.topic === topicId);
+      if (filtered.length >= 5) eligible = filtered;
+    }
+
+    state.quizQuestions = shuffle(eligible).slice(0, 10);
+    state.quizAnswers = {};
+    state.quizCurrentIndex = 0;
+    state.quizChecked = false;
+    state.quizCorrectCount = 0;
+
+    const titleEl = $('#quiz-title');
+    const domain = window.trainingContent ? window.trainingContent[domainId] : null;
+    if (titleEl && domain) titleEl.textContent = `Quick Quiz: Domain ${domainId} - ${domain.name}`;
+
+    const area = $('.quiz-question-area');
+    const results = $('#quiz-results');
+    if (area) area.classList.remove('hidden');
+    if (results) results.classList.add('hidden');
+
+    renderQuizQuestion();
+    showView('quiz');
+  }
+
+  function renderQuizQuestion() {
+    const q = state.quizQuestions[state.quizCurrentIndex];
+    if (!q) return;
+
+    const counter = $('#quiz-question-counter');
+    if (counter) counter.textContent = `Question ${state.quizCurrentIndex + 1} of ${state.quizQuestions.length}`;
+
+    const bar = $('#quiz-progress-bar');
+    if (bar) bar.style.width = ((state.quizCurrentIndex + 1) / state.quizQuestions.length * 100) + '%';
+
+    const tag = $('#quiz-domain-tag');
+    if (tag) tag.textContent = `Domain ${q.domain}: ${q.domainName}`;
+
+    const text = $('#quiz-question-text');
+    if (text) text.textContent = q.question;
+
+    const instr = $('#quiz-question-instruction');
+    if (instr) {
+      if (q.type === 'multiple-response') {
+        instr.textContent = `(Select ${q.correctAnswers.length} answers)`;
+        instr.classList.remove('hidden');
+      } else {
+        instr.textContent = '';
+        instr.classList.add('hidden');
+      }
+    }
+
+    const container = $('#quiz-answer-options');
+    if (!container) return;
+    container.innerHTML = '';
+    const inputType = q.type === 'multiple-response' ? 'checkbox' : 'radio';
+
+    q.options.forEach((opt, i) => {
+      const label = document.createElement('label');
+      label.className = 'answer-option';
+
+      const input = document.createElement('input');
+      input.type = inputType;
+      input.name = 'quiz-answer';
+      input.value = i;
+      input.className = 'answer-input';
+
+      const span = document.createElement('span');
+      span.className = 'answer-text';
+      span.textContent = opt;
+
+      label.appendChild(input);
+      label.appendChild(span);
+
+      label.addEventListener('click', (e) => {
+        if (state.quizChecked) return;
+        if (e.target !== input) { e.preventDefault(); input.checked = !input.checked; }
+        if (inputType === 'radio') {
+          state.quizAnswers[state.quizCurrentIndex] = [i];
+        } else {
+          if (!state.quizAnswers[state.quizCurrentIndex]) state.quizAnswers[state.quizCurrentIndex] = [];
+          const arr = state.quizAnswers[state.quizCurrentIndex];
+          if (input.checked && !arr.includes(i)) arr.push(i);
+          if (!input.checked) { const idx = arr.indexOf(i); if (idx > -1) arr.splice(idx, 1); }
+        }
+        container.querySelectorAll('.answer-option').forEach(lbl => {
+          lbl.classList.toggle('selected', lbl.querySelector('input')?.checked);
+        });
+      });
+
+      container.appendChild(label);
+    });
+
+    // Reset UI
+    const feedback = $('#quiz-feedback');
+    if (feedback) feedback.classList.add('hidden');
+    const checkBtn = $('#quiz-check-btn');
+    const nextBtn = $('#quiz-next-btn');
+    if (checkBtn) checkBtn.classList.remove('hidden');
+    if (nextBtn) nextBtn.classList.add('hidden');
+    state.quizChecked = false;
+  }
+
+  function checkQuizAnswer() {
+    const q = state.quizQuestions[state.quizCurrentIndex];
+    const ua = state.quizAnswers[state.quizCurrentIndex] || [];
+    const correct = arraysEqual(ua, q.correctAnswers);
+    if (correct) state.quizCorrectCount++;
+    state.quizChecked = true;
+
+    const feedback = $('#quiz-feedback');
+    const status = $('#quiz-feedback-status');
+    const explanation = $('#quiz-feedback-explanation');
+    if (feedback) feedback.classList.remove('hidden');
+    if (status) {
+      status.textContent = correct ? '✓ Correct!' : '✗ Incorrect';
+      status.className = 'quiz-feedback-status ' + (correct ? 'feedback-correct' : 'feedback-incorrect');
+    }
+    if (explanation) {
+      explanation.innerHTML = `<p><strong>Correct:</strong> ${q.correctAnswers.map(i => q.options[i]).join(', ')}</p><p>${q.explanation}</p>`;
+    }
+
+    $$('#quiz-answer-options .answer-option').forEach((label, i) => {
+      label.querySelector('input').disabled = true;
+      label.style.pointerEvents = 'none';
+      if (q.correctAnswers.includes(i)) label.classList.add('option-correct');
+      if (ua.includes(i) && !q.correctAnswers.includes(i)) label.classList.add('option-incorrect');
+    });
+
+    $('#quiz-check-btn').classList.add('hidden');
+    const nextBtn = $('#quiz-next-btn');
+    nextBtn.classList.remove('hidden');
+    nextBtn.textContent = state.quizCurrentIndex === state.quizQuestions.length - 1 ? 'See Results' : 'Next Question →';
+  }
+
+  function initQuizEvents() {
+    $('#quiz-check-btn').addEventListener('click', () => {
+      if (!(state.quizAnswers[state.quizCurrentIndex]?.length > 0)) {
+        alert('Please select an answer.');
+        return;
+      }
+      checkQuizAnswer();
+    });
+    $('#quiz-next-btn').addEventListener('click', () => {
+      if (state.quizCurrentIndex < state.quizQuestions.length - 1) {
+        state.quizCurrentIndex++;
+        renderQuizQuestion();
+      } else {
+        // Show results
+        $('.quiz-question-area').classList.add('hidden');
+        const results = $('#quiz-results');
+        results.classList.remove('hidden');
+        $('#quiz-correct-count').textContent = state.quizCorrectCount;
+        $('#quiz-total-count').textContent = state.quizQuestions.length;
+      }
+    });
+    $('#quiz-back-btn').addEventListener('click', () => showView('training'));
+    $('#quiz-retry-btn').addEventListener('click', () => startQuickQuiz(state.currentDomain, state.currentTopic));
+    $('#quiz-return-btn').addEventListener('click', () => showView('training'));
+  }
+
+  // ============================================================
+  // VISUAL EFFECTS
+  // ============================================================
+
+  // Scroll-triggered animations
+  function initScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    $$('.feature-card, .domain-item, .exam-stat').forEach(el => {
+      el.classList.add('animate-target');
+      observer.observe(el);
+    });
+  }
+
+  // Hero particle network background
+  function initHeroParticles() {
+    const canvas = $('#hero-particles');
+    if (!canvas) return;
+    const hero = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: -1000, y: -1000 };
+
+    function resize() {
+      canvas.width = hero.offsetWidth;
+      canvas.height = hero.offsetHeight;
+    }
+
+    function create() {
+      particles = [];
+      const count = Math.min(Math.floor(canvas.width / 20), 80);
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 0.5,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.4 + 0.1,
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,153,0,${0.06 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw particles + mouse interaction
+      particles.forEach(p => {
+        // Mouse repulsion
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          const force = (150 - dist) / 150 * 0.5;
+          p.x += (dx / dist) * force;
+          p.y += (dy / dist) * force;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,153,0,${p.opacity})`;
+        ctx.fill();
+
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    hero.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
+
+    resize();
+    create();
+    draw();
+    window.addEventListener('resize', () => { resize(); create(); });
+  }
+
+  // Card tilt effect
+  function initTiltEffects() {
+    $$('.feature-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px)`;
+
+        // Move glow
+        const glow = card.querySelector('.feature-card-glow');
+        if (glow) {
+          glow.style.left = `${(e.clientX - rect.left) - rect.width}px`;
+          glow.style.top = `${(e.clientY - rect.top) - rect.height}px`;
+        }
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+
+  // ============================================================
+  // TESTIMONIALS CAROUSEL
+  // ============================================================
+  function initCarousel() {
+    const track = $('#testimonials-track');
+    const prevBtn = $('#carousel-prev');
+    const nextBtn = $('#carousel-next');
+    const dotsContainer = $('#carousel-dots');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const cards = track.querySelectorAll('.testimonial-card');
+    const cardsPerPage = window.innerWidth <= 768 ? 1 : 2;
+    const totalPages = Math.ceil(cards.length / cardsPerPage);
+    let currentPage = 0;
+    let autoPlayInterval;
+
+    // Create dots
+    if (dotsContainer) {
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goToPage(i));
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      const cardWidth = cards[0].offsetWidth + 24; // card width + gap
+      track.style.transform = `translateX(-${currentPage * cardsPerPage * cardWidth}px)`;
+      // Update dots
+      if (dotsContainer) {
+        dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === currentPage);
+        });
+      }
+    }
+
+    prevBtn.addEventListener('click', () => {
+      currentPage = currentPage > 0 ? currentPage - 1 : totalPages - 1;
+      goToPage(currentPage);
+      resetAutoPlay();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentPage = currentPage < totalPages - 1 ? currentPage + 1 : 0;
+      goToPage(currentPage);
+      resetAutoPlay();
+    });
+
+    // Auto-play
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(() => {
+        currentPage = currentPage < totalPages - 1 ? currentPage + 1 : 0;
+        goToPage(currentPage);
+      }, 5000);
+    }
+
+    function resetAutoPlay() {
+      clearInterval(autoPlayInterval);
+      startAutoPlay();
+    }
+
+    startAutoPlay();
+
+    // Pause on hover
+    track.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+    track.addEventListener('mouseleave', startAutoPlay);
+
+    // Recalculate on resize
+    window.addEventListener('resize', () => {
+      currentPage = 0;
+      goToPage(0);
+    });
+  }
+
+  // ============================================================
+  // PAYMENT / STRIPE
+  // ============================================================
+  function hasPaid() {
+    return localStorage.getItem('aws_ccp_paid') === 'true';
+  }
+
+  function showPaymentModal() {
+    const modal = $('#payment-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('modal-open');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function hidePaymentModal() {
+    const modal = $('#payment-modal');
+    if (modal) {
+      modal.classList.add('closing');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('modal-open', 'closing');
+        document.body.style.overflow = '';
+      }, 250);
+    }
+  }
+
+  function initPayment() {
+    // Close modal on X button
+    const closeBtn = $('#modal-close');
+    if (closeBtn) closeBtn.addEventListener('click', hidePaymentModal);
+
+    // Close modal on overlay click
+    const modal = $('#payment-modal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) hidePaymentModal();
+      });
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        hidePaymentModal();
+      }
+    });
+
+    // Check for Stripe success redirect
+    // After Stripe payment, redirect user back with ?paid=success in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('paid') === 'success' || urlParams.get('session_id')) {
+      localStorage.setItem('aws_ccp_paid', 'true');
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+      // Show success message
+      showPaymentSuccess();
+    }
+  }
+
+  function showPaymentSuccess() {
+    const banner = document.createElement('div');
+    banner.className = 'payment-success-banner';
+    banner.innerHTML = '<span>✓ Payment successful! You now have full access to all practice tests.</span><button class="banner-close" onclick="this.parentElement.remove()">×</button>';
+    document.body.insertBefore(banner, document.body.firstChild);
+    setTimeout(() => banner.remove(), 8000);
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  function init() {
+    initHome();
+    initTrainingEvents();
+    initTestEvents();
+    initQuizEvents();
+    initPayment();
+    initCarousel();
+    initScrollAnimations();
+    initHeroParticles();
+    initTiltEffects();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

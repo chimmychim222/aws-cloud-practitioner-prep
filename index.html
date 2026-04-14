@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Certified Cloud Practitioner (CLF-C02) — Practice Tests & Training</title>
+  <meta name="description" content="Free practice tests and training for the AWS Certified Cloud Practitioner CLF-C02 exam. Study by domain, take timed exams, and review your results.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%23232F3E'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='%23FF9900' font-family='Arial,sans-serif' font-weight='bold'>A</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========== SITE HEADER ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="#" class="header-logo" id="header-logo">
+        <svg class="logo-aws" width="40" height="24" viewBox="0 0 40 24" fill="none" aria-hidden="true">
+          <path d="M11.2 14.8c0 .4.1.8.2 1 .1.3.3.5.5.8.1.1.1.2.1.3 0 .1-.1.3-.3.4l-1 .7c-.1.1-.3.1-.4.1-.2 0-.3-.1-.5-.3-.2-.2-.4-.5-.5-.8-.7.8-1.5 1.2-2.5 1.2-.7 0-1.3-.2-1.7-.6-.4-.4-.7-1-.7-1.7 0-.7.3-1.3.8-1.8.5-.4 1.2-.6 2.1-.6.3 0 .6 0 .9.1.3.1.7.1 1 .2v-.6c0-.7-.1-1.2-.4-1.5-.3-.3-.8-.4-1.5-.4-.3 0-.7.1-1 .2-.3.1-.7.2-1 .4l-.5.2c-.1 0-.2-.1-.2-.3v-.5c0-.2 0-.3.1-.4.1-.1.2-.2.4-.3.3-.2.7-.3 1.1-.4.4-.1.9-.2 1.4-.2.8 0 1.5.2 1.9.6.4.4.6 1 .6 1.9v2.5zm-3.4 1.3c.3 0 .6-.1.9-.2.3-.1.6-.4.7-.7.1-.2.2-.4.2-.6V14c-.2-.1-.5-.1-.8-.2-.3-.1-.6-.1-.8-.1-.6 0-1 .1-1.3.3-.3.2-.5.6-.5 1 0 .4.1.7.3.9.2.3.6.4 1.1.4h.2zm6.7 1c-.2 0-.3 0-.4-.1-.1-.1-.2-.2-.3-.4L11.4 10c-.1-.2-.1-.3-.1-.4 0-.2.1-.3.3-.3h1.5c.2 0 .3 0 .4.1.1.1.2.2.2.4l1.6 6.5 1.5-6.5c.1-.2.1-.3.2-.4.1-.1.3-.1.4-.1h1.2c.2 0 .3 0 .4.1.1.1.2.2.2.4l1.5 6.6 1.7-6.6c.1-.2.1-.3.2-.4.1-.1.3-.1.4-.1h1.4c.2 0 .3.1.3.3 0 .1 0 .1-.1.2 0 .1 0 .2-.1.3l-2.5 6.6c-.1.2-.1.3-.3.4-.1.1-.3.1-.4.1h-1.3c-.2 0-.3 0-.4-.1-.1-.1-.2-.2-.2-.4l-1.5-6.3-1.5 6.3c-.1.2-.1.3-.2.4-.1.1-.3.1-.4.1h-1.3zm10.7.3c-.5 0-.9-.1-1.4-.2-.5-.1-.8-.3-1-.4-.1-.1-.2-.2-.2-.3v-.6c0-.2.1-.3.2-.3h.1l.2.1c.3.1.7.2 1 .3.4.1.7.1 1 .1.5 0 1-.1 1.2-.3.3-.2.4-.5.4-.8 0-.2-.1-.5-.3-.6-.2-.2-.5-.3-1-.5l-1.4-.5c-.7-.2-1.2-.5-1.5-1-.3-.4-.5-.9-.5-1.4 0-.4.1-.8.3-1.1.2-.3.4-.6.7-.8.3-.2.6-.4 1-.5.4-.1.8-.2 1.2-.2.2 0 .4 0 .7.1.2 0 .5.1.7.2.2.1.4.1.6.2.2.1.3.2.4.2.1.1.2.2.2.3.1.1.1.3.1.4v.6c0 .2-.1.3-.2.3-.1 0-.2-.1-.4-.2-.6-.3-1.3-.4-2-.4-.5 0-.9.1-1.1.2-.3.2-.4.4-.4.8 0 .2.1.5.3.6.2.2.6.3 1.1.5l1.4.4c.7.2 1.2.5 1.5.9.3.4.4.9.4 1.3 0 .4-.1.8-.3 1.2-.2.3-.4.6-.8.8-.3.2-.7.4-1.1.5-.4.1-.9.2-1.4.2z" fill="#fff"/>
+          <path d="M30.5 18.5c-3 2.2-7.3 3.4-11 3.4-5.2 0-9.9-1.9-13.5-5.1-.3-.3 0-.6.3-.4 3.8 2.2 8.6 3.6 13.5 3.6 3.3 0 6.9-.7 10.3-2.1.5-.2.9.3.4.6z" fill="#F90"/>
+          <path d="M31.8 17c-.4-.5-2.5-.2-3.5-.1-.3 0-.3-.2-.1-.4 1.7-1.2 4.5-.9 4.8-.5.3.4-.1 3.2-1.7 4.6-.2.2-.5.1-.4-.2.4-.9 1.2-3 .9-3.4z" fill="#F90"/>
+        </svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+      <nav class="header-nav" id="header-nav">
+        <button class="nav-link active" id="nav-home-btn" data-view="home">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>
+          Home
+        </button>
+        <button class="nav-link" id="nav-training-btn" data-view="training">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>
+          Training
+        </button>
+        <button class="nav-link" id="nav-test-btn" data-view="test">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>
+          Practice Test
+        </button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main id="app-main">
+
+    <!-- ===== VIEW 1: HOME ===== -->
+    <section id="home-view" class="view active-view">
+
+      <div class="hero">
+        <canvas class="hero-particles" id="hero-particles"></canvas>
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            CLF-C02 Exam Preparation
+          </div>
+          <h1>AWS Certified<br><span class="highlight">Cloud Practitioner</span></h1>
+          <p class="hero-subtitle">Master the fundamentals of AWS Cloud with guided training and realistic practice exams. Build confidence for exam day.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" id="hero-start-training">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M2 2h14v2H2V2zm0 5h9v2H2V7zm0 5h14v2H2v-2z"/></svg>
+              Start Training
+            </button>
+            <button class="btn btn-outline-light btn-lg" id="hero-start-test">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M9 1a8 8 0 100 16A8 8 0 009 1zm.5 12H8V8h1.5v5zM9 3v5l3.5 2-.5 1L8 9V3h1z"/></svg>
+              Take Practice Test
+            </button>
+          </div>
+          <div class="exam-stats">
+            <div class="exam-stat">
+              <span class="exam-stat-value">65</span>
+              <span class="exam-stat-label">Questions</span>
+            </div>
+            <div class="exam-stat">
+              <span class="exam-stat-value">90</span>
+              <span class="exam-stat-label">Minutes</span>
+            </div>
+            <div class="exam-stat">
+              <span class="exam-stat-value">700</span>
+              <span class="exam-stat-label">Pass Score</span>
+            </div>
+            <div class="exam-stat">
+              <span class="exam-stat-value">4</span>
+              <span class="exam-stat-label">Domains</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Cards -->
+      <section class="features-section">
+        <div class="container">
+          <h2 class="section-title">Choose Your Study Path</h2>
+          <p class="section-subtitle">Two ways to prepare for the AWS Cloud Practitioner exam</p>
+          <div class="feature-cards">
+            <article class="feature-card" id="card-training">
+              <div class="feature-card-glow"></div>
+              <div class="feature-card-icon training-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <h3>Training Mode</h3>
+              <p>Study by domain with detailed explanations, key concepts, comparison tables, and quick quizzes to reinforce learning.</p>
+              <ul class="feature-list">
+                <li>4 exam domains with sub-topics</li>
+                <li>In-depth explanations and examples</li>
+                <li>Quick quizzes after each topic</li>
+              </ul>
+              <button class="btn btn-primary" id="start-training-btn">Start Training</button>
+            </article>
+            <article class="feature-card" id="card-test">
+              <div class="feature-card-glow"></div>
+              <div class="feature-card-icon test-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.1.8-1.3-4.5-2.7V7z"/></svg>
+              </div>
+              <h3>Practice Test</h3>
+              <p>Simulate the real exam with a timed 65-question test, question flagging, and detailed score report with explanations.</p>
+              <ul class="feature-list">
+                <li>65 questions in 90 minutes</li>
+                <li>Realistic exam simulation</li>
+                <li>Detailed results and review</li>
+              </ul>
+              <button class="btn btn-secondary" id="start-test-btn">Start Practice Test</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="testimonials-section">
+        <div class="container">
+          <h2 class="section-title">What Our Students Say</h2>
+          <p class="section-subtitle">Join thousands who passed the CLF-C02 exam</p>
+          <div class="testimonials-stats">
+            <div class="testimonials-stat"><strong>4,200+</strong> students certified</div>
+            <div class="testimonials-stat"><strong>94%</strong> pass rate</div>
+            <div class="testimonials-stat"><strong>4.8</strong> &#9733; average rating</div>
+          </div>
+          <div class="testimonials-carousel" id="testimonials-carousel">
+            <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous testimonials">&larr;</button>
+            <div class="testimonials-track" id="testimonials-track">
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I studied for two weeks using the practice tests and passed on my first attempt with an 842. The explanations after each question were incredibly helpful for understanding the 'why' behind each answer."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#FF9900;">MJ</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Marcus Johnson</span>
+                    <span class="testimonial-role">IT Support Specialist &bull; March 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"As someone switching careers from retail management, I was nervous about a tech certification. These practice tests broke everything down so clearly that I scored 810 on exam day."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#146EB4;">SP</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Sarah Patel</span>
+                    <span class="testimonial-role">Career Switcher &bull; February 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"The domain breakdown helped me find my weak spots in Security and Compliance. After focused study, I passed with a 790. The timed practice mode was a game changer for managing exam anxiety."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#232F3E;">DW</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">David Washington</span>
+                    <span class="testimonial-role">Business Analyst &bull; January 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I used this alongside the official AWS training and it was the perfect combo. The questions here felt very close to the real exam format. Passed with an 880!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#1B660F;">AN</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Aisha Nguyen</span>
+                    <span class="testimonial-role">Junior Cloud Engineer &bull; December 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"What sets this apart is the quality of explanations. Every wrong answer taught me something new. I went from 55% on my first practice test to passing the real exam with 805."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#CD2264;">RK</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Roberto Kim</span>
+                    <span class="testimonial-role">Systems Administrator &bull; November 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I'm a project manager who needed AWS certification to communicate with our dev team. The training modules gave me solid foundational knowledge. Passed first try with 835!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#7B2D8E;">LM</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Linda Martinez</span>
+                    <span class="testimonial-role">Project Manager &bull; October 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"The 400+ question bank meant I never ran out of fresh material. Every test felt different. Scored 860 on the real exam &mdash; well above the 700 passing threshold."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#1A7A8A;">JO</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">James O'Sullivan</span>
+                    <span class="testimonial-role">DevOps Intern &bull; September 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"Balancing full-time work and study was tough, but the quick quiz feature let me practice during lunch breaks. Bit by bit, I built up confidence and passed with a 775."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#D4511E;">FT</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Fatima Torres</span>
+                    <span class="testimonial-role">Help Desk Technician &bull; August 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I have zero IT background &mdash; I'm a high school teacher. This platform made cloud computing accessible and easy to understand. Passed with 780 and I'm now exploring a career change."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#2E7D32;">CT</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Christine Taylor</span>
+                    <span class="testimonial-role">High School Teacher &bull; March 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"Third time was the charm and this platform made the difference. After failing twice with other study materials, the detailed explanations here finally made concepts click. Scored 820!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#0972D3;">BH</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Brandon Harris</span>
+                    <span class="testimonial-role">Helpdesk Analyst &bull; February 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"The security and compliance section was outstanding. As someone working in healthcare IT, the explanations of HIPAA, shared responsibility, and encryption were exactly what I needed. 850 on the exam!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#B71C1C;">ME</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Michelle Evans</span>
+                    <span class="testimonial-role">Healthcare IT Coordinator &bull; January 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I recommended this to my entire team. Four of us studied together using the practice tests and all four passed within the same week. The question quality is on par with the real exam."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#FF6F00;">KR</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Kevin Reyes</span>
+                    <span class="testimonial-role">Team Lead, IT Operations &bull; December 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"At 52 years old, I wasn't sure I could learn cloud computing. The training content is written in plain English, not jargon. Passed with 760 and landed a new role within a month!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#4A148C;">GS</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Gregory Simmons</span>
+                    <span class="testimonial-role">Career Changer &bull; November 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"The billing and pricing section saved me. That domain always tripped me up, but after the focused training and practice questions, I nailed it. Final score: 830."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#00695C;">NW</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Nina Williams</span>
+                    <span class="testimonial-role">Finance Analyst &bull; October 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I completed three full practice exams over a weekend. By the third one I was consistently scoring above 85%. Took the real exam Monday morning and scored 870. Best $49 I ever spent."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#1565C0;">TL</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Tyler Lawson</span>
+                    <span class="testimonial-role">Computer Science Student &bull; April 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"Coming from an Azure background, I needed to quickly get AWS certified. The comparison tables in the training content were fantastic for mapping my existing knowledge. Passed with 845 in just 10 days."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#37474F;">DP</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Diana Petrov</span>
+                    <span class="testimonial-role">Cloud Solutions Architect &bull; March 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"My company required all managers to get cloud certified. I dreaded studying but the training modules here were actually engaging. Scored 795 and my boss was impressed!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#AD1457;">RM</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Rachel Morgan</span>
+                    <span class="testimonial-role">Operations Manager &bull; February 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"The flag-for-review feature during practice tests taught me how to manage my time on the real exam. I flagged 8 questions, came back to them, and still finished with 20 minutes to spare. Score: 815."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#E65100;">AK</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Andre Kowalski</span>
+                    <span class="testimonial-role">Network Technician &bull; January 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"English is my second language and I was worried about the exam wording. The practice questions prepared me for exactly how AWS phrases things. Passed with 770 &mdash; so grateful!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#0097A7;">YC</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Yuki Chen</span>
+                    <span class="testimonial-role">QA Engineer &bull; December 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I'm a freelance web developer who wanted to add cloud skills to my resume. The training on compute, storage, and databases was incredibly thorough. Passed with 840 and already landed two new clients."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#558B2F;">OB</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Omar Brooks</span>
+                    <span class="testimonial-role">Freelance Developer &bull; November 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"Studied exclusively with this platform for three weeks. The mix of training content and practice tests covers everything. No surprises on exam day. Scored 855 &mdash; absolutely worth it."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#283593;">HJ</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Hannah Jensen</span>
+                    <span class="testimonial-role">Data Analyst &bull; April 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"My university professor recommended this for our cloud computing course. 28 out of 30 students in our class passed the certification using this. The question bank is comprehensive."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#6A1B9A;">PS</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Priya Sharma</span>
+                    <span class="testimonial-role">Graduate Student, CS &bull; March 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I failed my first attempt before finding this site. The detailed explanations for wrong answers were the key &mdash; I finally understood shared responsibility and the Well-Architected Framework. Second attempt: 825!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#BF360C;">JD</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Jason Daniels</span>
+                    <span class="testimonial-role">Desktop Support Tech &bull; February 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"As a startup founder, understanding AWS pricing and support tiers was critical. Domain 4 content here is the best I've found anywhere. Got certified with 810 and now make smarter infrastructure decisions."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#004D40;">EL</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Elena Lombardi</span>
+                    <span class="testimonial-role">Startup Founder &bull; January 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"Retired military, transitioning to tech. This was my first IT certification ever. The training was clear, structured, and didn't assume prior knowledge. Scored 790 on my first try!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#1B5E20;">MC</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Michael Carter</span>
+                    <span class="testimonial-role">Military Veteran &bull; December 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"The multiple-response questions in the practice tests were crucial. The real exam has quite a few and most other prep sites barely cover them. I felt fully prepared. Score: 835."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#880E4F;">SW</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Samantha Wu</span>
+                    <span class="testimonial-role">Software Tester &bull; November 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I bought this for my daughter who's in college studying IT. She used it for a week and passed with 800. Now I'm studying for my own certification using the same platform. Great value for $49."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#33691E;">RG</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Richard Garcia</span>
+                    <span class="testimonial-role">Parent &amp; IT Manager &bull; October 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"I've used three different AWS prep platforms and this one has the best explanations, period. Not just 'A is correct' but a full breakdown of why each option is right or wrong. Passed with 865."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#01579B;">JF</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Jennifer Foster</span>
+                    <span class="testimonial-role">Cloud Support Associate &bull; September 2025</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"Non-technical sales rep here. My company is an AWS partner and wanted all sales staff certified. The training content explains concepts without being overwhelming. Scored 755 and got promoted!"</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#F57F17;">WA</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">William Adams</span>
+                    <span class="testimonial-role">Cloud Sales Rep &bull; April 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="testimonial-quote">"The practice test timer trained me to pace myself perfectly. On exam day I finished all 65 questions with 15 minutes left for review. Passed with 848. This is the only study resource you need."</p>
+                <div class="testimonial-author">
+                  <div class="testimonial-avatar" style="background:#311B92;">KN</div>
+                  <div class="testimonial-info">
+                    <span class="testimonial-name">Kayla Nakamura</span>
+                    <span class="testimonial-role">Junior SysAdmin &bull; March 2026</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next testimonials">&rarr;</button>
+          </div>
+          <div class="carousel-dots" id="carousel-dots"></div>
+        </div>
+      </section>
+
+      <!-- Domain Overview -->
+      <section class="domains-section">
+        <div class="container">
+          <h2 class="section-title">Exam Domains</h2>
+          <p class="section-subtitle">Content distribution across the CLF-C02 exam</p>
+          <div class="domains-grid">
+            <div class="domain-item" data-domain="1">
+              <div class="domain-number">1</div>
+              <div class="domain-info">
+                <div class="domain-name">Cloud Concepts</div>
+                <div class="domain-bar-track"><div class="domain-bar-fill" style="width: 0%" data-width="24%"></div></div>
+              </div>
+              <div class="domain-weight">24%</div>
+            </div>
+            <div class="domain-item" data-domain="2">
+              <div class="domain-number">2</div>
+              <div class="domain-info">
+                <div class="domain-name">Security and Compliance</div>
+                <div class="domain-bar-track"><div class="domain-bar-fill" style="width: 0%" data-width="30%"></div></div>
+              </div>
+              <div class="domain-weight">30%</div>
+            </div>
+            <div class="domain-item" data-domain="3">
+              <div class="domain-number">3</div>
+              <div class="domain-info">
+                <div class="domain-name">Cloud Technology and Services</div>
+                <div class="domain-bar-track"><div class="domain-bar-fill" style="width: 0%" data-width="34%"></div></div>
+              </div>
+              <div class="domain-weight">34%</div>
+            </div>
+            <div class="domain-item" data-domain="4">
+              <div class="domain-number">4</div>
+              <div class="domain-info">
+                <div class="domain-name">Billing, Pricing, and Support</div>
+                <div class="domain-bar-track"><div class="domain-bar-fill" style="width: 0%" data-width="12%"></div></div>
+              </div>
+              <div class="domain-weight">12%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===== VIEW 2: TRAINING ===== -->
+    <section id="training-view" class="view">
+      <div class="training-layout">
+        <aside class="training-sidebar" id="training-sidebar">
+          <div class="sidebar-heading">Study Domains</div>
+          <nav class="sidebar-nav" id="training-sidebar-nav">
+            <!-- Populated by app.js -->
+          </nav>
+        </aside>
+        <div class="training-main">
+          <div class="training-header">
+            <button class="btn btn-ghost btn-sm" id="training-home-btn">&larr; Back to Home</button>
+            <span class="domain-badge" id="training-domain-badge">Domain 1: Cloud Concepts (24%)</span>
+          </div>
+          <h2 class="training-topic-title" id="training-topic-title">Loading...</h2>
+          <div class="training-content-area" id="training-content-area">
+            <!-- Training content HTML injected by app.js -->
+          </div>
+          <div class="training-footer">
+            <button class="btn btn-primary" id="start-quick-quiz-btn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm1 12H7v-2h2v2zm0-3H7V4h2v5z"/></svg>
+              Quick Quiz on This Topic
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW 3: PRACTICE TEST ===== -->
+    <section id="test-view" class="view">
+      <!-- Test Header Bar -->
+      <div class="test-header-bar">
+        <div class="test-header-inner">
+          <div class="test-timer-group">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M9 1a8 8 0 100 16A8 8 0 009 1zm.5 8.5L6 12l-.7-1.2L8 9V4h1.5v5.5z"/></svg>
+            <span class="test-timer" id="test-timer">90:00</span>
+          </div>
+          <div class="test-progress-group">
+            <span class="test-counter" id="test-question-counter">Question 1 of 65</span>
+            <div class="test-progress-track">
+              <div class="test-progress-bar" id="test-progress-bar" style="width: 0%"></div>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm" id="submit-test-btn">Submit Test</button>
+        </div>
+      </div>
+
+      <div class="test-layout">
+        <!-- Question Area -->
+        <div class="test-question-area">
+          <div class="question-card">
+            <div class="question-meta">
+              <span class="question-domain-tag" id="test-domain-tag">Domain 1: Cloud Concepts</span>
+              <span class="question-type-tag" id="test-type-tag">Multiple Choice</span>
+            </div>
+            <h3 class="question-text" id="test-question-text">Loading question...</h3>
+            <p class="question-instruction hidden" id="test-question-instruction"></p>
+            <fieldset class="answer-options" id="test-answer-options">
+              <legend class="sr-only">Answer choices</legend>
+            </fieldset>
+            <div class="question-explanation hidden" id="question-explanation"></div>
+          </div>
+
+          <div class="question-nav-buttons">
+            <button class="btn btn-ghost" id="prev-question-btn" disabled>&larr; Previous</button>
+            <button class="btn btn-outline flag-btn" id="flag-question-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M2 1v12h1.5V8.5h7L9 6l1.5-2.5h-7V1H2z"/></svg>
+              Flag for Review
+            </button>
+            <button class="btn btn-primary" id="next-question-btn">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Question Navigator -->
+        <aside class="question-navigator" id="question-navigator">
+          <h3 class="navigator-heading">Questions</h3>
+          <div class="navigator-legend">
+            <span class="legend-item"><span class="legend-swatch swatch-current"></span> Current</span>
+            <span class="legend-item"><span class="legend-swatch swatch-answered"></span> Answered</span>
+            <span class="legend-item"><span class="legend-swatch swatch-flagged"></span> Flagged</span>
+            <span class="legend-item"><span class="legend-swatch swatch-unanswered"></span> Unanswered</span>
+          </div>
+          <div class="navigator-grid" id="navigator-grid"></div>
+          <div class="navigator-summary">
+            <div class="summary-item"><strong id="answered-count">0</strong> Answered</div>
+            <div class="summary-item"><strong id="flagged-count">0</strong> Flagged</div>
+            <div class="summary-item"><strong id="unanswered-count">65</strong> Unanswered</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== VIEW 4: RESULTS ===== -->
+    <section id="results-view" class="view">
+      <div class="container">
+        <div class="results-summary">
+          <h2 class="results-heading">Practice Test Results</h2>
+          <div class="score-display">
+            <div class="score-circle" id="score-circle">
+              <svg class="score-ring" viewBox="0 0 120 120">
+                <circle class="score-ring-bg" cx="60" cy="60" r="54" />
+                <circle class="score-ring-fill" id="score-ring-fill" cx="60" cy="60" r="54" />
+              </svg>
+              <div class="score-text">
+                <span class="score-value" id="score-value">0</span>
+                <span class="score-max">/ 1000</span>
+              </div>
+            </div>
+            <p class="score-status" id="score-status">--</p>
+            <p class="score-detail">You answered <strong id="correct-count">0</strong> of <strong id="total-count">65</strong> questions correctly.</p>
+          </div>
+        </div>
+
+        <div class="results-domain-breakdown">
+          <h3 class="section-title">Score by Domain</h3>
+          <div class="domain-breakdown-list" id="domain-breakdown-list">
+            <div class="domain-breakdown-item" data-domain="1">
+              <div class="domain-breakdown-label">
+                <span>Domain 1: Cloud Concepts</span>
+                <span class="domain-breakdown-percent" id="domain-1-percent">0%</span>
+              </div>
+              <div class="domain-breakdown-bar-bg"><div class="domain-breakdown-bar" id="domain-1-bar"></div></div>
+            </div>
+            <div class="domain-breakdown-item" data-domain="2">
+              <div class="domain-breakdown-label">
+                <span>Domain 2: Security and Compliance</span>
+                <span class="domain-breakdown-percent" id="domain-2-percent">0%</span>
+              </div>
+              <div class="domain-breakdown-bar-bg"><div class="domain-breakdown-bar" id="domain-2-bar"></div></div>
+            </div>
+            <div class="domain-breakdown-item" data-domain="3">
+              <div class="domain-breakdown-label">
+                <span>Domain 3: Cloud Technology and Services</span>
+                <span class="domain-breakdown-percent" id="domain-3-percent">0%</span>
+              </div>
+              <div class="domain-breakdown-bar-bg"><div class="domain-breakdown-bar" id="domain-3-bar"></div></div>
+            </div>
+            <div class="domain-breakdown-item" data-domain="4">
+              <div class="domain-breakdown-label">
+                <span>Domain 4: Billing, Pricing, and Support</span>
+                <span class="domain-breakdown-percent" id="domain-4-percent">0%</span>
+              </div>
+              <div class="domain-breakdown-bar-bg"><div class="domain-breakdown-bar" id="domain-4-bar"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-review">
+          <h3 class="section-title">Question Review</h3>
+          <p class="review-hint">Click any question to expand the explanation.</p>
+          <div class="review-filters">
+            <button class="btn btn-sm btn-outline review-filter-btn active" data-filter="all">All</button>
+            <button class="btn btn-sm btn-outline review-filter-btn" data-filter="incorrect">Incorrect</button>
+            <button class="btn btn-sm btn-outline review-filter-btn" data-filter="correct">Correct</button>
+            <button class="btn btn-sm btn-outline review-filter-btn" data-filter="flagged">Flagged</button>
+          </div>
+          <div class="review-list" id="review-list"></div>
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-primary btn-lg" id="retake-test-btn">Retake Test</button>
+          <button class="btn btn-ghost btn-lg" id="results-home-btn">Back to Home</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW 5: QUICK QUIZ ===== -->
+    <section id="quiz-view" class="view">
+      <div class="container">
+        <div class="quiz-header">
+          <button class="btn btn-ghost btn-sm" id="quiz-back-btn">&larr; Back to Training</button>
+          <h2 class="quiz-title" id="quiz-title">Quick Quiz</h2>
+          <span class="quiz-counter" id="quiz-question-counter">Question 1 of 10</span>
+        </div>
+        <div class="quiz-progress-track">
+          <div class="quiz-progress-bar" id="quiz-progress-bar" style="width: 0%"></div>
+        </div>
+
+        <div class="quiz-question-area">
+          <div class="question-card">
+            <span class="question-domain-tag" id="quiz-domain-tag">Domain 1</span>
+            <h3 class="question-text" id="quiz-question-text">Loading...</h3>
+            <p class="question-instruction hidden" id="quiz-question-instruction"></p>
+            <fieldset class="answer-options" id="quiz-answer-options">
+              <legend class="sr-only">Answer choices</legend>
+            </fieldset>
+            <div class="quiz-feedback hidden" id="quiz-feedback">
+              <p class="quiz-feedback-status" id="quiz-feedback-status"></p>
+              <div class="quiz-feedback-explanation" id="quiz-feedback-explanation"></div>
+            </div>
+          </div>
+          <div class="question-nav-buttons">
+            <button class="btn btn-primary" id="quiz-check-btn">Check Answer</button>
+            <button class="btn btn-primary hidden" id="quiz-next-btn">Next Question &rarr;</button>
+          </div>
+        </div>
+
+        <div class="quiz-results hidden" id="quiz-results">
+          <div class="quiz-results-inner">
+            <h3>Quiz Complete!</h3>
+            <p class="quiz-results-score">You got <strong id="quiz-correct-count">0</strong> out of <strong id="quiz-total-count">10</strong> correct.</p>
+            <div class="quiz-results-actions">
+              <button class="btn btn-primary" id="quiz-retry-btn">Retry Quiz</button>
+              <button class="btn btn-ghost" id="quiz-return-btn">Return to Training</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay hidden" id="payment-modal">
+      <div class="modal-content">
+        <button class="modal-close" id="modal-close">&times;</button>
+        <div class="modal-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h2>Unlock Practice Tests</h2>
+        <p class="modal-subtitle">Get unlimited access to all practice exams</p>
+        <div class="modal-price">
+          <span class="price-amount">$49</span>
+          <span class="price-period">one-time payment</span>
+        </div>
+        <ul class="modal-features">
+          <li>&#10003; 400+ exam-style questions</li>
+          <li>&#10003; Unlimited timed practice tests</li>
+          <li>&#10003; Detailed explanations for every question</li>
+          <li>&#10003; Score tracking and domain breakdown</li>
+          <li>&#10003; Instant access after payment</li>
+        </ul>
+        <a href="https://buy.stripe.com/00wfZa2GE1mZ9Qtdg43ks01" class="btn btn-primary btn-lg modal-pay-btn" id="stripe-pay-btn" target="_blank" rel="noopener">
+          Pay $49 &mdash; Start Practicing
+        </a>
+        <p class="modal-secure">&#128274; Secure payment powered by Stripe</p>
+        <p class="modal-guarantee">30-day money-back guarantee</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer id="site-footer">
+    <div class="container">
+      <p>AWS Certified Cloud Practitioner CLF-C02 Practice &mdash; Not affiliated with or endorsed by Amazon Web Services.</p>
+    </div>
+  </footer>
+
+  <script src="questions.js"></script>
+  <script src="training-content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

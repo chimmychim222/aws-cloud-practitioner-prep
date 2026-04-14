@@ -980,7 +980,7 @@ fieldset { border: none; }
 }
 .testimonials-track {
   display: flex; gap: 1.5rem;
-  animation: marquee 60s linear infinite;
+  animation: marquee 180s linear infinite;
   width: max-content;
 }
 .testimonials-track:hover {

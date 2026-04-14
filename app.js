@@ -83,7 +83,7 @@
     ['#hero-start-test', '#start-test-btn'].forEach(sel => {
       const btn = $(sel);
       if (btn) btn.addEventListener('click', () => {
-        const section = document.querySelector('.test-selection-section');
+        const section = document.getElementById('test-selection');
         if (section) {
           section.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else if (hasPaid()) {
@@ -131,7 +131,7 @@
       }
       showView('home');
       setTimeout(() => {
-        const section = document.querySelector('.test-selection-section');
+        const section = document.getElementById('test-selection');
         if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     });
@@ -815,6 +815,17 @@
       el.classList.add('animate-target');
       observer.observe(el);
     });
+
+    // Test option cards scroll-reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    $$('.scroll-reveal').forEach(el => revealObserver.observe(el));
   }
 
   // Hero particle network background
@@ -1015,12 +1026,15 @@
     const paid = hasPaid();
     $$('.test-option-card').forEach(card => {
       const lockEl = card.querySelector('.test-option-lock');
-      if (paid) {
+      const btn = card.querySelector('.test-start-btn');
+      const isFree = card.classList.contains('test-option-free');
+      if (paid && !isFree) {
         card.classList.add('unlocked');
-        if (lockEl) lockEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>';
-      } else {
+        if (lockEl) lockEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>';
+        if (btn) btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Start Test';
+      } else if (!isFree) {
         card.classList.remove('unlocked');
-        if (lockEl) lockEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+        if (lockEl) lockEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
       }
     });
   }

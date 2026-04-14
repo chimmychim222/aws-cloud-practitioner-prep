@@ -167,64 +167,93 @@
                 <li>Questions shuffled every attempt</li>
                 <li>Detailed results and review</li>
               </ul>
-              <button class="btn btn-secondary" id="start-test-btn" data-duration="90">Start Full Practice Test</button>
+              <button class="btn btn-secondary" id="start-test-btn" data-duration="90">Choose Practice Test ↓</button>
             </article>
           </div>
         </div>
       </section>
 
       <!-- Test Duration Selection -->
-      <section class="test-selection-section">
+      <section class="test-selection-section" id="test-selection">
+        <div class="test-selection-bg"></div>
         <div class="container">
-          <h2 class="section-title">Choose Your Practice Test</h2>
-          <p class="section-subtitle">Try a free quick test or unlock all practice tests for a one-time $49 payment</p>
+          <div class="test-selection-header">
+            <span class="test-selection-eyebrow">Practice Tests</span>
+            <h2 class="section-title">Choose Your Challenge</h2>
+            <p class="section-subtitle">Try a free quick test or unlock all durations for a one-time <strong>$49</strong> payment</p>
+          </div>
           <div class="test-options-grid">
 
             <div class="test-option-card test-option-free unlocked" data-duration="20">
-              <div class="test-option-free-label">Free</div>
-              <div class="test-option-badge">Quick</div>
-              <div class="test-option-time">20</div>
-              <div class="test-option-unit">minutes</div>
+              <div class="test-card-glow"></div>
+              <div class="test-option-ribbon test-option-ribbon-free">&#10003; Free</div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">20<span class="test-option-unit">min</span></div>
               <div class="test-option-questions">15 questions</div>
-              <p class="test-option-desc">Try before you buy — a free sample of our practice questions</p>
-              <button class="btn btn-primary test-start-btn" data-duration="20" data-questions="15" data-time="1200" data-free="true">Start Free Test</button>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">Try before you buy &mdash; a free sample of our exam-quality questions</p>
+              <button class="btn btn-primary test-start-btn" data-duration="20" data-questions="15" data-time="1200" data-free="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Start Free Test
+              </button>
             </div>
 
             <div class="test-option-card" data-duration="40">
+              <div class="test-card-glow"></div>
               <div class="test-option-lock" id="lock-40">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
-              <div class="test-option-badge">Medium</div>
-              <div class="test-option-time">40</div>
-              <div class="test-option-unit">minutes</div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">40<span class="test-option-unit">min</span></div>
               <div class="test-option-questions">30 questions</div>
-              <p class="test-option-desc">A solid mid-length session to test multiple domains</p>
-              <button class="btn btn-primary test-start-btn" data-duration="40" data-questions="30" data-time="2400">Start Test</button>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">A focused mid-length session covering multiple domains</p>
+              <button class="btn btn-primary test-start-btn" data-duration="40" data-questions="30" data-time="2400">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Unlock &amp; Start
+              </button>
             </div>
 
             <div class="test-option-card" data-duration="60">
+              <div class="test-card-glow"></div>
               <div class="test-option-lock" id="lock-60">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
-              <div class="test-option-badge">Extended</div>
-              <div class="test-option-time">60</div>
-              <div class="test-option-unit">minutes</div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">60<span class="test-option-unit">min</span></div>
               <div class="test-option-questions">45 questions</div>
-              <p class="test-option-desc">Comprehensive review covering all four exam domains</p>
-              <button class="btn btn-primary test-start-btn" data-duration="60" data-questions="45" data-time="3600">Start Test</button>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">Comprehensive coverage of all four exam domains</p>
+              <button class="btn btn-primary test-start-btn" data-duration="60" data-questions="45" data-time="3600">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Unlock &amp; Start
+              </button>
             </div>
 
             <div class="test-option-card test-option-featured" data-duration="90">
+              <div class="test-card-glow test-card-glow-featured"></div>
               <div class="test-option-lock" id="lock-90">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
-              <div class="test-option-recommended">Recommended</div>
-              <div class="test-option-badge">Full Exam</div>
-              <div class="test-option-time">90</div>
-              <div class="test-option-unit">minutes</div>
+              <div class="test-option-ribbon test-option-ribbon-recommended">&#9733; Recommended</div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">90<span class="test-option-unit">min</span></div>
               <div class="test-option-questions">65 questions</div>
-              <p class="test-option-desc">Identical format to the real CLF-C02 exam &mdash; the best way to prepare</p>
-              <button class="btn btn-primary test-start-btn" data-duration="90" data-questions="65" data-time="5400">Start Test</button>
+              <div class="test-option-meta">Matches real CLF-C02 format</div>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">The ultimate prep &mdash; identical to the real AWS exam experience</p>
+              <button class="btn btn-primary test-start-btn" data-duration="90" data-questions="65" data-time="5400">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Unlock &amp; Start
+              </button>
             </div>
 
           </div>

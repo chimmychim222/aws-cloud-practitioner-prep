@@ -1243,183 +1243,273 @@ fieldset { border: none; }
 }
 
 /* ============================================
-   Test Selection / Duration Cards
+   Test Selection / Duration Cards — Sleek Design
    ============================================ */
 .test-selection-section {
-  padding: 80px 0;
-  background: var(--bg-secondary, #F5F7FA);
+  position: relative;
+  padding: 100px 0 90px;
+  overflow: hidden;
+  background: linear-gradient(170deg, var(--aws-squid-ink) 0%, #1a2332 50%, #0d1821 100%);
+}
+.test-selection-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(255,153,0,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(255,153,0,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.test-selection-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  position: relative;
+  z-index: 1;
+}
+.test-selection-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--aws-orange);
+  margin-bottom: 0.75rem;
+  padding: 6px 18px;
+  border: 1px solid rgba(255,153,0,0.3);
+  border-radius: 20px;
+  background: rgba(255,153,0,0.06);
 }
 .test-selection-section .section-title {
   text-align: center;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--aws-squid-ink);
-  margin-bottom: 0.5rem;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0.75rem 0 0.6rem;
+  letter-spacing: -0.02em;
 }
 .test-selection-section .section-subtitle {
   text-align: center;
-  color: var(--text-muted, #666);
+  color: rgba(255,255,255,0.6);
   font-size: 1.05rem;
-  margin-bottom: 2.5rem;
+  margin: 0;
 }
+.test-selection-section .section-subtitle strong {
+  color: var(--aws-orange);
+  font-weight: 700;
+}
+
+/* Grid */
 .test-options-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   max-width: 1100px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
+
+/* Card base */
 .test-option-card {
   position: relative;
-  background: var(--bg-primary, #fff);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2.25rem 1.5rem 1.75rem;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  border: 2px solid transparent;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease, border-color 0.4s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
 }
 .test-option-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-  border-color: var(--aws-orange);
-}
-.test-option-card.unlocked {
-  border-color: rgba(3, 127, 12, 0.3);
-}
-.test-option-card.unlocked:hover {
-  border-color: #037F0C;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(255,153,0,0.08);
+  border-color: rgba(255,153,0,0.3);
 }
 
-/* Featured (90-min) card */
-.test-option-featured {
-  border-color: var(--aws-orange);
-  background: linear-gradient(180deg, #FFF8F0 0%, #fff 40%);
+/* Card inner glow effect */
+.test-card-glow {
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(255,153,0,0.04) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
 }
-.test-option-recommended {
+.test-option-card:hover .test-card-glow { opacity: 1; }
+.test-card-glow-featured {
+  background: radial-gradient(circle at 50% 50%, rgba(255,153,0,0.1) 0%, transparent 60%);
+}
+
+/* Ribbons */
+.test-option-ribbon {
   position: absolute;
   top: 0; left: 0; right: 0;
-  background: var(--aws-orange);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 6px 0;
-}
-.test-option-featured .test-option-badge {
-  margin-top: 1rem;
-}
-
-/* Free card */
-.test-option-free {
-  border-color: #037F0C;
-  background: linear-gradient(180deg, #F0FFF0 0%, #fff 40%);
-}
-.test-option-free:hover {
-  border-color: #025a09;
-}
-.test-option-free-label {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  background: linear-gradient(90deg, #037F0C, #2E7D32);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 6px 0;
-  text-align: center;
-}
-.test-option-free .test-option-badge {
-  margin-top: 1rem;
-  background: #037F0C;
-}
-
-/* Lock icon overlay */
-.test-option-lock {
-  position: absolute;
-  top: 12px; right: 12px;
-  width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted, #999);
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-.test-option-lock svg { width: 20px; height: 20px; }
-.test-option-card.unlocked .test-option-lock {
-  color: #037F0C;
-  opacity: 1;
-}
-.test-option-card.unlocked .test-option-lock svg {
-  /* Swap to unlocked icon via JS */
-}
-
-/* Badge */
-.test-option-badge {
-  display: inline-block;
-  background: var(--aws-squid-ink);
-  color: #fff;
-  font-size: 0.7rem;
+  padding: 7px 0;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  padding: 4px 14px;
-  border-radius: 20px;
-  margin-bottom: 1rem;
+  text-align: center;
 }
-.test-option-featured .test-option-badge {
-  background: var(--aws-orange);
+.test-option-ribbon-free {
+  background: linear-gradient(90deg, #037F0C, #2E7D32);
+  color: #fff;
 }
+.test-option-ribbon-recommended {
+  background: linear-gradient(90deg, #e68a00, var(--aws-orange), #e68a00);
+  color: #fff;
+}
+
+/* Free card special */
+.test-option-free {
+  border-color: rgba(3,127,12,0.35);
+  background: rgba(3,127,12,0.06);
+}
+.test-option-free:hover {
+  border-color: rgba(3,127,12,0.6);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(3,127,12,0.12);
+}
+
+/* Featured card */
+.test-option-featured {
+  border-color: rgba(255,153,0,0.3);
+  background: rgba(255,153,0,0.06);
+}
+.test-option-featured:hover {
+  border-color: var(--aws-orange);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 50px rgba(255,153,0,0.15);
+}
+
+/* Unlocked state */
+.test-option-card.unlocked {
+  border-color: rgba(3,127,12,0.3);
+}
+.test-option-card.unlocked:hover {
+  border-color: rgba(3,127,12,0.6);
+}
+
+/* Clock icon */
+.test-option-icon {
+  width: 48px; height: 48px;
+  margin: 1rem 0 0.75rem;
+  color: rgba(255,255,255,0.25);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.test-option-icon svg { width: 100%; height: 100%; }
+.test-option-card:hover .test-option-icon {
+  color: var(--aws-orange);
+  transform: scale(1.1);
+}
+.test-option-free .test-option-icon { color: rgba(3,127,12,0.5); }
+.test-option-free:hover .test-option-icon { color: #2E7D32; }
+
+/* Lock icon */
+.test-option-lock {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.25);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.test-option-lock svg { width: 18px; height: 18px; }
+.test-option-card:hover .test-option-lock { color: rgba(255,255,255,0.5); }
+.test-option-card.unlocked .test-option-lock { color: #2E7D32; }
 
 /* Time display */
 .test-option-time {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  color: var(--aws-squid-ink);
+  color: #fff;
   line-height: 1;
   margin-bottom: 0.25rem;
+  letter-spacing: -0.03em;
 }
 .test-option-unit {
   font-size: 0.85rem;
-  color: var(--text-muted, #888);
+  color: rgba(255,255,255,0.4);
   font-weight: 600;
-  text-transform: uppercase;
+  margin-left: 4px;
   letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
 }
 .test-option-questions {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--aws-squid-ink);
-  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.25rem;
+}
+.test-option-meta {
+  font-size: 0.72rem;
+  color: var(--aws-orange);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+.test-option-divider {
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  margin: 0.75rem 0;
+}
+.test-option-featured .test-option-divider {
+  background: linear-gradient(90deg, transparent, rgba(255,153,0,0.4), transparent);
+}
+.test-option-free .test-option-divider {
+  background: linear-gradient(90deg, transparent, rgba(3,127,12,0.4), transparent);
 }
 .test-option-desc {
   font-size: 0.82rem;
-  color: var(--text-muted, #666);
-  line-height: 1.5;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
   margin-bottom: 1.25rem;
   flex-grow: 1;
 }
+
+/* Buttons */
 .test-option-card .test-start-btn {
   width: 100%;
-  padding: 10px 0;
-  font-size: 0.9rem;
+  padding: 12px 0;
+  font-size: 0.88rem;
   font-weight: 700;
-  border-radius: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  border: none;
 }
+.test-option-free .test-start-btn {
+  background: linear-gradient(135deg, #037F0C, #2E7D32);
+  color: #fff;
+}
+.test-option-free .test-start-btn:hover {
+  background: linear-gradient(135deg, #2E7D32, #037F0C);
+  box-shadow: 0 4px 20px rgba(3,127,12,0.35);
+}
+.test-option-featured .test-start-btn {
+  background: linear-gradient(135deg, var(--aws-orange), #e68a00);
+}
+.test-option-featured .test-start-btn:hover {
+  box-shadow: 0 4px 20px rgba(255,153,0,0.35);
+}
+
+/* Cards are always visible — hover effects provide dynamism */
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .test-options-grid { grid-template-columns: repeat(2, 1fr); max-width: 600px; }
+  .test-options-grid { grid-template-columns: repeat(2, 1fr); max-width: 580px; }
+  .test-selection-section { padding: 70px 0; }
 }
 @media (max-width: 600px) {
   .test-options-grid { grid-template-columns: 1fr; max-width: 360px; }
   .test-selection-section { padding: 50px 0; }
-  .test-option-card { padding: 1.5rem 1.25rem; }
-  .test-option-time { font-size: 2.5rem; }
+  .test-option-card { padding: 2rem 1.25rem 1.5rem; }
+  .test-option-time { font-size: 2.8rem; }
+  .test-selection-section .section-title { font-size: 1.8rem; }
 }

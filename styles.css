@@ -1028,6 +1028,9 @@ fieldset { border: none; }
   .testimonial-card {
     min-width: 280px; max-width: 280px;
   }
+  .testimonials-track {
+    animation-duration: 720s;
+  }
   .testimonials-carousel { overflow: hidden; }
   .carousel-dots { display: none; }
   .testimonials-stats { gap: var(--sp-4); }

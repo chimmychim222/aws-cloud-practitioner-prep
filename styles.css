@@ -1029,7 +1029,7 @@ fieldset { border: none; }
     min-width: 280px; max-width: 280px;
   }
   .testimonials-track {
-    animation-duration: 720s;
+    animation-duration: 1440s;
   }
   .testimonials-carousel { overflow: hidden; }
   .carousel-dots { display: none; }

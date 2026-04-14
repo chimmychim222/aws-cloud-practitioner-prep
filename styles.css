@@ -1024,7 +1024,7 @@ fieldset { border: none; }
 @media (max-width: 768px) {
   .testimonial-card { min-width: 300px; max-width: 300px; }
   .testimonials-track {
-    animation-duration: 540s;
+    animation-duration: 450s;
   }
 }
 @media (max-width: 600px) {

@@ -126,15 +126,34 @@
   // ---- Check Stripe redirect ----
   function checkPaymentRedirect(uid, userRef) {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('paid') === 'success' || urlParams.get('session_id')) {
-      // Mark user as paid in Firestore
-      userRef.update({ paid: true }).then(() => {
+    const sessionId = urlParams.get('session_id');
+
+    // Only accept Stripe checkout session IDs (start with cs_)
+    if (!sessionId || !sessionId.startsWith('cs_')) return;
+
+    // Check if this session ID was already used (prevent replay)
+    const sessionRef = db.collection('stripe_sessions').doc(sessionId);
+    sessionRef.get().then(function(snap) {
+      if (snap.exists) {
+        // Session already redeemed — ignore
+        window.history.replaceState({}, '', window.location.pathname);
+        return;
+      }
+
+      // Mark session as used and record which user redeemed it
+      sessionRef.set({
+        uid: uid,
+        redeemedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Mark user as paid
+      userRef.update({ paid: true }).then(function() {
         window.AppAuth.userPaid = true;
         window.history.replaceState({}, '', window.location.pathname);
         showPaymentSuccessBanner();
         updateUI();
       });
-    }
+    });
   }
 
   // ---- UI Updates ----

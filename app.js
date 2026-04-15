@@ -1,10 +1,124 @@
 // ============================================================
-// AWS Certified Cloud Practitioner (CLF-C02) Practice App
+// AWS Certification Practice App — Config-driven
 // Main Application Logic
 // ============================================================
 
 (function () {
   'use strict';
+
+  // ---- Populate page from SiteConfig ----
+  function populateFromConfig() {
+    const c = window.SiteConfig;
+    if (!c) return;
+
+    // Helper to set text content of all matching elements
+    function setText(sel, val) {
+      document.querySelectorAll(sel).forEach(function(el) { el.textContent = val; });
+    }
+    function setHTML(sel, val) {
+      document.querySelectorAll(sel).forEach(function(el) { el.innerHTML = val; });
+    }
+
+    // Page title
+    document.title = c.certFullName + ' (' + c.examCode + ') \u2014 Practice Tests & Training';
+
+    // Logo
+    var logoText = document.querySelector('.logo-text');
+    if (logoText) logoText.innerHTML = c.logoText + ' <span class="logo-accent">' + c.logoAccent + '</span>';
+
+    // Hero section
+    setText('[data-cfg="hero-subtitle"]', c.heroSubtitle);
+    setText('[data-cfg="cert-name"]', c.certName);
+    setText('[data-cfg="hero-desc"]', c.heroDescription);
+
+    // Exam stats
+    setText('[data-cfg="exam-questions"]', c.totalQuestions);
+    setText('[data-cfg="exam-minutes"]', c.timeMinutes);
+    setText('[data-cfg="exam-pass-score"]', c.passScore);
+    setText('[data-cfg="exam-domains"]', c.domains.length);
+
+    // Feature subtitle
+    setText('[data-cfg="feature-subtitle"]', c.featureSubtitle);
+
+    // Test selection subtitle
+    var testSubtitle = document.querySelector('[data-cfg="test-subtitle"]');
+    if (testSubtitle) testSubtitle.innerHTML = 'Try a free quick test or unlock all durations for a one-time <strong>$' + c.price + '</strong> payment';
+
+    // Exam code references
+    setText('[data-cfg="exam-code"]', c.examCode);
+    setText('[data-cfg="cert-full-name"]', c.certFullName);
+
+    // Testimonials stats
+    setText('[data-cfg="stat-students"]', c.stats.studentsCertified);
+    setText('[data-cfg="stat-pass-rate"]', c.stats.passRate);
+    setText('[data-cfg="stat-rating"]', c.stats.avgRating);
+
+    // Testimonial subtitle
+    setText('[data-cfg="testimonial-subtitle"]', 'Join thousands who passed the ' + c.examCode + ' exam');
+
+    // Domain names in training sidebar and results
+    c.domains.forEach(function(d, i) {
+      var label = 'Domain ' + (i + 1) + ': ' + d.name;
+      var labelPct = label + ' (' + Math.round(d.weight * 100) + '%)';
+      setText('[data-cfg="domain-' + (i + 1) + '"]', label);
+      setText('[data-cfg="domain-' + (i + 1) + '-pct"]', labelPct);
+    });
+
+    // Build domains grid dynamically
+    var domainsGrid = document.getElementById('domains-grid-dynamic');
+    if (domainsGrid) {
+      domainsGrid.innerHTML = '';
+      c.domains.forEach(function(d, i) {
+        var pct = Math.round(d.weight * 100);
+        var item = document.createElement('div');
+        item.className = 'domain-item';
+        item.setAttribute('data-domain', i + 1);
+        item.innerHTML = '<div class="domain-number">' + (i + 1) + '</div>' +
+          '<div class="domain-info">' +
+          '<div class="domain-name">' + d.name + '</div>' +
+          '<div class="domain-bar-track"><div class="domain-bar-fill" style="width: 0%" data-width="' + pct + '%"></div></div>' +
+          '</div>' +
+          '<div class="domain-weight">' + pct + '%</div>';
+        domainsGrid.appendChild(item);
+      });
+    }
+
+    // Build results domain breakdown dynamically
+    var breakdownList = document.getElementById('domain-breakdown-list');
+    if (breakdownList) {
+      breakdownList.innerHTML = '';
+      c.domains.forEach(function(d, i) {
+        var n = i + 1;
+        var item = document.createElement('div');
+        item.className = 'domain-breakdown-item';
+        item.setAttribute('data-domain', n);
+        item.innerHTML = '<div class="domain-breakdown-label">' +
+          '<span>Domain ' + n + ': ' + d.name + '</span>' +
+          '<span class="domain-breakdown-percent" id="domain-' + n + '-percent">0%</span>' +
+          '</div>' +
+          '<div class="domain-breakdown-bar-bg"><div class="domain-breakdown-bar" id="domain-' + n + '-bar"></div></div>';
+        breakdownList.appendChild(item);
+      });
+    }
+
+    // Payment modal
+    var priceEl = document.querySelector('[data-cfg="price"]');
+    if (priceEl) priceEl.textContent = '$' + c.price;
+    setText('[data-cfg="guarantee"]', c.guarantee);
+
+    // Stripe link
+    var stripeBtn = document.getElementById('stripe-pay-btn');
+    if (stripeBtn) {
+      stripeBtn.href = c.stripePaymentLink;
+      stripeBtn.textContent = 'Pay $' + c.price + ' \u2014 Start Practicing';
+    }
+
+    // Footer disclaimer
+    setText('[data-cfg="footer-disclaimer"]', c.footerDisclaimer);
+  }
+
+  // Run immediately (before DOMContentLoaded since script is at bottom)
+  populateFromConfig();
 
   // ---- State ----
   const state = {
@@ -262,22 +376,28 @@
     const bank = window.questionBank;
     if (!bank || bank.length === 0) { alert('Question bank not loaded.'); return; }
 
-    const byDomain = { 1: [], 2: [], 3: [], 4: [] };
+    // Build domain map dynamically from config
+    const cfg = window.SiteConfig;
+    const domainIds = cfg.domains.map((_, i) => i + 1);
+    const byDomain = {};
+    domainIds.forEach(d => { byDomain[d] = []; });
     bank.forEach(q => { if (byDomain[q.domain]) byDomain[q.domain].push(q); });
 
     // Scale domain weights to match requested question count
-    const weights = { 1: 0.24, 2: 0.30, 3: 0.34, 4: 0.12 };
+    const weights = {};
+    cfg.domains.forEach((d, i) => { weights[i + 1] = d.weight; });
     const counts = {};
     let total = 0;
-    for (const d of [1, 2, 3, 4]) {
+    for (const d of domainIds) {
       counts[d] = Math.round(numQuestions * weights[d]);
       total += counts[d];
     }
-    // Adjust rounding differences on domain 3
-    counts[3] += (numQuestions - total);
+    // Adjust rounding differences on the largest domain
+    const largestDomain = domainIds.reduce((a, b) => weights[a] >= weights[b] ? a : b);
+    counts[largestDomain] += (numQuestions - total);
 
     let selected = [];
-    for (const d of [1, 2, 3, 4]) {
+    for (const d of domainIds) {
       selected = selected.concat(shuffle(byDomain[d]).slice(0, counts[d]));
     }
 

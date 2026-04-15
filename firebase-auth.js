@@ -4,15 +4,8 @@
 (function () {
   'use strict';
 
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCxrC9P263tCT_RFh5Xd99WHm0bJRxUekw",
-    authDomain: "aws-ccp-prep.firebaseapp.com",
-    projectId: "aws-ccp-prep",
-    storageBucket: "aws-ccp-prep.firebasestorage.app",
-    messagingSenderId: "623544110265",
-    appId: "1:623544110265:web:badf967e25d1e50dcd5f68"
-  };
+  // Firebase config — reads from site-config.js
+  const firebaseConfig = window.SiteConfig.firebaseConfig;
 
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();

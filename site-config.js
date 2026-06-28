@@ -54,7 +54,16 @@ window.SiteConfig = {
   // Payment link success URL must be configured in Stripe Dashboard to:
   //   https://cloudpractitionerprep.com/?session_id={CHECKOUT_SESSION_ID}
   // uid is appended at runtime as ?client_reference_id=<uid>
-  stripePaymentLink: 'https://buy.stripe.com/00wfZa2GE1mZ9Qtdg43ks01',
+  //
+  // To test without charging real cards: set stripeTestMode to true and
+  // replace stripePaymentLinkTest with your Stripe test-mode payment link.
+  // NEVER commit stripeTestMode: true — live site must always use the live link.
+  stripeTestMode: false,
+  stripePaymentLinkLive: 'https://buy.stripe.com/7sY14ngtj0Bicg0fhedjO00',
+  stripePaymentLinkTest: 'REPLACE_WITH_STRIPE_TEST_LINK',
+  get stripePaymentLink() {
+    return this.stripeTestMode ? this.stripePaymentLinkTest : this.stripePaymentLinkLive;
+  },
 
   // ---- Firebase ----
   firebaseConfig: {

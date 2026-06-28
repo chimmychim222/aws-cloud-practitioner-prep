@@ -1,12 +1,14 @@
 // ============================================================
 // SITE CONFIGURATION — Edit this file to create a new cert site
 // ============================================================
-// After editing this file, also update:
-//   1. <head> meta tags in index.html (search "TEMPLATE:" comments)
-//   2. CNAME file (your domain)
-//   3. sitemap.xml and robots.txt (your domain)
-//   4. questions.js (your question bank)
-//   5. training-content.js (your training content)
+// This is the TEMPLATE. The actual site-config.js is generated
+// at deploy time by GitHub Actions, which substitutes %%VAR%%
+// placeholders with values from repository secrets.
+//
+// For local development:
+//   cp site-config.template.js site-config.js
+//   then fill in the real values in your local site-config.js
+//   (site-config.js is .gitignored — never commit it)
 // ============================================================
 
 window.SiteConfig = {
@@ -58,17 +60,17 @@ window.SiteConfig = {
   // ---- Stripe ----
   stripePaymentLink: 'https://buy.stripe.com/00wfZa2GE1mZ9Qtdg43ks01',
 
-  // ---- Firebase ----
+  // ---- Firebase (injected by CI — never hardcode here) ----
   firebaseConfig: {
-    apiKey: "AIzaSyCxrC9P263tCT_RFh5Xd99WHm0bJRxUekw",
-    authDomain: "aws-ccp-prep.firebaseapp.com",
-    projectId: "aws-ccp-prep",
-    storageBucket: "aws-ccp-prep.firebasestorage.app",
-    messagingSenderId: "623544110265",
-    appId: "1:623544110265:web:badf967e25d1e50dcd5f68"
+    apiKey:            '%%FIREBASE_API_KEY%%',
+    authDomain:        '%%FIREBASE_AUTH_DOMAIN%%',
+    projectId:         '%%FIREBASE_PROJECT_ID%%',
+    storageBucket:     '%%FIREBASE_STORAGE_BUCKET%%',
+    messagingSenderId: '%%FIREBASE_MESSAGING_SENDER_ID%%',
+    appId:             '%%FIREBASE_APP_ID%%'
   },
 
-  // ---- Google Verification ----
+  // ---- Google Search Console verification ----
   googleVerification: '02NUvjZ3KgS7aYAsMjeY12esYnWJdnDJL572EAe5ihI',
 
   // ---- Footer ----

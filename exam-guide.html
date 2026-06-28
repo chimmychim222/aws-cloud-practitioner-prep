@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Cloud Practitioner Exam Guide — CLF-C02</title>
+  <meta name="description" content="Complete CLF-C02 exam guide: four domains with task statements, 65 questions in 90 min, scaled scoring, $100 registration — from an independent prep resource.">
+  <link rel="canonical" href="https://cloudpractitionerprep.com/exam-guide">
+  <meta property="og:type"        content="article">
+  <meta property="og:title"       content="AWS Cloud Practitioner Exam Guide — CLF-C02">
+  <meta property="og:description" content="Four domains, 65 questions, 90 minutes, 700/1000 to pass. Everything you need to know about the CLF-C02 exam.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/exam-guide">
+  <meta property="og:site_name"   content="AWS Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="AWS Cloud Practitioner Exam Guide — CLF-C02">
+  <meta name="twitter:description" content="Four domains, 65 questions, 90 minutes, 700/1000 to pass. Everything about the CLF-C02 exam.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="robots" content="index, follow">
+
+  <!-- Course + BreadcrumbList structured data -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "AWS Cloud Practitioner CLF-C02 Exam Guide",
+      "description": "Comprehensive guide to the AWS Certified Cloud Practitioner CLF-C02 exam covering all four domains, question formats, scaled scoring, and registration steps.",
+      "url": "https://cloudpractitionerprep.com/exam-guide",
+      "provider": {
+        "@type": "Organization",
+        "name": "AWS Cloud Practitioner Prep",
+        "url": "https://cloudpractitionerprep.com"
+      },
+      "educationalLevel": "Foundational",
+      "teaches": "AWS Cloud Practitioner CLF-C02"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://cloudpractitionerprep.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Exam Guide",
+          "item": "https://cloudpractitionerprep.com/exam-guide"
+        }
+      ]
+    }
+  ]
+  </script>
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%23232F3E'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='%23FF9900' font-family='Arial,sans-serif' font-weight='bold'>A</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .eg-breadcrumb {
+      padding: var(--sp-4) 0 0;
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+    }
+    .eg-breadcrumb a { color: var(--text-muted); text-decoration: none; }
+    .eg-breadcrumb a:hover { color: var(--aws-orange); }
+    .eg-breadcrumb .sep { margin: 0 var(--sp-2); }
+
+    /* ── Hero ── */
+    .eg-hero {
+      padding: var(--sp-10) 0 var(--sp-8);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .eg-hero h1 {
+      font-size: var(--fs-4xl);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: var(--sp-4);
+    }
+    .eg-hero .lead {
+      font-size: var(--fs-lg);
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.7;
+    }
+
+    /* ── Stat strip ── */
+    .eg-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-4);
+      margin-top: var(--sp-8);
+    }
+    .eg-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-lg);
+      padding: var(--sp-4) var(--sp-5);
+      min-width: 130px;
+      box-shadow: var(--shadow-sm);
+    }
+    .eg-stat-value {
+      font-size: var(--fs-2xl);
+      font-weight: 800;
+      color: var(--aws-orange);
+      display: block;
+      line-height: 1.1;
+    }
+    .eg-stat-label {
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 600;
+      margin-top: var(--sp-1);
+    }
+
+    /* ── Sections ── */
+    .eg-section { padding: var(--sp-12) 0; border-bottom: 1px solid var(--border-light); }
+    .eg-section:last-of-type { border-bottom: none; }
+    .eg-section h2 {
+      font-size: var(--fs-2xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--sp-4);
+    }
+    .eg-section h3 {
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      margin: var(--sp-6) 0 var(--sp-2);
+    }
+    .eg-section p { color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--sp-3); }
+    .eg-section p:last-child { margin-bottom: 0; }
+    .eg-section ul, .eg-section ol {
+      color: var(--text-secondary);
+      padding-left: var(--sp-5);
+      line-height: 1.9;
+    }
+    .eg-section li { margin-bottom: var(--sp-1); list-style: disc; }
+    .eg-section ol li { list-style: decimal; }
+
+    /* ── Domain cards ── */
+    .eg-domains { display: flex; flex-direction: column; gap: var(--sp-6); margin-top: var(--sp-6); }
+    .eg-domain {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .eg-domain-header {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      padding: var(--sp-5) var(--sp-6);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .eg-domain-num {
+      width: 40px; height: 40px; border-radius: var(--r-full);
+      background: var(--aws-squid-ink); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--fs-base); font-weight: 800; flex-shrink: 0;
+    }
+    .eg-domain-title { flex: 1; }
+    .eg-domain-name { font-size: var(--fs-lg); font-weight: 700; color: var(--text-primary); }
+    .eg-domain-meta { font-size: var(--fs-sm); color: var(--text-muted); margin-top: 2px; }
+    .eg-domain-pct {
+      font-size: var(--fs-xl); font-weight: 800; color: var(--aws-orange);
+      white-space: nowrap;
+    }
+    .eg-domain-body { padding: var(--sp-5) var(--sp-6); }
+    .eg-domain-bar-track {
+      height: 6px; background: var(--border-light); border-radius: var(--r-full);
+      overflow: hidden; margin-bottom: var(--sp-4);
+    }
+    .eg-domain-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--aws-orange), var(--aws-orange-hover));
+      border-radius: var(--r-full);
+    }
+    .eg-task-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+    .eg-task {
+      display: flex; align-items: baseline; gap: var(--sp-3);
+      padding: var(--sp-2) var(--sp-3);
+      background: var(--bg-page); border-radius: var(--r-md);
+    }
+    .eg-task-id {
+      font-size: var(--fs-xs); font-weight: 700;
+      color: var(--aws-orange-hover); min-width: 32px;
+    }
+    .eg-task-text { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.5; }
+
+    /* ── Question format cards ── */
+    .eg-formats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); margin-top: var(--sp-6); }
+    .eg-format {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6);
+      box-shadow: var(--shadow-sm);
+    }
+    .eg-format-title { font-size: var(--fs-lg); font-weight: 700; margin-bottom: var(--sp-2); }
+    .eg-format p { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--sp-2); }
+
+    /* ── Score illustration ── */
+    .eg-score-example {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5) var(--sp-6);
+      margin-top: var(--sp-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .eg-score-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: var(--sp-2) 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: var(--fs-sm);
+    }
+    .eg-score-row:last-child { border-bottom: none; }
+    .eg-score-row .label { color: var(--text-muted); }
+    .eg-score-row .value { font-weight: 700; color: var(--text-primary); }
+    .eg-score-row.pass .value { color: var(--color-success); }
+    .eg-score-row.fail .value { color: var(--color-error); }
+
+    /* ── Timeline ── */
+    .eg-timeline { display: flex; flex-direction: column; gap: 0; margin-top: var(--sp-6); }
+    .eg-week {
+      display: flex; gap: var(--sp-5); padding: var(--sp-4) 0;
+      border-left: 2px solid var(--border-light);
+      padding-left: var(--sp-6);
+      margin-left: var(--sp-4);
+      position: relative;
+    }
+    .eg-week::before {
+      content: '';
+      position: absolute; left: -5px; top: var(--sp-5);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--aws-orange);
+    }
+    .eg-week-label {
+      font-size: var(--fs-xs); font-weight: 700; color: var(--aws-orange);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      min-width: 60px; padding-top: 2px;
+    }
+    .eg-week-content h4 { font-size: var(--fs-base); font-weight: 700; margin-bottom: var(--sp-1); }
+    .eg-week-content p { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.6; margin: 0; }
+
+    /* ── CTA section ── */
+    .eg-cta-section {
+      background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark));
+      border-radius: var(--r-xl);
+      padding: var(--sp-10) var(--sp-8);
+      text-align: center;
+      margin: var(--sp-12) 0 var(--sp-8);
+    }
+    .eg-cta-section h2 { color: #fff; font-size: var(--fs-2xl); font-weight: 800; margin-bottom: var(--sp-2); }
+    .eg-cta-section p { color: rgba(255,255,255,0.65); margin-bottom: var(--sp-6); }
+    .eg-cta-grid { display: flex; gap: var(--sp-4); justify-content: center; flex-wrap: wrap; }
+    .eg-cta-note { font-size: var(--fs-xs); color: rgba(255,255,255,0.35); margin-top: var(--sp-3); }
+
+    /* ── Info box ── */
+    .eg-info {
+      background: var(--color-info-bg);
+      border-left: 4px solid var(--color-info);
+      border-radius: 0 var(--r-md) var(--r-md) 0;
+      padding: var(--sp-4) var(--sp-5);
+      margin: var(--sp-4) 0;
+    }
+    .eg-info p { color: var(--text-primary); margin: 0; font-size: var(--fs-sm); line-height: 1.7; }
+    .eg-info strong { color: var(--color-info); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .eg-hero h1 { font-size: var(--fs-3xl); }
+      .eg-formats { grid-template-columns: 1fr; }
+      .eg-stats { gap: var(--sp-3); }
+      .eg-cta-section { padding: var(--sp-8) var(--sp-5); }
+    }
+    @media (max-width: 480px) {
+      .eg-hero h1 { font-size: var(--fs-2xl); }
+      .eg-domain-header { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-header-mount">
+    <noscript>
+      <nav style="background:#232F3E;padding:0.75rem 1.5rem;display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap">
+        <a href="/"            style="color:#FF9900;font-weight:700;text-decoration:none">Home</a>
+        <a href="/exam-guide"  style="color:#FF9900;font-weight:700;text-decoration:none">Exam Guide</a>
+        <a href="/faq"         style="color:rgba(255,255,255,.7);text-decoration:none">FAQ</a>
+      </nav>
+    </noscript>
+  </div>
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="eg-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="sep" aria-hidden="true">›</span>
+        <span>Exam Guide</span>
+      </nav>
+
+      <!-- Hero -->
+      <section class="eg-hero">
+        <h1>AWS Cloud Practitioner Exam Guide</h1>
+        <p class="lead">A factual reference for the CLF-C02 exam — domains, task statements, question formats, scaled scoring, and how to register. All facts sourced from the official AWS exam guide.</p>
+        <div class="eg-stats">
+          <div class="eg-stat"><span class="eg-stat-value">CLF-C02</span><span class="eg-stat-label">Exam Code</span></div>
+          <div class="eg-stat"><span class="eg-stat-value">65</span><span class="eg-stat-label">Questions total</span></div>
+          <div class="eg-stat"><span class="eg-stat-value">90</span><span class="eg-stat-label">Minutes</span></div>
+          <div class="eg-stat"><span class="eg-stat-value">700</span><span class="eg-stat-label">Pass / 1000</span></div>
+          <div class="eg-stat"><span class="eg-stat-value">$100</span><span class="eg-stat-label">Exam fee (USD)</span></div>
+        </div>
+      </section>
+
+      <!-- What is CLF-C02 -->
+      <section class="eg-section">
+        <h2>What is the AWS Certified Cloud Practitioner?</h2>
+        <p>The AWS Certified Cloud Practitioner (CLF-C02) is a <strong>foundational-level</strong> certification from Amazon Web Services. It validates broad knowledge of the AWS Cloud — concepts, core services, security principles, pricing, and support options.</p>
+        <p>There are no formal prerequisites and no hands-on lab component. The exam is designed to be accessible to people without a technical background, including business analysts, project managers, sales professionals, finance teams, and career-changers who want to demonstrate a working understanding of cloud computing in an AWS context.</p>
+
+        <h3>Who it is for</h3>
+        <ul>
+          <li><strong>Non-technical roles</strong> at companies that use AWS — understanding what the cloud is and how AWS services are priced and governed</li>
+          <li><strong>Early-career technologists</strong> building a credential base before pursuing associate-level certifications (Solutions Architect, Developer, SysOps)</li>
+          <li><strong>Career-changers</strong> entering the cloud industry who need to demonstrate foundational cloud literacy</li>
+          <li><strong>AWS partners</strong> whose staff are required to hold at least a foundational certification</li>
+        </ul>
+
+        <div class="eg-info">
+          <p><strong>Independent resource:</strong> This site is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. The exam described here is administered by AWS. This page summarises publicly available information from the <a href="https://aws.amazon.com/certification/certified-cloud-practitioner/" target="_blank" rel="noopener noreferrer">official AWS certification page</a>.</p>
+        </div>
+      </section>
+
+      <!-- Domains -->
+      <section class="eg-section">
+        <h2>Exam Domains and Task Statements</h2>
+        <p>The CLF-C02 exam is divided into four domains. The percentage shown is the proportion of <em>scored</em> questions from that domain. All task statements below are drawn directly from the official AWS Certified Cloud Practitioner Exam Guide (CLF-C02).</p>
+
+        <div class="eg-domains">
+
+          <!-- Domain 1 -->
+          <div class="eg-domain">
+            <div class="eg-domain-header">
+              <div class="eg-domain-num">1</div>
+              <div class="eg-domain-title">
+                <div class="eg-domain-name">Cloud Concepts</div>
+                <div class="eg-domain-meta">4 task statements</div>
+              </div>
+              <div class="eg-domain-pct">24%</div>
+            </div>
+            <div class="eg-domain-body">
+              <div class="eg-domain-bar-track"><div class="eg-domain-bar-fill" style="width:24%"></div></div>
+              <div class="eg-task-list">
+                <div class="eg-task"><span class="eg-task-id">1.1</span><span class="eg-task-text">Define the benefits of the AWS Cloud</span></div>
+                <div class="eg-task"><span class="eg-task-id">1.2</span><span class="eg-task-text">Identify design principles of the AWS Cloud</span></div>
+                <div class="eg-task"><span class="eg-task-id">1.3</span><span class="eg-task-text">Understand the benefits of and strategies for migration to the AWS Cloud</span></div>
+                <div class="eg-task"><span class="eg-task-id">1.4</span><span class="eg-task-text">Understand concepts of cloud economics</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 2 -->
+          <div class="eg-domain">
+            <div class="eg-domain-header">
+              <div class="eg-domain-num">2</div>
+              <div class="eg-domain-title">
+                <div class="eg-domain-name">Security and Compliance</div>
+                <div class="eg-domain-meta">4 task statements · largest domain by weight after Domain 3</div>
+              </div>
+              <div class="eg-domain-pct">30%</div>
+            </div>
+            <div class="eg-domain-body">
+              <div class="eg-domain-bar-track"><div class="eg-domain-bar-fill" style="width:30%"></div></div>
+              <div class="eg-task-list">
+                <div class="eg-task"><span class="eg-task-id">2.1</span><span class="eg-task-text">Understand the AWS shared responsibility model</span></div>
+                <div class="eg-task"><span class="eg-task-id">2.2</span><span class="eg-task-text">Understand AWS Cloud security, governance, and compliance concepts</span></div>
+                <div class="eg-task"><span class="eg-task-id">2.3</span><span class="eg-task-text">Identify AWS access management capabilities</span></div>
+                <div class="eg-task"><span class="eg-task-id">2.4</span><span class="eg-task-text">Identify components and resources for security support</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 3 -->
+          <div class="eg-domain">
+            <div class="eg-domain-header">
+              <div class="eg-domain-num">3</div>
+              <div class="eg-domain-title">
+                <div class="eg-domain-name">Cloud Technology and Services</div>
+                <div class="eg-domain-meta">8 task statements · the largest domain</div>
+              </div>
+              <div class="eg-domain-pct">34%</div>
+            </div>
+            <div class="eg-domain-body">
+              <div class="eg-domain-bar-track"><div class="eg-domain-bar-fill" style="width:34%"></div></div>
+              <div class="eg-task-list">
+                <div class="eg-task"><span class="eg-task-id">3.1</span><span class="eg-task-text">Define methods of deploying and operating in the AWS Cloud</span></div>
+                <div class="eg-task"><span class="eg-task-id">3.2</span><span class="eg-task-text">Define the AWS global infrastructure</span></div>
+                <div class="eg-task"><span class="eg-task-id">3.3</span><span class="eg-task-text">Identify AWS compute services</span></div>
+                <div class="eg-task"><span class="eg-task-id">3.4</span><span class="eg-task-text">Identify AWS database services</span></div>
+                <div class="eg-task"><span class="eg-task-id">3.5</span><span class="eg-task-text">Identify AWS network services</span></div>
+                <div class="eg-task"><span class="eg-task-id">3.6</span><span class="eg-task-text">Identify AWS storage services</span></div>
+                <div class="eg-task"><span class="eg-task-id">3.7</span><span class="eg-task-text">Identify AWS AI and ML services and analytics services</span></div>
+                <div class="eg-task"><span class="eg-task-id">3.8</span><span class="eg-task-text">Identify services from other in-scope AWS service categories</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 4 -->
+          <div class="eg-domain">
+            <div class="eg-domain-header">
+              <div class="eg-domain-num">4</div>
+              <div class="eg-domain-title">
+                <div class="eg-domain-name">Billing, Pricing, and Support</div>
+                <div class="eg-domain-meta">3 task statements</div>
+              </div>
+              <div class="eg-domain-pct">12%</div>
+            </div>
+            <div class="eg-domain-body">
+              <div class="eg-domain-bar-track"><div class="eg-domain-bar-fill" style="width:12%"></div></div>
+              <div class="eg-task-list">
+                <div class="eg-task"><span class="eg-task-id">4.1</span><span class="eg-task-text">Compare AWS pricing models</span></div>
+                <div class="eg-task"><span class="eg-task-id">4.2</span><span class="eg-task-text">Understand resources for billing, budget, and cost management</span></div>
+                <div class="eg-task"><span class="eg-task-id">4.3</span><span class="eg-task-text">Identify AWS technical resources and AWS Support options</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p style="margin-top:var(--sp-6);font-size:var(--fs-sm);color:var(--text-muted)">Domains 2 and 3 together account for 64% of the exam. Direct more preparation time there.</p>
+      </section>
+
+      <!-- Question formats -->
+      <section class="eg-section">
+        <h2>Question Formats</h2>
+        <p>The CLF-C02 exam uses two question types. Both appear in this course's practice tests in roughly the same proportion as the real exam.</p>
+
+        <div class="eg-formats">
+          <div class="eg-format">
+            <div class="eg-format-title">Multiple-Choice</div>
+            <p>One correct answer from four options. Three distractors are plausible; the exam tests understanding, not elimination of obvious wrong answers.</p>
+            <p><strong>Example prompt:</strong> "A company wants to… Which AWS service BEST meets this requirement?"</p>
+          </div>
+          <div class="eg-format">
+            <div class="eg-format-title">Multiple-Response</div>
+            <p>Two correct answers from four or five options. You must select exactly the right two; partial credit is not awarded. These questions are labelled "(Select TWO.)" in the stem.</p>
+            <p><strong>Strategy:</strong> Eliminate the two or three clearly wrong options first, then choose between the remaining candidates.</p>
+          </div>
+        </div>
+
+        <h3>Unscored questions</h3>
+        <p>Of the 65 questions, <strong>50 are scored</strong> and <strong>15 are unscored</strong> (experimental). Unscored questions look identical to scored ones and are not labelled during the exam. AWS uses them to evaluate questions for future exams. They do not affect your final score — but because you cannot identify them, treat every question as if it counts.</p>
+      </section>
+
+      <!-- Scoring -->
+      <section class="eg-section">
+        <h2>How the Exam is Scored</h2>
+        <p>Scores are reported on a <strong>scaled</strong> scale of <strong>100 to 1000</strong>. The passing score is <strong>700</strong>. There is no penalty for incorrect answers — an unanswered question counts the same as a wrong one, so always select an answer for every question.</p>
+
+        <h3>What "scaled scoring" means</h3>
+        <p>Raw scores (percentage of questions answered correctly) are not reported directly. AWS applies a statistical scaling process to account for minor difficulty variations between different versions of the same exam. This means two candidates who answered the same proportion of questions correctly may receive slightly different scaled scores if they sat different exam forms — and both are equally valid.</p>
+        <p>The practical implication: aim to demonstrate consistent understanding across all four domains, not just to maximise a raw count. Domain breakdowns appear on your score report, showing where you were stronger or weaker regardless of whether you pass.</p>
+
+        <div class="eg-score-example">
+          <div class="eg-score-row"><span class="label">Score range</span><span class="value">100 – 1000</span></div>
+          <div class="eg-score-row pass"><span class="label">Passing score</span><span class="value">700 ✓</span></div>
+          <div class="eg-score-row fail"><span class="label">Failing score</span><span class="value">below 700</span></div>
+          <div class="eg-score-row"><span class="label">Wrong-answer penalty</span><span class="value">None — always answer every question</span></div>
+          <div class="eg-score-row"><span class="label">Result format</span><span class="value">Pass / Fail + domain breakdown</span></div>
+          <div class="eg-score-row"><span class="label">Scored questions</span><span class="value">50 of 65 (15 are unscored)</span></div>
+        </div>
+      </section>
+
+      <!-- Cost and registration -->
+      <section class="eg-section">
+        <h2>Exam Cost and How to Register</h2>
+        <p>The standard exam fee is <strong>$100 USD</strong>. Pricing may vary by country and is subject to change — the authoritative current price is shown during checkout on the official AWS exam portal.</p>
+        <p>You can sit the exam <strong>in-person</strong> at a Pearson VUE or PSI testing centre, or <strong>online proctored</strong> from home. Both formats use the same question content and scoring.</p>
+
+        <h3>Steps to register</h3>
+        <ol>
+          <li>Go to the <a href="https://aws.amazon.com/certification/certified-cloud-practitioner/" target="_blank" rel="noopener noreferrer">official AWS Certified Cloud Practitioner page</a> and click <strong>Schedule Exam</strong>.</li>
+          <li>Sign in or create a free AWS account.</li>
+          <li>Select your testing format (in-person or online proctored) and your preferred date and location.</li>
+          <li>Pay the exam fee (credit/debit card accepted).</li>
+          <li>Receive a booking confirmation by email.</li>
+        </ol>
+
+        <div class="eg-info">
+          <p><strong>Before you pay out of pocket:</strong> Some employers offer AWS exam vouchers through partner programmes. AWS also periodically offers a free practice exam attempt to candidates who have completed certain AWS training courses. Check with your employer and your AWS Training and Certification account before registering.</p>
+        </div>
+      </section>
+
+      <!-- Study timeline -->
+      <section class="eg-section">
+        <h2>Recommended Study Timeline</h2>
+        <p>Study time varies significantly based on your existing cloud and IT experience. Candidates with no IT background typically need more time on Domain 3 (Cloud Technology and Services), which covers a wide range of AWS services.</p>
+
+        <div class="eg-timeline">
+          <div class="eg-week">
+            <span class="eg-week-label">Week 1</span>
+            <div class="eg-week-content">
+              <h4>Domains 1 &amp; 2 — Cloud Concepts and Security</h4>
+              <p>Work through the training content for task statements 1.1–1.4 and 2.1–2.4. Pay close attention to the shared responsibility model (2.1) — it is tested frequently and in multiple contexts. Run quick quizzes after each topic to identify gaps early.</p>
+            </div>
+          </div>
+          <div class="eg-week">
+            <span class="eg-week-label">Week 2</span>
+            <div class="eg-week-content">
+              <h4>Domains 3 &amp; 4 — Technology and Billing</h4>
+              <p>Domain 3 has eight task statements and covers compute, databases, networking, storage, AI/ML, and more. Spend more time here than anywhere else — it is 34% of the exam. Domain 4 is smaller (12%) but covers pricing models and Support plans that are easily confused.</p>
+            </div>
+          </div>
+          <div class="eg-week">
+            <span class="eg-week-label">Week 3</span>
+            <div class="eg-week-content">
+              <h4>Shorter timed practice tests</h4>
+              <p>Take the 15-question and 30-question timed tests. Review every explanation — including questions you got right — to understand the reasoning rather than the answer. Note which domains you are weakest in and return to the training content for those areas.</p>
+            </div>
+          </div>
+          <div class="eg-week">
+            <span class="eg-week-label">Week 4+</span>
+            <div class="eg-week-content">
+              <h4>Full 65-question timed exams</h4>
+              <p>Take the full 65-question, 90-minute exam repeatedly until you are consistently comfortable with the pacing. Each attempt draws a fresh randomised subset weighted to match the official domain percentages, so no two attempts are identical. Review weak domains between attempts.</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top:var(--sp-6);font-size:var(--fs-sm);color:var(--text-muted)">Candidates with existing IT or AWS experience may compress this timeline. Candidates coming from a non-technical background may benefit from additional time on Weeks 1–2 before moving to timed practice.</p>
+      </section>
+
+      <!-- CTAs -->
+      <div class="eg-cta-section">
+        <h2>Ready to start preparing?</h2>
+        <p>Use the free diagnostic to see where you stand, or jump straight into practice tests.</p>
+        <div class="eg-cta-grid">
+          <a href="/diagnostic" class="btn btn-outline-light btn-lg">
+            Take the free diagnostic
+            <span style="font-size:0.7em;opacity:0.6;margin-left:6px">(coming soon)</span>
+          </a>
+          <button id="eg-pay-btn" class="btn btn-primary btn-lg">
+            Start practicing — $49
+          </button>
+        </div>
+        <p class="eg-cta-note">10-day money-back guarantee · One-time payment · No subscription</p>
+      </div>
+
+    </div><!-- /.container -->
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <!-- Auth modal — required by firebase-auth.js on every page -->
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase + Auth -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/firebase-auth.js"></script>
+
+  <!-- Pay button — no app.js needed; reuses SiteConfig + AppAuth -->
+  <script>
+    (function () {
+      var btn = document.getElementById('eg-pay-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var auth = window.AppAuth;
+        if (!auth || !auth.isLoggedIn()) {
+          if (window.showAuthModal) window.showAuthModal('login');
+          return;
+        }
+        if (auth.hasPaid()) {
+          // Already paid — send them to the practice tests
+          window.location.href = '/';
+          return;
+        }
+        var link = window.SiteConfig && window.SiteConfig.stripePaymentLink;
+        if (!link) return;
+        if (!auth.docReady) {
+          btn.textContent = 'Preparing checkout…';
+          btn.disabled = true;
+          var poll = setInterval(function () {
+            if (auth.docReady) { clearInterval(poll); doRedirect(); }
+          }, 100);
+          return;
+        }
+        doRedirect();
+        function doRedirect() {
+          btn.disabled = true;
+          btn.textContent = 'Redirecting to Stripe…';
+          window.location.href = link + '?client_reference_id=' + encodeURIComponent(auth.currentUser.uid);
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

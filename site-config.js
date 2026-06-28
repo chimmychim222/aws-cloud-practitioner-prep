@@ -1,14 +1,7 @@
 // ============================================================
-// SITE CONFIGURATION — Edit this file to create a new cert site
-// ============================================================
-// This is the TEMPLATE. The actual site-config.js is generated
-// at deploy time by GitHub Actions, which substitutes %%VAR%%
-// placeholders with values from repository secrets.
-//
-// For local development:
-//   cp site-config.template.js site-config.js
-//   then fill in the real values in your local site-config.js
-//   (site-config.js is .gitignored — never commit it)
+// SITE CONFIGURATION — LOCAL DEV COPY (gitignored)
+// Do NOT commit this file. The deployed version is generated
+// from site-config.template.js by GitHub Actions.
 // ============================================================
 
 window.SiteConfig = {
@@ -60,14 +53,14 @@ window.SiteConfig = {
   // ---- Stripe ----
   stripePaymentLink: 'https://buy.stripe.com/00wfZa2GE1mZ9Qtdg43ks01',
 
-  // ---- Firebase (injected by CI — never hardcode here) ----
+  // ---- Firebase ----
   firebaseConfig: {
-    apiKey:            '%%FIREBASE_API_KEY%%',
-    authDomain:        '%%FIREBASE_AUTH_DOMAIN%%',
-    projectId:         '%%FIREBASE_PROJECT_ID%%',
-    storageBucket:     '%%FIREBASE_STORAGE_BUCKET%%',
-    messagingSenderId: '%%FIREBASE_MESSAGING_SENDER_ID%%',
-    appId:             '%%FIREBASE_APP_ID%%'
+    apiKey: "AIzaSyCxrC9P263tCT_RFh5Xd99WHm0bJRxUekw",
+    authDomain: "aws-ccp-prep.firebaseapp.com",
+    projectId: "aws-ccp-prep",
+    storageBucket: "aws-ccp-prep.firebasestorage.app",
+    messagingSenderId: "623544110265",
+    appId: "1:623544110265:web:badf967e25d1e50dcd5f68"
   },
 
   // ---- Google Search Console verification ----

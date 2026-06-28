@@ -11,6 +11,11 @@
   const auth = firebase.auth();
   const db = firebase.firestore();
 
+  // Google provider
+  const googleProvider = new firebase.auth.GoogleAuthProvider();
+  googleProvider.addScope('email');
+  googleProvider.addScope('profile');
+
   // Session ID for single-session enforcement
   const SESSION_ID = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
 
@@ -222,6 +227,27 @@
     if (el) { el.textContent = msg; el.classList.remove('hidden'); }
   }
 
+  // ---- Google Sign-In ----
+  async function handleGoogleSignIn() {
+    clearAuthErrors();
+    try {
+      await auth.signInWithPopup(googleProvider);
+      hideAuthModal();
+    } catch (err) {
+      if (err.code === 'auth/account-exists-with-different-credential') {
+        // Email/password account already exists — prompt to link
+        window._pendingGoogleCred = err.credential;
+        showAuthError('auth-form-login',
+          'An account with that email already exists. Sign in with your password below to link your Google account.');
+        switchAuthTab('login');
+        const emailEl = $('#login-email');
+        if (emailEl) emailEl.value = err.email || '';
+      } else if (err.code !== 'auth/popup-closed-by-user') {
+        showAuthError('auth-form-login', 'Google sign-in failed. Please try again.');
+      }
+    }
+  }
+
   // ---- Signup ----
   async function handleSignup(e) {
     e.preventDefault();
@@ -269,6 +295,11 @@
 
     try {
       await auth.signInWithEmailAndPassword(email, password);
+      // Link pending Google credential if user arrived via Google→email flow
+      if (window._pendingGoogleCred) {
+        try { await auth.currentUser.linkWithCredential(window._pendingGoogleCred); }
+        finally { window._pendingGoogleCred = null; }
+      }
       hideAuthModal();
     } catch (err) {
       const msg = err.code === 'auth/user-not-found' ? 'No account found with this email.'
@@ -310,9 +341,11 @@
   function showPaymentSuccessBanner() {
     const banner = document.createElement('div');
     banner.className = 'payment-success-banner';
-    banner.innerHTML = '<span>Payment successful! You now have full access to all practice tests.</span><button class="banner-close" onclick="this.parentElement.remove()">x</button>';
+    banner.innerHTML = '<span>Payment successful! You now have full access to all practice tests.</span><button class="banner-close" onclick="this.parentElement.remove()">&#10005;</button>';
     document.body.insertBefore(banner, document.body.firstChild);
     setTimeout(() => banner.remove(), 8000);
+    // Invite buyer to leave a review after the banner has settled
+    setTimeout(() => { if (typeof window.showReviewPrompt === 'function') window.showReviewPrompt(); }, 2500);
   }
 
   // ---- Expose showAuthModal globally ----
@@ -377,6 +410,9 @@
     // Forgot password
     const forgotBtn = $('#forgot-password-btn');
     if (forgotBtn) forgotBtn.addEventListener('click', handleForgotPassword);
+
+    // Google sign-in buttons (one per form)
+    $$('.google-signin-btn').forEach(btn => btn.addEventListener('click', handleGoogleSignIn));
   }
 
   if (document.readyState === 'loading') {

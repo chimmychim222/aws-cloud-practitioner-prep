@@ -13,7 +13,7 @@
 
   <!-- Open Graph (Facebook, LinkedIn) -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="AWS Cloud Practitioner Practice Tests — Pass the CLF-C02 Exam">
+  <meta property="og:title" content="AWS Cloud Practitioner Practice Tests — Prepare for the CLF-C02 Exam">
   <meta property="og:description" content="400+ practice questions, timed exams, and domain-specific training for the AWS Cloud Practitioner CLF-C02 exam.">
   <meta property="og:url" content="https://cloudpractitionerprep.com/">
   <meta property="og:site_name" content="AWS Cloud Practitioner Prep">
@@ -21,7 +21,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AWS Cloud Practitioner Practice Tests — Pass the CLF-C02 Exam">
+  <meta name="twitter:title" content="AWS Cloud Practitioner Practice Tests — Prepare for the CLF-C02 Exam">
   <meta name="twitter:description" content="400+ practice questions, timed exams, and training for the AWS Cloud Practitioner CLF-C02 exam.">
   <meta name="twitter:image" content="https://cloudpractitionerprep.com/og-image.png">
 
@@ -266,19 +266,14 @@
         </div>
       </section>
 
-      <!-- Testimonials -->
-      <section class="testimonials-section">
+      <!-- Testimonials — hidden until 3+ approved reviews exist in Firestore -->
+      <section class="testimonials-section" id="testimonials-section" style="display:none">
         <div class="container">
           <h2 class="section-title">What Our Students Say</h2>
+          <div class="testimonials-stats" id="testimonials-stats"></div>
           <div class="testimonials-carousel" id="testimonials-carousel">
-            <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous testimonials">&larr;</button>
-            <div class="testimonials-track" id="testimonials-track">
-              <!-- testimonials placeholder -->
-
-                        </div>
-            <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next testimonials">&rarr;</button>
+            <div class="testimonials-track" id="testimonials-track"></div>
           </div>
-          <div class="carousel-dots" id="carousel-dots"></div>
         </div>
       </section>
 
@@ -532,6 +527,11 @@
             <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
           </div>
           <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+          <div class="auth-divider"><span>or</span></div>
+          <button type="button" class="btn-google google-signin-btn">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Continue with Google
+          </button>
           <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
         </form>
         <form class="auth-form hidden" id="auth-form-signup">
@@ -549,6 +549,44 @@
             <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
           </div>
           <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+          <div class="auth-divider"><span>or</span></div>
+          <button type="button" class="btn-google google-signin-btn">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Continue with Google
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Review submission modal — shown post-purchase -->
+    <div class="modal-overlay hidden" id="review-modal">
+      <div class="modal-content review-modal-content">
+        <button class="modal-close" id="review-modal-close">&times;</button>
+        <div class="auth-modal-header">
+          <h2>Share Your Experience</h2>
+          <p class="auth-modal-subtitle">Help other students by sharing how this course prepared you.</p>
+        </div>
+        <form id="review-form">
+          <div class="auth-error hidden" id="review-error"></div>
+          <div class="auth-field">
+            <label for="review-name">Your name</label>
+            <input type="text" id="review-name" required maxlength="60" autocomplete="name">
+          </div>
+          <div class="auth-field">
+            <label for="review-role">Role or title <span class="field-optional">(optional)</span></label>
+            <input type="text" id="review-role" maxlength="80" placeholder="e.g. Cloud Engineer, Student">
+          </div>
+          <div class="auth-field">
+            <label for="review-score">AWS exam score <span class="field-optional">(optional, self-reported)</span></label>
+            <input type="number" id="review-score" min="100" max="1000" placeholder="e.g. 820">
+          </div>
+          <div class="auth-field">
+            <label for="review-quote">Your review</label>
+            <textarea id="review-quote" required maxlength="400" rows="4"
+              placeholder="How did this course help you prepare?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg auth-submit" id="review-submit">Submit Review</button>
+          <button type="button" class="auth-forgot-btn" id="review-skip">Not now</button>
         </form>
       </div>
     </div>

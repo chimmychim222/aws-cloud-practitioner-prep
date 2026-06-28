@@ -1705,3 +1705,94 @@ fieldset { border: none; }
   .auth-header-btn { padding: 6px 14px; font-size: 0.8rem; }
   .auth-header-btn.logged-in { width: 34px; height: 34px; }
 }
+
+/* ============================================================
+   GOOGLE SIGN-IN BUTTON
+   ============================================================ */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  color: var(--text-muted, #8a9bb0);
+  font-size: 0.8rem;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border, rgba(255,255,255,0.1));
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: #fff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.btn-google:hover {
+  background: #f8f9fa;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+.btn-google:active { background: #f1f3f4; }
+
+/* ============================================================
+   REVIEW MODAL
+   ============================================================ */
+.review-modal-content {
+  max-width: 480px;
+}
+.review-modal-content textarea {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: var(--text-primary, #e8edf3);
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.review-modal-content textarea:focus {
+  outline: none;
+  border-color: var(--aws-orange, #FF9900);
+}
+.field-optional {
+  font-size: 0.78rem;
+  color: var(--text-muted, #8a9bb0);
+  font-weight: 400;
+}
+
+/* ============================================================
+   TESTIMONIALS STATS (computed, shown only when data exists)
+   ============================================================ */
+.testimonials-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.testimonials-stat {
+  font-size: 0.95rem;
+  color: var(--text-muted, #8a9bb0);
+}
+.testimonials-stat strong {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--aws-orange, #FF9900);
+  margin-right: 0.2rem;
+}

@@ -16,40 +16,42 @@
 
   // Nav items: add new content pages here as they are built.
   // Use clean paths — never .html extensions.
+  // SPA view items carry id + view so app.js can wire click handlers and
+  // showView() can find them by ID to manage the active state.
   var path = window.location.pathname.replace(/\/$/, '') || '/';
+  var isSPA = (path === '/' || path === '/index' || path === '/index.html');
   var navItems = [
     {
-      label: 'Home',
-      href: '/',
+      label: 'Home',         href: '/',    id: 'nav-home-btn',     view: 'home',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>'
     },
     {
-      label: 'Training',
-      href: '/',
+      label: 'Training',     href: '/',    id: 'nav-training-btn', view: 'training',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>'
     },
     {
-      label: 'Practice Test',
-      href: '/',
+      label: 'Practice Test', href: '/',   id: 'nav-test-btn',     view: 'test',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>'
     },
     {
-      label: 'FAQ',
-      href: '/faq',
+      label: 'FAQ',          href: '/faq', id: null,               view: null,
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>'
     }
   ];
 
   var navHTML = navItems.map(function (item) {
-    // Mark active when the current path exactly matches or starts with the item href
-    // (only meaningful for non-root hrefs; avoids marking Home active on every page)
-    var isActive = item.href !== '/' && (path === item.href || path.indexOf(item.href + '/') === 0);
-    return [
-      '<a href="' + item.href + '" class="nav-link' + (isActive ? ' active' : '') + '">',
-      item.icon,
-      item.label,
-      '</a>'
-    ].join('');
+    // SPA view items (home/training/test): active only when on the SPA and it's
+    // the home view (initial state). showView() takes over after first click.
+    // Content page items: active when the path matches their href.
+    var isActive = item.view
+      ? (isSPA && item.view === 'home')
+      : (path === item.href || path.indexOf(item.href + '/') === 0);
+
+    var attrs = 'href="' + item.href + '" class="nav-link' + (isActive ? ' active' : '') + '"';
+    if (item.id)   attrs += ' id="'        + item.id   + '"';
+    if (item.view) attrs += ' data-view="' + item.view + '"';
+
+    return '<a ' + attrs + '>' + item.icon + item.label + '</a>';
   }).join('');
 
   mount.innerHTML = [

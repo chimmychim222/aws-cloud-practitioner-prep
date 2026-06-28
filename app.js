@@ -1065,6 +1065,13 @@
     const track = $('#testimonials-track');
     if (!track) return;
 
+    // Hide the whole section when there are no cards
+    if (track.querySelectorAll('.testimonial-card').length === 0) {
+      const section = track.closest('.testimonials-section');
+      if (section) section.style.display = 'none';
+      return;
+    }
+
     // Duplicate all cards so the scroll loops seamlessly
     const originalHTML = track.innerHTML;
     track.innerHTML = originalHTML + originalHTML;

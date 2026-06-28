@@ -158,6 +158,9 @@
     if (menuBtn) menuBtn.classList.remove('open');
   }
 
+  // Expose for components/header.js (read at click-time, after app.js has loaded)
+  window.showView = showView;
+
   function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -233,10 +236,12 @@
       });
     });
 
-    // Nav buttons
-    $('#nav-home-btn').addEventListener('click', () => showView('home'));
-    $('#nav-training-btn').addEventListener('click', () => { initTraining(); showView('training'); });
-    $('#nav-test-btn').addEventListener('click', () => {
+    // Nav buttons — e.preventDefault() stops <a href="/"> from reloading the page
+    // Mobile menu toggle is handled by components/header.js
+    $('#nav-home-btn').addEventListener('click', (e) => { e.preventDefault(); showView('home'); });
+    $('#nav-training-btn').addEventListener('click', (e) => { e.preventDefault(); initTraining(); showView('training'); });
+    $('#nav-test-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       if (state.testQuestions.length > 0 && !state.testSubmitted) {
         showView('test');
         return;
@@ -247,15 +252,6 @@
         if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     });
-
-    // Mobile menu toggle
-    const menuBtn = $('#mobile-menu-btn');
-    if (menuBtn) {
-      menuBtn.addEventListener('click', () => {
-        menuBtn.classList.toggle('open');
-        $('#header-nav').classList.toggle('open');
-      });
-    }
 
     // Animate domain bars on scroll
     animateDomainBars();

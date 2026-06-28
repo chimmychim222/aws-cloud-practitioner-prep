@@ -48,14 +48,6 @@
     setText('[data-cfg="exam-code"]', c.examCode);
     setText('[data-cfg="cert-full-name"]', c.certFullName);
 
-    // Testimonials stats
-    setText('[data-cfg="stat-students"]', c.stats.studentsCertified);
-    setText('[data-cfg="stat-pass-rate"]', c.stats.passRate);
-    setText('[data-cfg="stat-rating"]', c.stats.avgRating);
-
-    // Testimonial subtitle
-    setText('[data-cfg="testimonial-subtitle"]', 'Join thousands who passed the ' + c.examCode + ' exam');
-
     // Domain names in training sidebar and results
     c.domains.forEach(function(d, i) {
       var label = 'Domain ' + (i + 1) + ': ' + d.name;

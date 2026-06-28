@@ -52,13 +52,6 @@ window.SiteConfig = {
   currency: 'USD',
   guarantee: '10-day money-back guarantee',
 
-  // ---- Social Proof Stats ----
-  stats: {
-    studentsCertified: '4,200+',
-    passRate: '94%',
-    avgRating: '4.8'
-  },
-
   // ---- Domain & URLs ----
   domain: 'cloudpractitionerprep.com',
 

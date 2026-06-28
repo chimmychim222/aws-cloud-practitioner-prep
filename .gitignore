@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment variables — real secrets (Stripe, email, etc.) go here
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# Local secret / credential files
+*.pem
+*.key
+secrets.json
+credentials.json
+service-account.json

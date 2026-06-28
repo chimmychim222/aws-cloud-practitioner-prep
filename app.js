@@ -98,7 +98,7 @@
     if (priceEl) priceEl.textContent = '$' + c.price;
     setText('[data-cfg="guarantee"]', c.guarantee);
 
-    // Pay button label (href removed \u2014 button now calls /api/create-checkout)
+    // Pay button label (direct Stripe Payment Link redirect)
     var stripeBtn = document.getElementById('stripe-pay-btn');
     if (stripeBtn) stripeBtn.textContent = 'Pay $' + c.price + ' \u2014 Start Practicing';
 
@@ -1346,39 +1346,20 @@
     // Pay button → server-side Stripe checkout session (uid attached server-side)
     const payBtn = $('#stripe-pay-btn');
     if (payBtn) {
-      payBtn.addEventListener('click', async function () {
+      payBtn.addEventListener('click', function () {
         const user = window.AppAuth && window.AppAuth.currentUser;
         if (!user) { window.showAuthModal('login'); return; }
+        if (hasPaid()) { hidePaymentModal(); return; }
 
-        const originalText = payBtn.textContent;
+        const payLink = window.SiteConfig && window.SiteConfig.stripePaymentLink;
+        if (!payLink) { console.error('stripePaymentLink not configured in site-config.js'); return; }
+
         payBtn.disabled = true;
-        payBtn.textContent = 'Redirecting to checkout…';
+        payBtn.textContent = 'Redirecting to Stripe…';
 
-        try {
-          const idToken = await user.getIdToken();
-          const resp = await fetch('/api/create-checkout', {
-            method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + idToken }
-          });
-          const data = await resp.json();
-
-          if (data.error === 'already_paid') {
-            hidePaymentModal();
-            return;
-          }
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            throw new Error('No checkout URL returned');
-          }
-        } catch (err) {
-          console.error('Checkout initiation failed:', err);
-          payBtn.textContent = 'Something went wrong — try again';
-          setTimeout(function () {
-            payBtn.disabled = false;
-            payBtn.textContent = originalText;
-          }, 3000);
-        }
+        // Append uid so stripe_sessions can associate the purchase with this Firebase user.
+        // Stripe Payment Links support client_reference_id as a query parameter.
+        window.location.href = payLink + '?client_reference_id=' + encodeURIComponent(user.uid);
       });
     }
   }

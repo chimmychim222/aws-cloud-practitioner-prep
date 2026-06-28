@@ -1,4 +1,11 @@
 // api/create-checkout.js
+// ============================================================
+// NOT ACTIVE — GitHub Pages cannot execute server-side code.
+// This function requires a serverless runtime (Vercel, Cloudflare
+// Workers, AWS Lambda, etc.). Retained for future use if a serverless
+// host is added. The active payment flow uses the Stripe Payment Link
+// in site-config.js with client-side session validation. See CLAUDE.md.
+// ============================================================
 // Creates a Stripe Checkout session with the Firebase uid as client_reference_id.
 // The webhook reads that uid to know which user to grant paid access.
 

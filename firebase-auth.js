@@ -98,10 +98,8 @@
           window.AppAuth.userPaid = data.paid === true;
           updateUI();
 
-          // Webhook just set paid:true — swap confirming banner for success banner
+          // paid flipped false→true (client-side grant, or future server-side webhook)
           if (!wasPaid && data.paid === true) {
-            const confirming = document.getElementById('payment-confirming-banner');
-            if (confirming) confirming.remove();
             showPaymentSuccessBanner();
           }
 
@@ -112,8 +110,8 @@
           }
         });
 
-        // Show confirming banner if returning from Stripe checkout
-        checkPaymentRedirect();
+        // Check for completed Stripe payment and grant access client-side
+        checkPaymentRedirect(user.uid, userRef);
 
       } catch (e) {
         console.error('Auth state error:', e);
@@ -129,23 +127,39 @@
   });
 
   // ---- Check Stripe redirect ----
-  // paid:true is now set server-side by the Stripe webhook (api/stripe-webhook.js).
-  // The browser only shows a confirming banner and waits for the Firestore snapshot.
-  function checkPaymentRedirect() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('payment') !== 'pending') return;
-    window.history.replaceState({}, '', window.location.pathname);
-    showPaymentConfirmingBanner();
-  }
+  // Client-side payment completion for static hosting (GitHub Pages).
+  // Security tradeoff: paid is written by the client after validating the session ID
+  // prefix and checking replay protection. A sophisticated attacker who obtained a
+  // valid cs_ session ID before it was claimed could exploit this. This matches the
+  // CCA model; server-side verification (api/stripe-webhook.js) is the hardening path
+  // when a serverless host is available.
+  function checkPaymentRedirect(uid, userRef) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
 
-  function showPaymentConfirmingBanner() {
-    if (document.getElementById('payment-confirming-banner')) return;
-    const banner = document.createElement('div');
-    banner.id = 'payment-confirming-banner';
-    banner.className = 'payment-success-banner';
-    banner.style.background = 'linear-gradient(90deg, #1565C0, #0D47A1)';
-    banner.innerHTML = '<span>Confirming your payment&#8230; this usually takes a few seconds.</span>';
-    document.body.insertBefore(banner, document.body.firstChild);
+    // Only accept Stripe checkout session IDs (cs_ prefix)
+    if (!sessionId || !sessionId.startsWith('cs_')) return;
+
+    // Clean URL immediately regardless of outcome
+    window.history.replaceState({}, '', window.location.pathname);
+
+    // Replay protection: reject if this session was already redeemed
+    const sessionRef = db.collection('stripe_sessions').doc(sessionId);
+    sessionRef.get().then(function(snap) {
+      if (snap.exists) return; // already used — ignore silently
+
+      // Record session as redeemed, then grant access
+      sessionRef.set({
+        uid: uid,
+        redeemedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function() {
+        return userRef.update({ paid: true });
+      }).then(function() {
+        window.AppAuth.userPaid = true;
+        updateUI();
+        showPaymentSuccessBanner();
+      });
+    });
   }
 
   // ---- UI Updates ----

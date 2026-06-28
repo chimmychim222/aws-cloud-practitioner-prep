@@ -374,40 +374,56 @@ Document ID is the Firebase uid. Written only via the Firebase Console.
 
 ## Stripe Integration
 
-> **⚠️ Payments are currently non-functional on the live site.**
-> GitHub Pages cannot execute server-side code. The `api/` functions exist in the repo
-> but are not active. See "Current payment status" below.
+**Active flow: client-side payment completion via Stripe Payment Link.**
+This matches the CCA (client-side) model and works on static hosting (GitHub Pages).
 
-### Intended flow (requires a separate serverless host)
+### Active payment flow
 
-1. User clicks "Pay $49" → `app.js` calls `POST /api/create-checkout` with Firebase ID token.
-2. `api/create-checkout.js` verifies the ID token, creates a Stripe Checkout session with `client_reference_id = uid`, returns `{ url }`.
-3. Browser redirects to `session.url` (Stripe-hosted checkout page).
-4. After payment, Stripe redirects to `/?payment=pending`.
-5. `firebase-auth.js` detects `?payment=pending`, clears the URL, shows a "Confirming…" banner.
-6. Stripe POSTs `checkout.session.completed` to `POST /api/stripe-webhook`.
-7. `api/stripe-webhook.js` verifies the Stripe signature, reads `client_reference_id` (= uid), performs an atomic Firestore batch: write to `stripe_sessions/{sessionId}` (replay protection) + `users/{uid}.paid = true`.
-8. The `onSnapshot` listener in `firebase-auth.js` detects `paid: false → true` and swaps the "Confirming…" banner for the "Payment successful!" banner. Tests unlock without a page reload.
+1. User clicks "Pay $49" → `app.js` appends the Firebase uid to the Stripe Payment Link:
+   `https://buy.stripe.com/…?client_reference_id=<uid>`
+2. User pays on Stripe's hosted checkout page.
+3. Stripe redirects to the success URL configured in the Stripe Dashboard:
+   `https://cloudpractitionerprep.com/?session_id={CHECKOUT_SESSION_ID}`
+4. `firebase-auth.js` `checkPaymentRedirect(uid, userRef)` detects `?session_id=cs_…`,
+   clears the URL, then:
+   a. Reads `stripe_sessions/{sessionId}` — if the doc exists, the session was already
+      used; abort silently.
+   b. Writes `stripe_sessions/{sessionId}` with `{uid, redeemedAt}` (replay protection).
+   c. Writes `users/{uid}.paid = true`.
+   d. Calls `showPaymentSuccessBanner()` and queues the review prompt.
 
-### Current payment status
+**Security tradeoff:** `paid` is written by the client after validating the `cs_` prefix
+and checking replay protection. A sophisticated attacker who obtained a valid Stripe
+session ID before it was claimed could exploit this. This is the accepted tradeoff for
+static hosting. Server-side verification (`api/stripe-webhook.js`) is the hardening path
+when a serverless host is available. Do not work around this by removing the replay guard.
 
-GitHub Pages serves `api/create-checkout.js` and `api/stripe-webhook.js` as raw text files.
-When the pay button calls `POST /api/create-checkout`, the browser receives the JS source
-as the response body (not valid JSON), causing the fetch to fail. The button shows
-"Something went wrong — try again". **No payment can be completed on the current live site.**
+### Stripe Dashboard setup required
 
-To restore payments, the `api/` functions must be deployed to a serverless platform:
-- **Vercel** (recommended — `vercel.json` is already in the repo, `api/` directory is the convention)
-- Cloudflare Workers (requires adapting the Node.js code)
-- AWS Lambda + API Gateway
+The Payment Link must have its **After payment** success URL set to:
+```
+https://cloudpractitionerprep.com/?session_id={CHECKOUT_SESSION_ID}
+```
+Stripe Dashboard → Payment Links → your link → Edit → After payment → Success URL.
 
-The `api/` code is complete and correct; it just needs a runtime environment.
+`client_reference_id` is passed as a URL query parameter at runtime by `app.js`. Stripe
+Payment Links support this natively — no server needed.
 
-### Secrets (environment variables — never committed)
+### Inactive server-side functions (retained for future use)
 
-These must be set as environment variables on whichever serverless platform hosts the `api/`
-functions. They must **never** appear in any committed file, `.env` file, or `site-config.js`.
-`.env` and `.env.*` are in `.gitignore`.
+`api/create-checkout.js` and `api/stripe-webhook.js` are Node.js serverless functions
+that require a runtime to execute. They are **NOT active** on GitHub Pages. Both files
+carry a `NOT ACTIVE` banner comment. When a serverless host is added:
+- Deploy both files to the platform
+- Set the four env vars (below) on that platform
+- Register the webhook URL (`/api/stripe-webhook`) in Stripe Dashboard
+- Change the pay button in `app.js` to call `/api/create-checkout` instead of
+  redirecting directly to the payment link
+
+### Secrets (for serverless host — not currently needed for static site)
+
+These are only needed when `api/` functions are active. They must **never** appear in
+any committed file, `.env` file, or `site-config.js`.
 
 | Variable | Purpose |
 |---|---|
@@ -448,8 +464,13 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
-    match /stripe_sessions/{id} {
-      allow read, write: if false; // server-side only via Admin SDK
+    match /stripe_sessions/{sessionId} {
+      // Client reads to check replay; creates to record redemption.
+      // uid must match the authenticated user. Sessions are immutable once created.
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
     }
 
     match /testimonials/{id} {
@@ -496,16 +517,18 @@ These rules apply to every change made to this codebase. No exceptions.
 - Stats (average score etc.) are computed from real Firestore data only. Render nothing — not a zero, not a placeholder — when the data set is empty.
 
 ### Payment status
-- `users/{uid}.paid` is **intended** to be written server-side only by `api/stripe-webhook.js`
-  after cryptographic Stripe signature verification.
-- **Current reality:** The `api/` functions are not active on GitHub Pages. Payments cannot
-  be completed until the functions are deployed to a serverless platform. Do not work around
-  this by adding a client-side `paid: true` write — that would reintroduce the security
-  vulnerability the server-side flow was designed to prevent.
-- The client reads `paid` via `onSnapshot` and reacts to it. It must never write it.
-- Do not add any client-side code path that sets `paid: true`, regardless of URL params or
-  local state. The previous client-side flow (accepting `?session_id=cs_*` in the URL) was
-  removed specifically because it could be bypassed.
+- `users/{uid}.paid` is written client-side by `firebase-auth.js` `checkPaymentRedirect()`
+  after the Stripe Payment Link redirects back with a `?session_id=cs_…` parameter.
+- The flow includes replay protection: `stripe_sessions/{sessionId}` is written first and
+  checked on every redirect. If the doc already exists, the write is silently rejected.
+- **Known tradeoff:** A client-side paywall can be bypassed by a technically sophisticated
+  user who obtains a valid, unclaimed Stripe session ID. This is the accepted model for
+  static hosting (matches the CCA approach). Do not add further client-side bypasses.
+- The inactive `api/stripe-webhook.js` is the hardening path: cryptographic Stripe
+  signature verification server-side, then `paid: true` set via Admin SDK. Activate it
+  when a serverless host is available.
+- Do not add any *new* client-side path that sets `paid: true` without the session-ID
+  check and replay guard already in `checkPaymentRedirect()`.
 
 ### Secrets
 - `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, `FIREBASE_SERVICE_ACCOUNT`

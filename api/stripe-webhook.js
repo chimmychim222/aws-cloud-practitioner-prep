@@ -1,4 +1,11 @@
 // api/stripe-webhook.js
+// ============================================================
+// NOT ACTIVE — GitHub Pages cannot execute server-side code.
+// This function requires a serverless runtime (Vercel, Cloudflare
+// Workers, AWS Lambda, etc.). Retained for future use if a serverless
+// host is added. The active payment flow uses client-side session
+// validation in firebase-auth.js. See CLAUDE.md.
+// ============================================================
 // Receives POST from Stripe, verifies signature, grants paid access via Admin SDK.
 // Body parsing MUST be disabled so we receive raw bytes Stripe signed.
 

@@ -18,13 +18,15 @@
 | Styles | Vanilla CSS (`styles.css`) with CSS custom properties for all tokens |
 | Client JS | Vanilla ES5/ES6 (`app.js`, `firebase-auth.js`, `admin.js`) — no framework, no bundler |
 | Firebase (client) | Firebase JS SDK compat v10.12.0 via CDN — Auth + Firestore |
-| Firebase (server) | Firebase Admin SDK v12 (Node.js) in `api/` serverless functions |
-| Payments | Stripe JS SDK v16 (Node.js) in `api/` serverless functions |
+| Firebase (server) | Firebase Admin SDK v12 (Node.js) in `api/` — **requires a separate serverless host; does NOT run on GitHub Pages** |
+| Payments | Stripe JS SDK v16 (Node.js) in `api/` — **currently non-functional; see Stripe Integration** |
 | Fonts | Inter (Google Fonts CDN); Amazon Ember as secondary fallback |
-| Hosting | **Vercel** — static files + `api/` directory as serverless functions |
+| Hosting | **GitHub Pages** — static files only, served from the `gh-pages` branch |
 | Repo | GitHub — `chimmychim222/aws-cloud-practitioner-prep` |
 
 **No build step.** Files are served as-is. No webpack, Vite, TypeScript, or transpilation.
+
+**GitHub Pages is a static host.** It serves pre-built HTML/CSS/JS files only. No server-side code executes. The `api/` directory is present in the repo but its files are served as raw text — they are not invoked as functions on GitHub Pages.
 
 ### File inventory
 
@@ -38,16 +40,65 @@ questions.js           — window.questionBank — 400 CLF-C02 questions
 training-content.js    — window.trainingContent — HTML study material by domain/topic
 admin.html             — Admin review moderation page (not linked publicly)
 admin.js               — Admin page logic (Firestore reads/writes)
-api/stripe-webhook.js  — Vercel serverless: verifies Stripe events, sets paid:true
-api/create-checkout.js — Vercel serverless: creates Stripe checkout session with uid
+api/stripe-webhook.js  — Node.js serverless function (NOT active on GitHub Pages)
+api/create-checkout.js — Node.js serverless function (NOT active on GitHub Pages)
 package.json           — Node deps for api/ functions (stripe, firebase-admin)
-vercel.json            — Vercel project config
+vercel.json            — Inert on GitHub Pages; retained as documentation of URL intent
 site-config.js         — Committed; Firebase web config is intentionally public
 .gitignore             — Ignores node_modules, .env/.env.*, .vercel/, secrets
 CLAUDE.md              — This file; source of truth for all project conventions
 CNAME                  — cloudpractitionerprep.com
 sitemap.xml / robots.txt
+.github/workflows/deploy.yml — GitHub Actions deploy workflow
 ```
+
+---
+
+## Hosting and Deploy
+
+**Host:** GitHub Pages, served from the `gh-pages` branch of
+`chimmychim222/aws-cloud-practitioner-prep`. Custom domain: `cloudpractitionerprep.com`.
+CDN: Fastly (`185.199.108–111.153`). Cache: `Cache-Control: max-age=600` (10 min, set by GitHub Pages).
+
+### How a push reaches the live site
+
+```
+git push origin main
+       ↓
+GitHub Actions (.github/workflows/deploy.yml) triggers on push to main
+       ↓
+peaceiris/actions-gh-pages@v4 force-pushes all files
+(excluding .github/ and CNAME.example) to the gh-pages branch
+       ↓
+GitHub Pages detects gh-pages branch update → rebuilds (1–2 min)
+       ↓
+Fastly CDN serves files at cloudpractitionerprep.com (max-age=600)
+```
+
+To trigger a deploy manually: GitHub → repo → Actions → "Deploy to GitHub Pages" → Run workflow.
+
+### Clean URLs and vercel.json
+
+`vercel.json` is **inert on GitHub Pages** — GitHub Pages does not process it.
+It is kept in the repo as documentation of the intended URL structure (`"cleanUrls": true`)
+and will be needed if the site is migrated to a platform that does support it (Vercel, Netlify).
+
+Clean URLs (`/faq` instead of `/faq.html`) work via GitHub Pages' own server-side URL
+normalization, not via `vercel.json`. Note: the workflow deploys with a `.nojekyll` file
+(added by `peaceiris/actions-gh-pages` by default), which disables Jekyll. Confirm on the
+live site that `/faq` and `/faq.html` both resolve — GitHub Pages behavior without Jekyll
+can vary. If `/faq` returns 404, internal links must use `/faq.html` or a custom 404 redirect.
+
+### GitHub Pages cannot run server-side code
+
+GitHub Pages is a **static host only**. The `api/` directory (Node.js serverless functions
+for Stripe checkout and webhooks) is present in the repo but its files are served as raw
+JavaScript text, not executed. Any `fetch('/api/create-checkout')` call from the browser
+receives the JS source file as the response, not a function execution.
+
+To activate the `api/` functions, they must be deployed to a separate serverless platform
+(Vercel, Cloudflare Workers, AWS Lambda, etc.) that can execute Node.js. See the Stripe
+Integration section for the current payment flow status.
 
 ---
 
@@ -323,7 +374,11 @@ Document ID is the Firebase uid. Written only via the Firebase Console.
 
 ## Stripe Integration
 
-**Flow:** Dynamic checkout sessions — no static payment links.
+> **⚠️ Payments are currently non-functional on the live site.**
+> GitHub Pages cannot execute server-side code. The `api/` functions exist in the repo
+> but are not active. See "Current payment status" below.
+
+### Intended flow (requires a separate serverless host)
 
 1. User clicks "Pay $49" → `app.js` calls `POST /api/create-checkout` with Firebase ID token.
 2. `api/create-checkout.js` verifies the ID token, creates a Stripe Checkout session with `client_reference_id = uid`, returns `{ url }`.
@@ -334,9 +389,25 @@ Document ID is the Firebase uid. Written only via the Firebase Console.
 7. `api/stripe-webhook.js` verifies the Stripe signature, reads `client_reference_id` (= uid), performs an atomic Firestore batch: write to `stripe_sessions/{sessionId}` (replay protection) + `users/{uid}.paid = true`.
 8. The `onSnapshot` listener in `firebase-auth.js` detects `paid: false → true` and swaps the "Confirming…" banner for the "Payment successful!" banner. Tests unlock without a page reload.
 
-**The client never writes `paid: true`.** Only `api/stripe-webhook.js` does, after cryptographic signature verification.
+### Current payment status
 
-### Secrets (Vercel environment variables only)
+GitHub Pages serves `api/create-checkout.js` and `api/stripe-webhook.js` as raw text files.
+When the pay button calls `POST /api/create-checkout`, the browser receives the JS source
+as the response body (not valid JSON), causing the fetch to fail. The button shows
+"Something went wrong — try again". **No payment can be completed on the current live site.**
+
+To restore payments, the `api/` functions must be deployed to a serverless platform:
+- **Vercel** (recommended — `vercel.json` is already in the repo, `api/` directory is the convention)
+- Cloudflare Workers (requires adapting the Node.js code)
+- AWS Lambda + API Gateway
+
+The `api/` code is complete and correct; it just needs a runtime environment.
+
+### Secrets (environment variables — never committed)
+
+These must be set as environment variables on whichever serverless platform hosts the `api/`
+functions. They must **never** appear in any committed file, `.env` file, or `site-config.js`.
+`.env` and `.env.*` are in `.gitignore`.
 
 | Variable | Purpose |
 |---|---|
@@ -344,9 +415,6 @@ Document ID is the Firebase uid. Written only via the Firebase Console.
 | `STRIPE_PRICE_ID` | Stripe Price ID for the $49 product (`price_…`) |
 | `STRIPE_WEBHOOK_SECRET` | Verifies webhook signatures (`whsec_…`) |
 | `FIREBASE_SERVICE_ACCOUNT` | Firebase Admin SDK service account (full JSON, stringified) |
-
-These must **never** appear in any committed file, `.env` file, or `site-config.js`.
-`.env` and `.env.*` are in `.gitignore`.
 
 ---
 
@@ -428,14 +496,24 @@ These rules apply to every change made to this codebase. No exceptions.
 - Stats (average score etc.) are computed from real Firestore data only. Render nothing — not a zero, not a placeholder — when the data set is empty.
 
 ### Payment status
-- `users/{uid}.paid` is written **server-side only** by `api/stripe-webhook.js` after cryptographic Stripe signature verification.
-- The client reads `paid` via `onSnapshot` and reacts to it. It never writes it.
-- Do not add any client-side code path that sets `paid: true`, regardless of URL params or local state.
+- `users/{uid}.paid` is **intended** to be written server-side only by `api/stripe-webhook.js`
+  after cryptographic Stripe signature verification.
+- **Current reality:** The `api/` functions are not active on GitHub Pages. Payments cannot
+  be completed until the functions are deployed to a serverless platform. Do not work around
+  this by adding a client-side `paid: true` write — that would reintroduce the security
+  vulnerability the server-side flow was designed to prevent.
+- The client reads `paid` via `onSnapshot` and reacts to it. It must never write it.
+- Do not add any client-side code path that sets `paid: true`, regardless of URL params or
+  local state. The previous client-side flow (accepting `?session_id=cs_*` in the URL) was
+  removed specifically because it could be bypassed.
 
 ### Secrets
-- `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, `FIREBASE_SERVICE_ACCOUNT` are Vercel environment variables only.
+- `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, `FIREBASE_SERVICE_ACCOUNT`
+  are environment variables for the serverless host that runs `api/`. They are not Vercel-specific
+  — set them on whichever platform hosts the functions.
 - These must never appear in committed files, `.env` files, or `site-config.js`.
-- Firebase Web SDK config (`apiKey`, `authDomain`, etc.) in `site-config.js` is intentionally public — it is a project identifier, not a secret.
+- Firebase Web SDK config (`apiKey`, `authDomain`, etc.) in `site-config.js` is intentionally
+  public — it is a project identifier, not a secret.
 
 ### No fabricated outcome claims
 - Do not add pass-rate percentages, student-count statistics, or rating scores to meta tags, OG tags, structured data, or page copy unless they are computed from real Firestore data at runtime.
@@ -453,6 +531,9 @@ These rules apply to every change made to this codebase. No exceptions.
 6. Generate new `questions.js` and `training-content.js` from official exam guide.
 7. Create a new Firebase project — enable Email/Password + Google auth, apply Firestore rules.
 8. Create a new Stripe product and note the Price ID.
-9. Deploy to Vercel — set the four env vars for the new project.
+9. Push to `main` → GitHub Actions deploys to `gh-pages` branch → GitHub Pages goes live.
+   For Stripe payments to work, also deploy `api/` to a separate serverless host and set the
+   four env vars (`STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`,
+   `FIREBASE_SERVICE_ACCOUNT`) there.
 10. Register the new domain in Google Search Console.
 11. Update the footer disclaimer in `site-config.js → footerDisclaimer` for the new cert.

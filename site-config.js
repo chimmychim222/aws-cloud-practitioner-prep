@@ -60,7 +60,7 @@ window.SiteConfig = {
   // NEVER commit stripeTestMode: true — live site must always use the live link.
   stripeTestMode: false,
   stripePaymentLinkLive: 'https://buy.stripe.com/7sY14ngtj0Bicg0fhedjO00',
-  stripePaymentLinkTest: 'REPLACE_WITH_STRIPE_TEST_LINK',
+  stripePaymentLinkTest: 'https://buy.stripe.com/test_7sY14ngtj0Bicg0fhedjO00',
   get stripePaymentLink() {
     return this.stripeTestMode ? this.stripePaymentLinkTest : this.stripePaymentLinkLive;
   },

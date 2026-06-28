@@ -116,6 +116,10 @@
       } catch (e) {
         console.error('Auth state error:', e);
       }
+    } else {
+      // No signed-in user — check for a pending unclaimed payment in the URL.
+      // If found, show a prompt so the user can sign in and claim it.
+      checkPendingPaymentOnSignOut();
     }
 
     window.AppAuth.ready = true;
@@ -125,6 +129,33 @@
     if (window.AppAuth.onReady) window.AppAuth.onReady();
     document.dispatchEvent(new Event('auth-ready'));
   });
+
+  // ---- Pending payment with no signed-in user ----
+  // Called when onAuthStateChanged fires with user=null and a cs_ session_id is in the URL.
+  // Does NOT clean the URL — the session_id must survive until sign-in so that
+  // onAuthStateChanged (re-fired after auth) can hand it to checkPaymentRedirect.
+  function checkPendingPaymentOnSignOut() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    if (!sessionId || !sessionId.startsWith('cs_')) return;
+    if (document.getElementById('claim-purchase-banner')) return; // already shown
+
+    const banner = document.createElement('div');
+    banner.id = 'claim-purchase-banner';
+    banner.className = 'payment-success-banner';
+    banner.style.background = 'linear-gradient(90deg, #1565C0, #0D47A1)';
+    banner.innerHTML =
+      '<span>Payment received! Sign in to unlock your practice tests.</span>' +
+      '<button style="margin-left:12px;padding:4px 14px;font-size:0.82rem;font-weight:700;' +
+        'background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);' +
+        'color:#fff;border-radius:6px;cursor:pointer" ' +
+        'onclick="window.showAuthModal && window.showAuthModal(\'login\')">' +
+        'Sign In</button>';
+    document.body.insertBefore(banner, document.body.firstChild);
+
+    // Open the sign-in modal immediately so the action is obvious
+    if (window.showAuthModal) window.showAuthModal('login');
+  }
 
   // ---- Check Stripe redirect ----
   // Client-side payment completion for static hosting (GitHub Pages).
@@ -155,6 +186,8 @@
       }).then(function() {
         return userRef.update({ paid: true });
       }).then(function() {
+        const claimBanner = document.getElementById('claim-purchase-banner');
+        if (claimBanner) claimBanner.remove();
         window.AppAuth.userPaid = true;
         updateUI();
         showPaymentSuccessBanner();

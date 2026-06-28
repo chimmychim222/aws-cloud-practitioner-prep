@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Certified Cloud Practitioner (CLF-C02) — Practice Tests & Training</title>
+  <meta name="description" content="Practice tests and training for the AWS Certified Cloud Practitioner CLF-C02 exam. 400+ questions across all 4 domains with detailed explanations.">
+  <meta name="keywords" content="AWS Cloud Practitioner, CLF-C02, AWS certification, practice test, cloud computing exam, AWS training, cloud practitioner prep">
+  <meta name="author" content="AWS Cloud Practitioner Prep">
+  <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="02NUvjZ3KgS7aYAsMjeY12esYnWJdnDJL572EAe5ihI" />
+  <link rel="canonical" href="https://cloudpractitionerprep.com/">
+
+  <!-- Open Graph (Facebook, LinkedIn) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AWS Cloud Practitioner Practice Tests — Pass the CLF-C02 Exam">
+  <meta property="og:description" content="400+ practice questions, timed exams, and domain-specific training for the AWS Cloud Practitioner CLF-C02 exam.">
+  <meta property="og:url" content="https://cloudpractitionerprep.com/">
+  <meta property="og:site_name" content="AWS Cloud Practitioner Prep">
+  <meta property="og:image" content="https://cloudpractitionerprep.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AWS Cloud Practitioner Practice Tests — Pass the CLF-C02 Exam">
+  <meta name="twitter:description" content="400+ practice questions, timed exams, and training for the AWS Cloud Practitioner CLF-C02 exam.">
+  <meta name="twitter:image" content="https://cloudpractitionerprep.com/og-image.png">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%23232F3E'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='%23FF9900' font-family='Arial,sans-serif' font-weight='bold'>A</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=3">
+
+  <!-- Structured Data for Google Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "AWS Certified Cloud Practitioner (CLF-C02) Practice Tests & Training",
+    "description": "Comprehensive practice tests and training for the AWS Certified Cloud Practitioner CLF-C02 exam with 400+ questions across all 4 domains.",
+    "provider": {
+      "@type": "Organization",
+      "name": "AWS Cloud Practitioner Prep"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "49",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ========== SITE HEADER ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="#" class="header-logo" id="header-logo">
+        <svg class="logo-aws" width="40" height="24" viewBox="0 0 40 24" fill="none" aria-hidden="true">
+          <path d="M11.2 14.8c0 .4.1.8.2 1 .1.3.3.5.5.8.1.1.1.2.1.3 0 .1-.1.3-.3.4l-1 .7c-.1.1-.3.1-.4.1-.2 0-.3-.1-.5-.3-.2-.2-.4-.5-.5-.8-.7.8-1.5 1.2-2.5 1.2-.7 0-1.3-.2-1.7-.6-.4-.4-.7-1-.7-1.7 0-.7.3-1.3.8-1.8.5-.4 1.2-.6 2.1-.6.3 0 .6 0 .9.1.3.1.7.1 1 .2v-.6c0-.7-.1-1.2-.4-1.5-.3-.3-.8-.4-1.5-.4-.3 0-.7.1-1 .2-.3.1-.7.2-1 .4l-.5.2c-.1 0-.2-.1-.2-.3v-.5c0-.2 0-.3.1-.4.1-.1.2-.2.4-.3.3-.2.7-.3 1.1-.4.4-.1.9-.2 1.4-.2.8 0 1.5.2 1.9.6.4.4.6 1 .6 1.9v2.5zm-3.4 1.3c.3 0 .6-.1.9-.2.3-.1.6-.4.7-.7.1-.2.2-.4.2-.6V14c-.2-.1-.5-.1-.8-.2-.3-.1-.6-.1-.8-.1-.6 0-1 .1-1.3.3-.3.2-.5.6-.5 1 0 .4.1.7.3.9.2.3.6.4 1.1.4h.2zm6.7 1c-.2 0-.3 0-.4-.1-.1-.1-.2-.2-.3-.4L11.4 10c-.1-.2-.1-.3-.1-.4 0-.2.1-.3.3-.3h1.5c.2 0 .3 0 .4.1.1.1.2.2.2.4l1.6 6.5 1.5-6.5c.1-.2.1-.3.2-.4.1-.1.3-.1.4-.1h1.2c.2 0 .3 0 .4.1.1.1.2.2.2.4l1.5 6.6 1.7-6.6c.1-.2.1-.3.2-.4.1-.1.3-.1.4-.1h1.4c.2 0 .3.1.3.3 0 .1 0 .1-.1.2 0 .1 0 .2-.1.3l-2.5 6.6c-.1.2-.1.3-.3.4-.1.1-.3.1-.4.1h-1.3c-.2 0-.3 0-.4-.1-.1-.1-.2-.2-.2-.4l-1.5-6.3-1.5 6.3c-.1.2-.1.3-.2.4-.1.1-.3.1-.4.1h-1.3zm10.7.3c-.5 0-.9-.1-1.4-.2-.5-.1-.8-.3-1-.4-.1-.1-.2-.2-.2-.3v-.6c0-.2.1-.3.2-.3h.1l.2.1c.3.1.7.2 1 .3.4.1.7.1 1 .1.5 0 1-.1 1.2-.3.3-.2.4-.5.4-.8 0-.2-.1-.5-.3-.6-.2-.2-.5-.3-1-.5l-1.4-.5c-.7-.2-1.2-.5-1.5-1-.3-.4-.5-.9-.5-1.4 0-.4.1-.8.3-1.1.2-.3.4-.6.7-.8.3-.2.6-.4 1-.5.4-.1.8-.2 1.2-.2.2 0 .4 0 .7.1.2 0 .5.1.7.2.2.1.4.1.6.2.2.1.3.2.4.2.1.1.2.2.2.3.1.1.1.3.1.4v.6c0 .2-.1.3-.2.3-.1 0-.2-.1-.4-.2-.6-.3-1.3-.4-2-.4-.5 0-.9.1-1.1.2-.3.2-.4.4-.4.8 0 .2.1.5.3.6.2.2.6.3 1.1.5l1.4.4c.7.2 1.2.5 1.5.9.3.4.4.9.4 1.3 0 .4-.1.8-.3 1.2-.2.3-.4.6-.8.8-.3.2-.7.4-1.1.5-.4.1-.9.2-1.4.2z" fill="#fff"/>
+          <path d="M30.5 18.5c-3 2.2-7.3 3.4-11 3.4-5.2 0-9.9-1.9-13.5-5.1-.3-.3 0-.6.3-.4 3.8 2.2 8.6 3.6 13.5 3.6 3.3 0 6.9-.7 10.3-2.1.5-.2.9.3.4.6z" fill="#F90"/>
+          <path d="M31.8 17c-.4-.5-2.5-.2-3.5-.1-.3 0-.3-.2-.1-.4 1.7-1.2 4.5-.9 4.8-.5.3.4-.1 3.2-1.7 4.6-.2.2-.5.1-.4-.2.4-.9 1.2-3 .9-3.4z" fill="#F90"/>
+        </svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+      <nav class="header-nav" id="header-nav">
+        <button class="nav-link active" id="nav-home-btn" data-view="home">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>
+          Home
+        </button>
+        <button class="nav-link" id="nav-training-btn" data-view="training">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>
+          Training
+        </button>
+        <button class="nav-link" id="nav-test-btn" data-view="test">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>
+          Practice Test
+        </button>
+      </nav>
+      <div class="auth-header-wrap">
+        <button class="auth-header-btn" id="auth-header-btn">Sign In</button>
+        <div class="user-menu hidden" id="user-menu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="user-menu-name"></div>
+            <div class="user-menu-email" id="user-menu-email"></div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" id="user-menu-logout">Sign Out</button>
+        </div>
+      </div>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main id="app-main">
+
+    <!-- ===== VIEW 1: HOME ===== -->
+    <section id="home-view" class="view active-view">
+
+      <div class="hero">
+        <canvas class="hero-particles" id="hero-particles"></canvas>
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span data-cfg="hero-subtitle">CLF-C02 Exam Preparation</span>
+          </div>
+          <h1>AWS Certified<br><span class="highlight" data-cfg="cert-name">Cloud Practitioner</span></h1>
+          <p class="hero-subtitle" data-cfg="hero-desc">Master the fundamentals of AWS Cloud with guided training and realistic practice exams. Build confidence for exam day.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" id="hero-start-training">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M2 2h14v2H2V2zm0 5h9v2H2V7zm0 5h14v2H2v-2z"/></svg>
+              Start Training
+            </button>
+            <button class="btn btn-outline-light btn-lg" id="hero-start-test">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M9 1a8 8 0 100 16A8 8 0 009 1zm.5 12H8V8h1.5v5zM9 3v5l3.5 2-.5 1L8 9V3h1z"/></svg>
+              Take Practice Test
+            </button>
+          </div>
+          <div class="exam-stats">
+            <div class="exam-stat">
+              <span class="exam-stat-value" data-cfg="exam-questions">65</span>
+              <span class="exam-stat-label">Questions</span>
+            </div>
+            <div class="exam-stat">
+              <span class="exam-stat-value" data-cfg="exam-minutes">90</span>
+              <span class="exam-stat-label">Minutes</span>
+            </div>
+            <div class="exam-stat">
+              <span class="exam-stat-value" data-cfg="exam-pass-score">700</span>
+              <span class="exam-stat-label">Pass Score</span>
+            </div>
+            <div class="exam-stat">
+              <span class="exam-stat-value" data-cfg="exam-domains">4</span>
+              <span class="exam-stat-label">Domains</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Cards -->
+      <section class="features-section">
+        <div class="container">
+          <h2 class="section-title">Choose Your Study Path</h2>
+          <p class="section-subtitle" data-cfg="feature-subtitle">Two ways to prepare for the AWS Cloud Practitioner exam</p>
+          <div class="feature-cards">
+            <article class="feature-card" id="card-training">
+              <div class="feature-card-glow"></div>
+              <div class="feature-card-icon training-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <h3>Training Mode</h3>
+              <p>Study by domain with detailed explanations, key concepts, comparison tables, and quick quizzes to reinforce learning.</p>
+              <ul class="feature-list">
+                <li>4 exam domains with sub-topics</li>
+                <li>In-depth explanations and examples</li>
+                <li>Quick quizzes after each topic</li>
+              </ul>
+              <button class="btn btn-primary" id="start-training-btn">Start Training</button>
+            </article>
+            <article class="feature-card" id="card-test">
+              <div class="feature-card-glow"></div>
+              <div class="feature-card-icon test-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.1.8-1.3-4.5-2.7V7z"/></svg>
+              </div>
+              <h3>Practice Tests</h3>
+              <p>Timed exams with question flagging, scoring, and detailed review. Choose your test length below.</p>
+              <ul class="feature-list">
+                <li>4 test durations available</li>
+                <li>Questions shuffled every attempt</li>
+                <li>Detailed results and review</li>
+              </ul>
+              <button class="btn btn-secondary" id="start-test-btn" data-duration="90">Choose Practice Test ↓</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Test Duration Selection -->
+      <section class="test-selection-section" id="test-selection">
+        <div class="test-selection-bg"></div>
+        <div class="container">
+          <div class="test-selection-header">
+            <span class="test-selection-eyebrow">Practice Tests</span>
+            <h2 class="section-title">Choose Your Challenge</h2>
+            <p class="section-subtitle" data-cfg="test-subtitle">Try a free quick test or unlock all durations for a one-time <strong>$49</strong> payment</p>
+          </div>
+          <div class="test-options-grid">
+
+            <div class="test-option-card test-option-free unlocked" data-duration="20">
+              <div class="test-card-glow"></div>
+              <div class="test-option-ribbon test-option-ribbon-free">&#10003; Free</div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">20<span class="test-option-unit">min</span></div>
+              <div class="test-option-questions">15 questions</div>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">Try before you buy &mdash; a free sample of our exam-quality questions</p>
+              <button class="btn btn-primary test-start-btn" data-duration="20" data-questions="15" data-time="1200" data-free="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Start Free Test
+              </button>
+            </div>
+
+            <div class="test-option-card" data-duration="40">
+              <div class="test-card-glow"></div>
+              <div class="test-option-lock" id="lock-40">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">40<span class="test-option-unit">min</span></div>
+              <div class="test-option-questions">30 questions</div>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">A focused mid-length session covering multiple domains</p>
+              <button class="btn btn-primary test-start-btn" data-duration="40" data-questions="30" data-time="2400">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Unlock &amp; Start
+              </button>
+            </div>
+
+            <div class="test-option-card" data-duration="60">
+              <div class="test-card-glow"></div>
+              <div class="test-option-lock" id="lock-60">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">60<span class="test-option-unit">min</span></div>
+              <div class="test-option-questions">45 questions</div>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">Comprehensive coverage of all four exam domains</p>
+              <button class="btn btn-primary test-start-btn" data-duration="60" data-questions="45" data-time="3600">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Unlock &amp; Start
+              </button>
+            </div>
+
+            <div class="test-option-card test-option-featured" data-duration="90">
+              <div class="test-card-glow test-card-glow-featured"></div>
+              <div class="test-option-lock" id="lock-90">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="test-option-ribbon test-option-ribbon-recommended">&#9733; Recommended</div>
+              <div class="test-option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="test-option-time">90<span class="test-option-unit">min</span></div>
+              <div class="test-option-questions">65 questions</div>
+              <div class="test-option-meta">Matches real <span data-cfg="exam-code">CLF-C02</span> format</div>
+              <div class="test-option-divider"></div>
+              <p class="test-option-desc">The ultimate prep &mdash; identical to the real AWS exam experience</p>
+              <button class="btn btn-primary test-start-btn" data-duration="90" data-questions="65" data-time="5400">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Unlock &amp; Start
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="testimonials-section">
+        <div class="container">
+          <h2 class="section-title">What Our Students Say</h2>
+          <div class="testimonials-carousel" id="testimonials-carousel">
+            <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous testimonials">&larr;</button>
+            <div class="testimonials-track" id="testimonials-track">
+              <!-- testimonials placeholder -->
+
+                        </div>
+            <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next testimonials">&rarr;</button>
+          </div>
+          <div class="carousel-dots" id="carousel-dots"></div>
+        </div>
+      </section>
+
+      <!-- Domain Overview -->
+      <section class="domains-section">
+        <div class="container">
+          <h2 class="section-title">Exam Domains</h2>
+          <p class="section-subtitle">Content distribution across the <span data-cfg="exam-code">CLF-C02</span> exam</p>
+          <div class="domains-grid">
+            <div class="domains-grid-dynamic" id="domains-grid-dynamic"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===== VIEW 2: TRAINING ===== -->
+    <section id="training-view" class="view">
+      <div class="training-layout">
+        <aside class="training-sidebar" id="training-sidebar">
+          <div class="sidebar-heading">Study Domains</div>
+          <nav class="sidebar-nav" id="training-sidebar-nav">
+            <!-- Populated by app.js -->
+          </nav>
+        </aside>
+        <div class="training-main">
+          <div class="training-header">
+            <button class="btn btn-ghost btn-sm" id="training-home-btn">&larr; Back to Home</button>
+            <span class="domain-badge" id="training-domain-badge">Domain 1: Cloud Concepts (24%)</span>
+          </div>
+          <h2 class="training-topic-title" id="training-topic-title">Loading...</h2>
+          <div class="training-content-area" id="training-content-area">
+            <!-- Training content HTML injected by app.js -->
+          </div>
+          <div class="training-footer">
+            <button class="btn btn-primary" id="start-quick-quiz-btn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm1 12H7v-2h2v2zm0-3H7V4h2v5z"/></svg>
+              Quick Quiz on This Topic
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW 3: PRACTICE TEST ===== -->
+    <section id="test-view" class="view">
+      <!-- Test Header Bar -->
+      <div class="test-header-bar">
+        <div class="test-header-inner">
+          <div class="test-user-badge" id="test-user-badge">
+            <span class="test-user-name" id="test-user-name"></span>
+          </div>
+          <div class="test-timer-group">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M9 1a8 8 0 100 16A8 8 0 009 1zm.5 8.5L6 12l-.7-1.2L8 9V4h1.5v5.5z"/></svg>
+            <span class="test-timer" id="test-timer">90:00</span>
+          </div>
+          <div class="test-progress-group">
+            <span class="test-counter" id="test-question-counter">Question 1 of 65</span>
+            <div class="test-progress-track">
+              <div class="test-progress-bar" id="test-progress-bar" style="width: 0%"></div>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-sm" id="submit-test-btn">Submit Test</button>
+        </div>
+      </div>
+
+      <div class="test-layout">
+        <!-- Question Area -->
+        <div class="test-question-area">
+          <div class="question-card">
+            <div class="question-meta">
+              <span class="question-domain-tag" id="test-domain-tag">Domain 1: Cloud Concepts</span>
+              <span class="question-type-tag" id="test-type-tag">Multiple Choice</span>
+            </div>
+            <h3 class="question-text" id="test-question-text">Loading question...</h3>
+            <p class="question-instruction hidden" id="test-question-instruction"></p>
+            <fieldset class="answer-options" id="test-answer-options">
+              <legend class="sr-only">Answer choices</legend>
+            </fieldset>
+            <div class="question-explanation hidden" id="question-explanation"></div>
+          </div>
+
+          <div class="question-nav-buttons">
+            <button class="btn btn-ghost" id="prev-question-btn" disabled>&larr; Previous</button>
+            <button class="btn btn-outline flag-btn" id="flag-question-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M2 1v12h1.5V8.5h7L9 6l1.5-2.5h-7V1H2z"/></svg>
+              Flag for Review
+            </button>
+            <button class="btn btn-primary" id="next-question-btn">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Question Navigator -->
+        <aside class="question-navigator" id="question-navigator">
+          <h3 class="navigator-heading">Questions</h3>
+          <div class="navigator-legend">
+            <span class="legend-item"><span class="legend-swatch swatch-current"></span> Current</span>
+            <span class="legend-item"><span class="legend-swatch swatch-answered"></span> Answered</span>
+            <span class="legend-item"><span class="legend-swatch swatch-flagged"></span> Flagged</span>
+            <span class="legend-item"><span class="legend-swatch swatch-unanswered"></span> Unanswered</span>
+          </div>
+          <div class="navigator-grid" id="navigator-grid"></div>
+          <div class="navigator-summary">
+            <div class="summary-item"><strong id="answered-count">0</strong> Answered</div>
+            <div class="summary-item"><strong id="flagged-count">0</strong> Flagged</div>
+            <div class="summary-item"><strong id="unanswered-count">65</strong> Unanswered</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== VIEW 4: RESULTS ===== -->
+    <section id="results-view" class="view">
+      <div class="container">
+        <div class="results-summary">
+          <h2 class="results-heading">Practice Test Results</h2>
+          <div class="score-display">
+            <div class="score-circle" id="score-circle">
+              <svg class="score-ring" viewBox="0 0 120 120">
+                <circle class="score-ring-bg" cx="60" cy="60" r="54" />
+                <circle class="score-ring-fill" id="score-ring-fill" cx="60" cy="60" r="54" />
+              </svg>
+              <div class="score-text">
+                <span class="score-value" id="score-value">0</span>
+                <span class="score-max">/ 1000</span>
+              </div>
+            </div>
+            <p class="score-status" id="score-status">--</p>
+            <p class="score-detail">You answered <strong id="correct-count">0</strong> of <strong id="total-count">65</strong> questions correctly.</p>
+          </div>
+        </div>
+
+        <div class="results-domain-breakdown">
+          <h3 class="section-title">Score by Domain</h3>
+          <div class="domain-breakdown-list" id="domain-breakdown-list"></div>
+        </div>
+
+        <div class="results-review">
+          <h3 class="section-title">Question Review</h3>
+          <p class="review-hint">Click any question to expand the explanation.</p>
+          <div class="review-filters">
+            <button class="btn btn-sm btn-outline review-filter-btn active" data-filter="all">All</button>
+            <button class="btn btn-sm btn-outline review-filter-btn" data-filter="incorrect">Incorrect</button>
+            <button class="btn btn-sm btn-outline review-filter-btn" data-filter="correct">Correct</button>
+            <button class="btn btn-sm btn-outline review-filter-btn" data-filter="flagged">Flagged</button>
+          </div>
+          <div class="review-list" id="review-list"></div>
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-primary btn-lg" id="retake-test-btn">Retake Test</button>
+          <button class="btn btn-ghost btn-lg" id="results-home-btn">Back to Home</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW 5: QUICK QUIZ ===== -->
+    <section id="quiz-view" class="view">
+      <div class="container">
+        <div class="quiz-header">
+          <button class="btn btn-ghost btn-sm" id="quiz-back-btn">&larr; Back to Training</button>
+          <h2 class="quiz-title" id="quiz-title">Quick Quiz</h2>
+          <span class="quiz-counter" id="quiz-question-counter">Question 1 of 10</span>
+        </div>
+        <div class="quiz-progress-track">
+          <div class="quiz-progress-bar" id="quiz-progress-bar" style="width: 0%"></div>
+        </div>
+
+        <div class="quiz-question-area">
+          <div class="question-card">
+            <span class="question-domain-tag" id="quiz-domain-tag">Domain 1</span>
+            <h3 class="question-text" id="quiz-question-text">Loading...</h3>
+            <p class="question-instruction hidden" id="quiz-question-instruction"></p>
+            <fieldset class="answer-options" id="quiz-answer-options">
+              <legend class="sr-only">Answer choices</legend>
+            </fieldset>
+            <div class="quiz-feedback hidden" id="quiz-feedback">
+              <p class="quiz-feedback-status" id="quiz-feedback-status"></p>
+              <div class="quiz-feedback-explanation" id="quiz-feedback-explanation"></div>
+            </div>
+          </div>
+          <div class="question-nav-buttons">
+            <button class="btn btn-primary" id="quiz-check-btn">Check Answer</button>
+            <button class="btn btn-primary hidden" id="quiz-next-btn">Next Question &rarr;</button>
+          </div>
+        </div>
+
+        <div class="quiz-results hidden" id="quiz-results">
+          <div class="quiz-results-inner">
+            <h3>Quiz Complete!</h3>
+            <p class="quiz-results-score">You got <strong id="quiz-correct-count">0</strong> out of <strong id="quiz-total-count">10</strong> correct.</p>
+            <div class="quiz-results-actions">
+              <button class="btn btn-primary" id="quiz-retry-btn">Retry Quiz</button>
+              <button class="btn btn-ghost" id="quiz-return-btn">Return to Training</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay hidden" id="payment-modal">
+      <div class="modal-content">
+        <button class="modal-close" id="modal-close">&times;</button>
+        <div class="modal-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h2>Unlock Practice Tests</h2>
+        <p class="modal-subtitle">Get unlimited access to all practice exams</p>
+        <div class="modal-price">
+          <span class="price-amount" data-cfg="price">$49</span>
+          <span class="price-period">one-time payment</span>
+        </div>
+        <ul class="modal-features">
+          <li>&#10003; 400+ exam-style questions</li>
+          <li>&#10003; Unlimited timed practice tests</li>
+          <li>&#10003; Detailed explanations for every question</li>
+          <li>&#10003; Score tracking and domain breakdown</li>
+          <li>&#10003; Instant access after payment</li>
+        </ul>
+        <a href="https://buy.stripe.com/00wfZa2GE1mZ9Qtdg43ks01" class="btn btn-primary btn-lg modal-pay-btn" id="stripe-pay-btn" target="_blank" rel="noopener">
+          Pay $49 &mdash; Start Practicing
+        </a>
+        <p class="modal-secure">&#128274; Secure payment powered by Stripe</p>
+        <p class="modal-guarantee" data-cfg="guarantee">10-day money-back guarantee</p>
+      </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay hidden" id="auth-modal">
+      <div class="modal-content auth-modal-content">
+        <button class="modal-close" id="auth-modal-close">&times;</button>
+        <div class="auth-modal-header">
+          <h2>Welcome</h2>
+          <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+        </div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">Sign In</button>
+          <button class="auth-tab" data-tab="signup">Create Account</button>
+        </div>
+        <form class="auth-form" id="auth-form-login">
+          <div class="auth-error hidden"></div>
+          <div class="auth-field">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <div class="auth-field">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+          <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+        </form>
+        <form class="auth-form hidden" id="auth-form-signup">
+          <div class="auth-error hidden"></div>
+          <div class="auth-field">
+            <label for="signup-name">Your Name</label>
+            <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+          </div>
+          <div class="auth-field">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <div class="auth-field">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer id="site-footer">
+    <div class="container">
+      <p data-cfg="footer-disclaimer">AWS Certified Cloud Practitioner CLF-C02 Practice &mdash; Not affiliated with or endorsed by Amazon Web Services.</p>
+    </div>
+  </footer>
+
+  <script src="site-config.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="questions.js"></script>
+  <script src="training-content.js"></script>
+  <script src="firebase-auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

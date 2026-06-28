@@ -50,6 +50,12 @@ window.SiteConfig = {
   // ---- Domain & URLs ----
   domain: 'cloudpractitionerprep.com',
 
+  // ---- Stripe ----
+  // Payment link success URL must be configured in Stripe Dashboard to:
+  //   https://cloudpractitionerprep.com/?session_id={CHECKOUT_SESSION_ID}
+  // uid is appended at runtime as ?client_reference_id=<uid>
+  stripePaymentLink: 'https://buy.stripe.com/00wfZa2GE1mZ9Qtdg43ks01',
+
   // ---- Firebase ----
   firebaseConfig: {
     apiKey: "AIzaSyCxrC9P263tCT_RFh5Xd99WHm0bJRxUekw",

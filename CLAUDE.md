@@ -1,67 +1,388 @@
-# cloudpractitionerprep.com — Developer Notes
+# cloudpractitionerprep.com — Developer Reference
 
-## Hosting
-**Static site + serverless API deployed to Vercel.**
-Connect the GitHub repo to Vercel (vercel.com → New Project → import repo).
-Vercel deploys automatically on every push to `main`. The `api/` directory is
-served as Node.js serverless functions; everything else is served as static files.
+> **Affiliation disclaimer (required on every page)**
+> This site is an independent exam-preparation resource. It is **not affiliated with,
+> endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates.**
+> The footer must always include the string:
+> _"AWS Certified Cloud Practitioner CLF-C02 Practice — Not affiliated with or endorsed by Amazon Web Services."_
+> This text is driven by `site-config.js → footerDisclaimer` and rendered via
+> `data-cfg="footer-disclaimer"` in `index.html`. Never remove it.
 
-The old GitHub Actions GH Pages workflow (`.github/workflows/deploy.yml`) is
-superseded by Vercel's GitHub integration and can be removed.
+---
 
-## Secrets — NEVER commit these
-The following must be set as **Vercel environment variables** (Project → Settings →
-Environment Variables). They must never appear in any committed file, `.env` file,
-or `site-config.js`.
+## Tech Stack
 
-| Variable | What it is | Where to get it |
+| Layer | Technology |
+|---|---|
+| Markup | Vanilla HTML5 — single-page app in `index.html` |
+| Styles | Vanilla CSS (`styles.css`) with CSS custom properties for all tokens |
+| Client JS | Vanilla ES5/ES6 (`app.js`, `firebase-auth.js`, `admin.js`) — no framework, no bundler |
+| Firebase (client) | Firebase JS SDK compat v10.12.0 via CDN — Auth + Firestore |
+| Firebase (server) | Firebase Admin SDK v12 (Node.js) in `api/` serverless functions |
+| Payments | Stripe JS SDK v16 (Node.js) in `api/` serverless functions |
+| Fonts | Inter (Google Fonts CDN); Amazon Ember as secondary fallback |
+| Hosting | **Vercel** — static files + `api/` directory as serverless functions |
+| Repo | GitHub — `chimmychim222/aws-cloud-practitioner-prep` |
+
+**No build step.** Files are served as-is. No webpack, Vite, TypeScript, or transpilation.
+
+### File inventory
+
+```
+index.html             — Single-page app shell; all four views live here
+app.js                 — All client-side logic (test engine, training, UI, testimonials)
+firebase-auth.js       — Firebase Auth init, Google sign-in, session management
+styles.css             — All styles; design tokens at top as CSS custom properties
+site-config.js         — Cert-specific config (exam facts, branding, Firebase config)
+questions.js           — window.questionBank — 400 CLF-C02 questions
+training-content.js    — window.trainingContent — HTML study material by domain/topic
+admin.html             — Admin review moderation page (not linked publicly)
+admin.js               — Admin page logic (Firestore reads/writes)
+api/stripe-webhook.js  — Vercel serverless: verifies Stripe events, sets paid:true
+api/create-checkout.js — Vercel serverless: creates Stripe checkout session with uid
+package.json           — Node deps for api/ functions (stripe, firebase-admin)
+vercel.json            — Vercel project config
+site-config.js         — Committed; Firebase web config is intentionally public
+.gitignore             — Ignores node_modules, .env/.env.*, .vercel/, secrets
+CLAUDE.md              — This file; source of truth for all project conventions
+CNAME                  — cloudpractitionerprep.com
+sitemap.xml / robots.txt
+```
+
+---
+
+## Routing
+
+This is a **client-side single-page app** with no server-side routing.
+
+Four named views are rendered as `<section class="view">` elements in `index.html`.
+Only one is visible at a time. `showView(name)` in `app.js` toggles the `active-view`
+CSS class, which switches `display` from `none` to `block`.
+
+| View ID | URL | Trigger |
 |---|---|---|
-| `STRIPE_SECRET_KEY` | Stripe API secret key (`sk_live_…`) | Stripe Dashboard → Developers → API keys |
-| `STRIPE_PRICE_ID` | Stripe Price ID for the $49 product (`price_…`) | Stripe Dashboard → Products → your product → price |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret (`whsec_…`) | Stripe Dashboard → Developers → Webhooks → your endpoint |
-| `FIREBASE_SERVICE_ACCOUNT` | Firebase Admin SDK service account JSON (stringified) | Firebase Console → Project Settings → Service Accounts → Generate new private key |
+| `home-view` | `/` (default) | Logo click, Home nav button |
+| `training-view` | `/` (in-page) | "Start Training" button |
+| `test-view` | `/` (in-page) | "Take Practice Test" button |
+| `results-view` | `/` (in-page) | Test submission |
 
-`.env` and `.env.*` files are in `.gitignore` and must never be committed.
+`/admin.html` is a separate HTML page — not a view in the SPA.
 
-## Firebase config
-`site-config.js` contains the Firebase Web SDK config (apiKey, authDomain, etc.) and
-is committed to the repo. **This is intentional and correct.**
+---
 
-Firebase Web API keys are public project identifiers, not secrets. They must ship to
-the browser for the SDK to initialise. Security is provided by:
+## Design Tokens
 
-- **Firebase Authorized Domains** — only `cloudpractitionerprep.com` and
-  `localhost` can make auth requests with this config.
-- **Firestore Security Rules** — all read/write access is gated by rules in the
-  Firebase Console, not by hiding the config.
+All tokens are CSS custom properties on `:root` in `styles.css`. **Never hardcode
+these values in component styles — always reference the variable.**
 
-Do not add the Firebase config to GitHub Secrets or treat it as a credential.
-If you duplicate this site, create a new Firebase project and update `site-config.js`
-with the new project's config.
+### Colors
 
-## Admin moderation page (`/admin.html`)
-The admin review moderation UI lives at `/admin.html`. It is **not linked from any
-public page**. Access is gated by two checks on page load:
+```css
+/* AWS Brand */
+--aws-orange:       #FF9900   /* primary CTA, highlights, accents */
+--aws-orange-hover: #EC7211
+--aws-orange-light: #FFF4E6   /* orange tint backgrounds */
+--aws-squid-ink:    #232F3E   /* header, dark surfaces */
+--aws-ink-hover:    #37475A
+--aws-ink-dark:     #161E2D
 
-1. The visitor must be signed in via Firebase Auth.
-2. Their Firebase UID must exist as a document in the Firestore `admins` collection
-   with `isAdmin: true`.
+/* Semantic */
+--color-success:    #037F0C
+--color-error:      #D91515
+--color-warning:    #B8860B
+--color-info:       #0972D3
 
-### Adding an admin user
-1. Have the person sign in to the site (creates their Firebase Auth account).
-2. Firebase Console → Authentication → Users → find their email → copy their UID.
-3. Firestore → Data → `admins` collection → Add document:
-   - Document ID: their UID
-   - Fields: `isAdmin` (boolean) = `true`, `email` (string) = their email
-4. They can now access `/admin.html`.
+/* Neutrals */
+--bg-page:          #F2F3F3
+--bg-card:          #FFFFFF
+--text-primary:     #16191F
+--text-secondary:   #5F6B7A
+--text-muted:       #8D99A8
+--border-color:     #D5DBDB
+--border-light:     #EAEDED
+```
 
-### Firestore Security Rules for testimonials
-Apply these rules in the Firebase Console (Firestore → Rules):
+### Typography
+
+```css
+--font-main: 'Inter', 'Amazon Ember', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+/* Scale */
+--fs-xs:   0.75rem    /* 12px */
+--fs-sm:   0.875rem   /* 14px */
+--fs-base: 1rem       /* 16px */
+--fs-lg:   1.125rem   /* 18px */
+--fs-xl:   1.25rem    /* 20px */
+--fs-2xl:  1.5rem     /* 24px */
+--fs-3xl:  2rem       /* 32px */
+--fs-4xl:  2.75rem    /* 44px */
+```
+
+### Spacing
+
+4px base unit. Variables run `--sp-1` (4px) through `--sp-20` (80px) in the
+standard 1/2/3/4/5/6/8/10/12/16/20 scale.
+
+### Other tokens
+
+```css
+/* Radii */
+--r-sm: 4px  --r-md: 8px  --r-lg: 12px  --r-xl: 16px  --r-full: 9999px
+
+/* Transitions */
+--t-fast:   150ms cubic-bezier(.4,0,.2,1)
+--t-base:   250ms cubic-bezier(.4,0,.2,1)
+--t-slow:   400ms cubic-bezier(.4,0,.2,1)
+--t-spring: 500ms cubic-bezier(.175,.885,.32,1.275)
+
+/* Layout */
+--header-h: 56px
+--max-w:    1200px
+```
+
+---
+
+## Exam Facts (CLF-C02)
+
+**Source: Official AWS Certified Cloud Practitioner Exam Guide (CLF-C02)**
+
+These facts are fixed by the exam specification and must never be invented or
+approximated. If AWS updates the guide, update `site-config.js` and this file together.
+
+| Field | Value |
+|---|---|
+| Exam code | CLF-C02 |
+| Full name | AWS Certified Cloud Practitioner |
+| Level | Foundational |
+| Total questions | 65 (50 scored + 15 unscored) |
+| Duration | 90 minutes |
+| Passing score | 700 / 1000 |
+| Maximum score | 1000 |
+| Scoring model | Scaled: `round(100 + (correct/total) × 900)` |
+
+### Domains and official weightings
+
+| # | Domain | Weight |
+|---|---|---|
+| 1 | Cloud Concepts | 24% |
+| 2 | Security and Compliance | 30% |
+| 3 | Cloud Technology and Services | 34% |
+| 4 | Billing, Pricing, and Support | 12% |
+
+Practice tests sample questions in proportion to these weights. The rounding
+adjustment is applied to the largest domain (Domain 3) to ensure the total
+equals the requested question count exactly.
+
+---
+
+## Test Engine Data Model
+
+### Question (`questions.js`)
+
+`window.questionBank` is an array of question objects.
+
+```javascript
+{
+  id:           Number,   // sequential, 1-based, unique
+  domain:       Number,   // 1–4, maps to official domain
+  domainName:   String,   // e.g. "Cloud Concepts"
+  topic:        String,   // e.g. "1.1" — matches official exam guide task IDs
+  type:         "multiple-choice" | "multiple-response",
+  question:     String,
+  options:      String[], // ["A) …", "B) …", "C) …", "D) …"] (4–5 options)
+  correctAnswers: Number[], // zero-based indices into options[]
+                            // length 1 for multiple-choice, 2 for multiple-response
+  explanation:  String,   // explains why correct answers are right AND wrong options are wrong
+}
+```
+
+`multiple-response` questions have exactly 2 correct answers.
+`correctAnswers` is always sorted ascending.
+
+### Training content (`training-content.js`)
+
+`window.trainingContent` is a keyed object.
+
+```javascript
+{
+  "1": {                          // domain number as string key
+    name:   String,               // "Cloud Concepts"
+    weight: Number,               // 24 (percentage, integer)
+    topics: {
+      "1.1": {                    // topic ID as string key
+        title:   String,          // "Define the benefits of the AWS Cloud"
+        content: String,          // HTML string — rendered into .training-content-body
+      }
+    }
+  }
+}
+```
+
+Content HTML uses: `<h3>`, `<h4>`, `<p>`, `<ul>`, `<ol>`, `<li>`, `<strong>`,
+`<table>`, `<div class="key-concept">`, `<div class="tip-box">`.
+
+### Runtime test state (`app.js` — `state` object)
+
+```javascript
+{
+  // Practice test
+  testQuestions:       Question[],   // sampled subset of questionBank
+  testAnswers:         { [idx]: Number[] }, // user's selected answer indices per question
+  flaggedQuestions:    Set<Number>,  // question indices flagged for review
+  currentQuestionIndex: Number,
+  timerInterval:       Number | null,
+  timeRemaining:       Number,       // seconds remaining
+  testSubmitted:       Boolean,
+  reviewFilter:        'all' | 'correct' | 'incorrect' | 'flagged',
+  // Quick quiz (training mode)
+  quizQuestions:       Question[],
+  quizAnswers:         { [idx]: Number[] },
+  quizCurrentIndex:    Number,
+  quizChecked:         Boolean,
+  quizCorrectCount:    Number,
+}
+```
+
+---
+
+## Firestore Collections
+
+Project: `aws-ccp-prep`
+
+### `users/{uid}`
+
+Created on first sign-in. Written by `firebase-auth.js`.
+
+| Field | Type | Notes |
+|---|---|---|
+| `email` | string | from Firebase Auth |
+| `displayName` | string | from Firebase Auth |
+| `paid` | boolean | **Set server-side only** by `api/stripe-webhook.js`. Client never writes this field. |
+| `sessionId` | string | Current session UUID. Used to detect concurrent logins and sign out the older session. |
+| `createdAt` | timestamp | Set once on document creation |
+| `lastLogin` | timestamp | Updated on every sign-in |
+
+### `stripe_sessions/{stripeSessionId}`
+
+Replay protection for the Stripe webhook. Written by `api/stripe-webhook.js`.
+
+| Field | Type | Notes |
+|---|---|---|
+| `uid` | string | Firebase uid that redeemed this session |
+| `redeemedAt` | timestamp | Server timestamp |
+
+If a document for a given `stripeSessionId` already exists, the webhook ignores the event (duplicate delivery).
+
+### `testimonials/{id}`
+
+Auto-ID documents. Written by authenticated users (via review form in `app.js`).
+Updated by admins (via `admin.js`).
+
+| Field | Type | Notes |
+|---|---|---|
+| `uid` | string | Submitter's Firebase uid. Stored for audit; never exposed publicly. |
+| `name` | string | Submitter-provided display name |
+| `role` | string \| null | Optional; e.g. "Cloud Engineer" |
+| `quote` | string | Review text, max 400 chars |
+| `verified_score` | number \| null | Self-reported AWS exam score (100–1000). Not verified by us. |
+| `date` | timestamp | Submission time |
+| `status` | `"pending"` \| `"approved"` \| `"rejected"` | Set to `"pending"` on create. Admin-only update. |
+
+**Public reads** are restricted to `status == "approved"` by Firestore rules.
+The section is hidden client-side until ≥ 3 approved reviews exist.
+**Never seed, fabricate, or hardcode example reviews.**
+
+### `admins/{uid}`
+
+Document ID is the Firebase uid. Written only via the Firebase Console.
+
+| Field | Type | Notes |
+|---|---|---|
+| `isAdmin` | boolean | Must be `true` to pass the admin auth gate |
+| `email` | string | For human reference only |
+
+---
+
+## Firebase Auth Setup
+
+**Project:** `aws-ccp-prep` (config in `site-config.js`)
+
+**Enabled providers:**
+- Email/Password
+- Google (OAuth 2.0 via Firebase `signInWithPopup`)
+
+**Account linking:** If a Google sign-in returns `auth/account-exists-with-different-credential`, the user is prompted to sign in with their password first; then `linkWithCredential` merges the accounts.
+
+**Single-session enforcement:** On every sign-in, `firebase-auth.js` writes a new `sessionId` UUID to the user's Firestore doc and starts an `onSnapshot` listener. If the `sessionId` in Firestore changes (another device signed in), the current session is signed out and a kicked-out banner is shown.
+
+**Authorized domains** (set in Firebase Console → Authentication → Settings):
+- `cloudpractitionerprep.com`
+- `localhost`
+
+---
+
+## Stripe Integration
+
+**Flow:** Dynamic checkout sessions — no static payment links.
+
+1. User clicks "Pay $49" → `app.js` calls `POST /api/create-checkout` with Firebase ID token.
+2. `api/create-checkout.js` verifies the ID token, creates a Stripe Checkout session with `client_reference_id = uid`, returns `{ url }`.
+3. Browser redirects to `session.url` (Stripe-hosted checkout page).
+4. After payment, Stripe redirects to `/?payment=pending`.
+5. `firebase-auth.js` detects `?payment=pending`, clears the URL, shows a "Confirming…" banner.
+6. Stripe POSTs `checkout.session.completed` to `POST /api/stripe-webhook`.
+7. `api/stripe-webhook.js` verifies the Stripe signature, reads `client_reference_id` (= uid), performs an atomic Firestore batch: write to `stripe_sessions/{sessionId}` (replay protection) + `users/{uid}.paid = true`.
+8. The `onSnapshot` listener in `firebase-auth.js` detects `paid: false → true` and swaps the "Confirming…" banner for the "Payment successful!" banner. Tests unlock without a page reload.
+
+**The client never writes `paid: true`.** Only `api/stripe-webhook.js` does, after cryptographic signature verification.
+
+### Secrets (Vercel environment variables only)
+
+| Variable | Purpose |
+|---|---|
+| `STRIPE_SECRET_KEY` | Creates checkout sessions (`sk_live_…`) |
+| `STRIPE_PRICE_ID` | Stripe Price ID for the $49 product (`price_…`) |
+| `STRIPE_WEBHOOK_SECRET` | Verifies webhook signatures (`whsec_…`) |
+| `FIREBASE_SERVICE_ACCOUNT` | Firebase Admin SDK service account (full JSON, stringified) |
+
+These must **never** appear in any committed file, `.env` file, or `site-config.js`.
+`.env` and `.env.*` are in `.gitignore`.
+
+---
+
+## Admin Moderation Page (`/admin.html`)
+
+Not linked from any public page. Direct URL only.
+
+**Auth gate:** Firebase Auth sign-in required, then `admins/{uid}.isAdmin === true` checked in Firestore. Redirect to `/` on failure.
+
+**Adding an admin:**
+1. Sign in to the site (creates Firebase Auth account).
+2. Firebase Console → Authentication → Users → copy the UID.
+3. Firestore → `admins` collection → New document:
+   - Document ID: `{uid}`
+   - Fields: `isAdmin` (boolean) = `true`, `email` (string)
+
+**Capabilities:** Real-time list of all testimonials grouped by status. Approve, reject, toggle back, inline edit before approving. Confirm dialog before reject. `uid` and email are never rendered in the UI.
+
+---
+
+## Firestore Security Rules
+
+Apply in Firebase Console → Firestore → Rules:
 
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /stripe_sessions/{id} {
+      allow read, write: if false; // server-side only via Admin SDK
+    }
 
     match /testimonials/{id} {
       allow read: if resource.data.status == 'approved';
@@ -85,13 +406,53 @@ service cloud.firestore {
 }
 ```
 
-## Duplication checklist (new certification site)
-1. Copy this repo → new repo.
-2. Update `site-config.js` with new cert details and a new Firebase project config.
-3. Update `index.html` `<head>` meta tags (title, description, canonical URL, OG/Twitter).
+---
+
+## Conventions
+
+These rules apply to every change made to this codebase. No exceptions.
+
+### AWS affiliation
+- Never claim or imply affiliation with, endorsement by, or sponsorship by Amazon Web Services.
+- The footer disclaimer must appear on every page at all times.
+- Exam-related marketing copy must describe what the product *is*, not imply official status.
+
+### Exam facts
+- All CLF-C02 facts (question count, duration, pass score, domain names, domain weights) come from the **official AWS exam guide** only.
+- Do not invent, estimate, or round these figures. If the guide changes, update `site-config.js` and this file together, then regenerate affected content.
+- Question IDs, domain IDs, and topic IDs in `questions.js` must map to real exam guide task statements.
+
+### Fabricated data
+- **Never** generate, seed, hardcode, or commit example reviews, testimonials, student names, scores, or aggregate statistics (pass rates, student counts, ratings).
+- The testimonials section must remain hidden until ≥ 3 real approved reviews exist in Firestore.
+- Stats (average score etc.) are computed from real Firestore data only. Render nothing — not a zero, not a placeholder — when the data set is empty.
+
+### Payment status
+- `users/{uid}.paid` is written **server-side only** by `api/stripe-webhook.js` after cryptographic Stripe signature verification.
+- The client reads `paid` via `onSnapshot` and reacts to it. It never writes it.
+- Do not add any client-side code path that sets `paid: true`, regardless of URL params or local state.
+
+### Secrets
+- `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, `FIREBASE_SERVICE_ACCOUNT` are Vercel environment variables only.
+- These must never appear in committed files, `.env` files, or `site-config.js`.
+- Firebase Web SDK config (`apiKey`, `authDomain`, etc.) in `site-config.js` is intentionally public — it is a project identifier, not a secret.
+
+### No fabricated outcome claims
+- Do not add pass-rate percentages, student-count statistics, or rating scores to meta tags, OG tags, structured data, or page copy unless they are computed from real Firestore data at runtime.
+- Structured data (`application/ld+json`) must not include `aggregateRating` unless backed by live data.
+
+---
+
+## Duplication Checklist (new certification site)
+
+1. Copy this repo → new GitHub repo.
+2. Update `site-config.js` — new exam code, cert name, domains, weights, prices, Firebase config.
+3. Update `index.html` `<head>` — title, meta description, canonical URL, OG/Twitter tags.
 4. Update `CNAME` with the new domain.
-5. Update `sitemap.xml` and `robots.txt` with the new domain.
-6. Generate new `questions.js` and `training-content.js`.
-7. Create a new Firebase project, enable Email/Password + Google auth, set Firestore rules.
-8. Create a new Stripe product + payment link.
-9. Register the new domain in Google Search Console.
+5. Update `sitemap.xml` and `robots.txt`.
+6. Generate new `questions.js` and `training-content.js` from official exam guide.
+7. Create a new Firebase project — enable Email/Password + Google auth, apply Firestore rules.
+8. Create a new Stripe product and note the Price ID.
+9. Deploy to Vercel — set the four env vars for the new project.
+10. Register the new domain in Google Search Console.
+11. Update the footer disclaimer in `site-config.js → footerDisclaimer` for the new cert.

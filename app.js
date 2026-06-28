@@ -117,6 +117,7 @@
     // Practice Test
     testQuestions: [],
     testAnswers: {},
+    optionOrders: {},      // shuffled option order per question index, built at test start
     flaggedQuestions: new Set(),
     currentQuestionIndex: 0,
     timerInterval: null,
@@ -358,6 +359,36 @@
   // ============================================================
   // PRACTICE TEST
   // ============================================================
+  // Build a per-attempt shuffled option order for one question.
+  // Strips embedded "A) " / "B) " prefixes, shuffles the option texts,
+  // and remaps correctAnswers indices into the new display positions.
+  function buildOptionOrder(q) {
+    var stripped = q.options.map(function (opt) {
+      return opt.replace(/^[A-E]\)\s*/, '');
+    });
+
+    // Fisher-Yates on an index array
+    var order = stripped.map(function (_, i) { return i; });
+    for (var i = order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+    }
+
+    // Display texts in the new order
+    var texts = order.map(function (origIdx) { return stripped[origIdx]; });
+
+    // Map each original correct index to its new display position
+    var origCorrect = {};
+    q.correctAnswers.forEach(function (c) { origCorrect[c] = true; });
+    var correctIndices = [];
+    order.forEach(function (origIdx, newIdx) {
+      if (origCorrect[origIdx]) correctIndices.push(newIdx);
+    });
+    correctIndices.sort(function (a, b) { return a - b; });
+
+    return { texts: texts, correctIndices: correctIndices };
+  }
+
   function startPracticeTest(numQuestions, timeSeconds) {
     numQuestions = numQuestions || 65;
     timeSeconds = timeSeconds || 5400;
@@ -391,6 +422,11 @@
     }
 
     state.testQuestions = shuffle(selected);
+    // Build per-question shuffled option orders for this attempt
+    state.optionOrders = {};
+    state.testQuestions.forEach(function (q, idx) {
+      state.optionOrders[idx] = buildOptionOrder(q);
+    });
     state.testAnswers = {};
     state.flaggedQuestions = new Set();
     state.currentQuestionIndex = 0;
@@ -437,14 +473,16 @@
       }
     }
 
-    // Options
+    // Options — use this attempt's shuffled order
     const container = $('#test-answer-options');
     if (!container) return;
     container.innerHTML = '';
     const inputType = q.type === 'multiple-response' ? 'checkbox' : 'radio';
     const existing = state.testAnswers[idx] || [];
+    const order = state.optionOrders[idx];
+    const LABELS = 'ABCDE';
 
-    q.options.forEach((opt, i) => {
+    order.texts.forEach((text, i) => {
       const label = document.createElement('label');
       label.className = 'answer-option' + (existing.includes(i) ? ' selected' : '');
 
@@ -457,7 +495,7 @@
 
       const span = document.createElement('span');
       span.className = 'answer-text';
-      span.textContent = opt;
+      span.textContent = LABELS[i] + ') ' + text;
 
       label.appendChild(input);
       label.appendChild(span);
@@ -495,10 +533,12 @@
     if (explEl) {
       if (state.testSubmitted) {
         const ua = state.testAnswers[idx] || [];
-        const correct = arraysEqual(ua, q.correctAnswers);
+        const correct = arraysEqual(ua, order.correctIndices);
+        const correctLabels = order.correctIndices
+          .map(i => LABELS[i] + ') ' + order.texts[i]).join(', ');
         explEl.innerHTML = `<div class="explanation-box ${correct ? 'correct' : 'incorrect'}">
           <p class="explanation-status">${correct ? '✓ Correct' : '✗ Incorrect'}</p>
-          <p class="explanation-correct-answer"><strong>Correct answer${q.correctAnswers.length > 1 ? 's' : ''}:</strong> ${q.correctAnswers.map(i => q.options[i]).join(', ')}</p>
+          <p class="explanation-correct-answer"><strong>Correct answer${order.correctIndices.length > 1 ? 's' : ''}:</strong> ${correctLabels}</p>
           <p class="explanation-text">${q.explanation}</p>
         </div>`;
         explEl.classList.remove('hidden');
@@ -507,8 +547,8 @@
           const inp = label.querySelector('input');
           if (inp) inp.disabled = true;
           label.style.pointerEvents = 'none';
-          if (q.correctAnswers.includes(i)) label.classList.add('option-correct');
-          if (ua.includes(i) && !q.correctAnswers.includes(i)) label.classList.add('option-incorrect');
+          if (order.correctIndices.includes(i)) label.classList.add('option-correct');
+          if (ua.includes(i) && !order.correctIndices.includes(i)) label.classList.add('option-incorrect');
         });
       } else {
         explEl.classList.add('hidden');
@@ -604,7 +644,7 @@
 
     state.testQuestions.forEach((q, i) => {
       const ua = state.testAnswers[i] || [];
-      const correct = arraysEqual(ua, q.correctAnswers);
+      const correct = arraysEqual(ua, state.optionOrders[i].correctIndices);
       if (correct) totalCorrect++;
       dr[q.domain].t++;
       if (correct) dr[q.domain].c++;
@@ -658,7 +698,8 @@
 
     state.testQuestions.forEach((q, i) => {
       const ua = state.testAnswers[i] || [];
-      const correct = arraysEqual(ua, q.correctAnswers);
+      const qOrder = state.optionOrders[i];
+      const correct = arraysEqual(ua, qOrder.correctIndices);
       const flagged = state.flaggedQuestions.has(i);
 
       if (state.reviewFilter === 'correct' && !correct) return;
@@ -676,12 +717,12 @@
         </div>
         <p class="review-question-text">${q.question}</p>
         <div class="review-answers">
-          ${q.options.map((opt, j) => {
+          ${qOrder.texts.map((text, j) => {
             let cls = 'review-option';
-            if (q.correctAnswers.includes(j)) cls += ' review-option-correct';
-            if (ua.includes(j) && !q.correctAnswers.includes(j)) cls += ' review-option-incorrect';
+            if (qOrder.correctIndices.includes(j)) cls += ' review-option-correct';
+            if (ua.includes(j) && !qOrder.correctIndices.includes(j)) cls += ' review-option-incorrect';
             if (ua.includes(j)) cls += ' review-option-selected';
-            return `<div class="${cls}">${opt}</div>`;
+            return `<div class="${cls}">${'ABCDE'[j]}) ${text}</div>`;
           }).join('')}
         </div>
         <div class="review-explanation" style="display:none"><strong>Explanation:</strong> ${q.explanation}</div>`;

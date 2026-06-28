@@ -28,6 +28,7 @@
     currentUser: null,
     userPaid: false,
     ready: false,
+    docReady: false,   // true once the user's Firestore doc is confirmed/created
     onReady: null,
 
     hasPaid() {
@@ -56,6 +57,7 @@
   auth.onAuthStateChanged(async (user) => {
     window.AppAuth.currentUser = user;
     window.AppAuth.userPaid = false;
+    window.AppAuth.docReady = false;
 
     if (user) {
       try {
@@ -88,6 +90,9 @@
             lastLogin: firebase.firestore.FieldValue.serverTimestamp()
           });
         }
+
+        // Doc is confirmed to exist (found or just created) — pay button can now redirect
+        window.AppAuth.docReady = true;
 
         // Listen for session changes (kick if another login happens)
         userRef.onSnapshot((snap) => {
@@ -184,7 +189,9 @@
         uid: uid,
         redeemedAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then(function() {
-        return userRef.update({ paid: true });
+        // set+merge instead of update: creates the doc if it somehow doesn't exist yet,
+        // ensuring a paying customer can never be left without paid:true
+        return userRef.set({ paid: true }, { merge: true });
       }).then(function() {
         const claimBanner = document.getElementById('claim-purchase-banner');
         if (claimBanner) claimBanner.remove();

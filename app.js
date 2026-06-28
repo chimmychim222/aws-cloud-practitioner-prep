@@ -1355,11 +1355,26 @@
         if (!payLink) { console.error('stripePaymentLink not configured in site-config.js'); return; }
 
         payBtn.disabled = true;
-        payBtn.textContent = 'Redirecting to Stripe…';
 
-        // Append uid so stripe_sessions can associate the purchase with this Firebase user.
-        // Stripe Payment Links support client_reference_id as a query parameter.
-        window.location.href = payLink + '?client_reference_id=' + encodeURIComponent(user.uid);
+        function redirectToStripe() {
+          payBtn.textContent = 'Redirecting to Stripe…';
+          window.location.href = payLink + '?client_reference_id=' + encodeURIComponent(user.uid);
+        }
+
+        // Guard: on brand-new signups, onAuthStateChanged is still creating the Firestore
+        // doc when the user clicks Pay. Wait until docReady before redirecting so the
+        // doc is guaranteed to exist when checkPaymentRedirect writes paid:true on return.
+        if (window.AppAuth.docReady) {
+          redirectToStripe();
+        } else {
+          payBtn.textContent = 'Preparing checkout…';
+          var docPoll = setInterval(function () {
+            if (window.AppAuth.docReady) {
+              clearInterval(docPoll);
+              redirectToStripe();
+            }
+          }, 100);
+        }
       });
     }
   }

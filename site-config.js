@@ -50,9 +50,6 @@ window.SiteConfig = {
   // ---- Domain & URLs ----
   domain: 'cloudpractitionerprep.com',
 
-  // ---- Stripe ----
-  stripePaymentLink: 'https://buy.stripe.com/00wfZa2GE1mZ9Qtdg43ks01',
-
   // ---- Firebase ----
   firebaseConfig: {
     apiKey: "AIzaSyCxrC9P263tCT_RFh5Xd99WHm0bJRxUekw",

@@ -98,12 +98,9 @@
     if (priceEl) priceEl.textContent = '$' + c.price;
     setText('[data-cfg="guarantee"]', c.guarantee);
 
-    // Stripe link
+    // Pay button label (href removed \u2014 button now calls /api/create-checkout)
     var stripeBtn = document.getElementById('stripe-pay-btn');
-    if (stripeBtn) {
-      stripeBtn.href = c.stripePaymentLink;
-      stripeBtn.textContent = 'Pay $' + c.price + ' \u2014 Start Practicing';
-    }
+    if (stripeBtn) stripeBtn.textContent = 'Pay $' + c.price + ' \u2014 Start Practicing';
 
     // Footer disclaimer
     setText('[data-cfg="footer-disclaimer"]', c.footerDisclaimer);
@@ -1309,8 +1306,44 @@
       }
     });
 
-    // Stripe redirect is now handled by firebase-auth.js
-    // which writes paid status to Firestore instead of localStorage
+    // Pay button → server-side Stripe checkout session (uid attached server-side)
+    const payBtn = $('#stripe-pay-btn');
+    if (payBtn) {
+      payBtn.addEventListener('click', async function () {
+        const user = window.AppAuth && window.AppAuth.currentUser;
+        if (!user) { window.showAuthModal('login'); return; }
+
+        const originalText = payBtn.textContent;
+        payBtn.disabled = true;
+        payBtn.textContent = 'Redirecting to checkout…';
+
+        try {
+          const idToken = await user.getIdToken();
+          const resp = await fetch('/api/create-checkout', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + idToken }
+          });
+          const data = await resp.json();
+
+          if (data.error === 'already_paid') {
+            hidePaymentModal();
+            return;
+          }
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            throw new Error('No checkout URL returned');
+          }
+        } catch (err) {
+          console.error('Checkout initiation failed:', err);
+          payBtn.textContent = 'Something went wrong — try again';
+          setTimeout(function () {
+            payBtn.disabled = false;
+            payBtn.textContent = originalText;
+          }, 3000);
+        }
+      });
+    }
   }
 
   // ============================================================

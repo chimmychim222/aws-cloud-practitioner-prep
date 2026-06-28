@@ -1062,27 +1062,178 @@
   // TESTIMONIALS CAROUSEL — continuous marquee
   // ============================================================
   function initCarousel() {
-    const track = $('#testimonials-track');
-    if (!track) return;
+    const oldTrack = $('#testimonials-track');
+    if (!oldTrack || oldTrack.querySelectorAll('.testimonial-card').length === 0) return;
 
-    // Hide the whole section when there are no cards
-    if (track.querySelectorAll('.testimonial-card').length === 0) {
-      const section = track.closest('.testimonials-section');
-      if (section) section.style.display = 'none';
+    // Clone to clear accumulated event listeners from previous renders
+    const track = oldTrack.cloneNode(true);
+    oldTrack.parentNode.replaceChild(track, oldTrack);
+
+    // Duplicate cards for seamless infinite loop
+    track.innerHTML = track.innerHTML + track.innerHTML;
+
+    // Force reflow so animation restarts cleanly
+    track.style.animation = 'none';
+    void track.offsetHeight;
+    track.style.animation = '';
+
+    track.addEventListener('mouseenter', function() { track.style.animationPlayState = 'paused'; });
+    track.addEventListener('mouseleave', function() { track.style.animationPlayState = 'running'; });
+    track.addEventListener('touchstart', function() { track.style.animationPlayState = 'paused'; }, { passive: true });
+    track.addEventListener('touchend', function() { track.style.animationPlayState = 'running'; }, { passive: true });
+  }
+
+  // ============================================================
+  // TESTIMONIALS — loaded from Firestore, approved only
+  // ============================================================
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function initTestimonials() {
+    if (!window.firebase || !window.firebase.firestore) return;
+    firebase.firestore()
+      .collection('testimonials')
+      .where('status', '==', 'approved')
+      .orderBy('date', 'desc')
+      .onSnapshot(function(snap) {
+        renderTestimonials(snap.docs.map(function(d) {
+          return Object.assign({ id: d.id }, d.data());
+        }));
+      }, function() { /* silently ignore — section stays hidden */ });
+  }
+
+  function renderTestimonials(reviews) {
+    const section = $('#testimonials-section');
+    if (!section) return;
+
+    if (reviews.length < 3) {
+      section.style.display = 'none';
       return;
     }
 
-    // Duplicate all cards so the scroll loops seamlessly
-    const originalHTML = track.innerHTML;
-    track.innerHTML = originalHTML + originalHTML;
+    // Stats — only render figures backed by real data
+    const withScores = reviews.filter(function(r) { return r.verified_score; });
+    const statsEl = $('#testimonials-stats');
+    if (statsEl) {
+      let html = '';
+      if (withScores.length >= 3) {
+        const avg = withScores.reduce(function(s, r) { return s + r.verified_score; }, 0) / withScores.length;
+        html += '<div class="testimonials-stat"><strong>' + Math.round(avg) + '</strong> avg reported score</div>';
+      }
+      statsEl.innerHTML = html;
+    }
 
-    // Pause on hover
-    track.addEventListener('mouseenter', function() { track.style.animationPlayState = 'paused'; });
-    track.addEventListener('mouseleave', function() { track.style.animationPlayState = 'running'; });
+    // Render cards — never expose uid or email
+    const avatarColors = ['#FF9900','#146EB4','#232F3E','#1B660F','#7B2D8E','#1A7A8A','#D4511E','#2E7D32'];
+    const track = $('#testimonials-track');
+    if (!track) return;
+    track.innerHTML = reviews.map(function(r) {
+      const initials = r.name.trim().split(/\s+/).map(function(w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+      const color = avatarColors[(r.name.charCodeAt(0) + (r.name.charCodeAt(1) || 0)) % avatarColors.length];
+      const meta = [r.role ? escHtml(r.role) : '', r.verified_score ? 'Score: ' + r.verified_score : ''].filter(Boolean).join(' &bull; ');
+      return [
+        '<div class="testimonial-card">',
+        '<div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>',
+        '<p class="testimonial-quote">&ldquo;' + escHtml(r.quote) + '&rdquo;</p>',
+        '<div class="testimonial-author">',
+        '<div class="testimonial-avatar" style="background:' + color + '">' + initials + '</div>',
+        '<div class="testimonial-info">',
+        '<span class="testimonial-name">' + escHtml(r.name) + '</span>',
+        meta ? '<span class="testimonial-role">' + meta + '</span>' : '',
+        '</div></div></div>'
+      ].join('');
+    }).join('');
 
-    // Pause on touch
-    track.addEventListener('touchstart', function() { track.style.animationPlayState = 'paused'; }, { passive: true });
-    track.addEventListener('touchend', function() { track.style.animationPlayState = 'running'; }, { passive: true });
+    section.style.display = '';
+    initCarousel();
+  }
+
+  // ============================================================
+  // REVIEW PROMPT + FORM — post-purchase
+  // ============================================================
+  window.showReviewPrompt = function() {
+    const modal = $('#review-modal');
+    if (!modal) return;
+    const user = window.AppAuth && window.AppAuth.currentUser;
+    if (!user) return;
+    const nameEl = $('#review-name');
+    if (nameEl) nameEl.value = window.AppAuth.getDisplayName();
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  };
+
+  function initReviewForm() {
+    const modal = $('#review-modal');
+    if (!modal) return;
+
+    function closeReviewModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    const closeBtn = $('#review-modal-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeReviewModal);
+    const skipBtn = $('#review-skip');
+    if (skipBtn) skipBtn.addEventListener('click', closeReviewModal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeReviewModal(); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeReviewModal();
+    });
+
+    const form = $('#review-form');
+    if (!form) return;
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const user = window.AppAuth && window.AppAuth.currentUser;
+      if (!user) return;
+
+      const errEl = $('#review-error');
+      const btn = $('#review-submit');
+      const name = $('#review-name').value.trim();
+      const role = $('#review-role').value.trim();
+      const scoreRaw = $('#review-score').value.trim();
+      const quote = $('#review-quote').value.trim();
+      const score = scoreRaw ? parseInt(scoreRaw, 10) : null;
+
+      if (score !== null && (score < 100 || score > 1000)) {
+        errEl.textContent = 'Score must be between 100 and 1000.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+      errEl.classList.add('hidden');
+
+      try {
+        const doc = {
+          uid: user.uid,
+          name: name,
+          role: role || null,
+          quote: quote,
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+          status: 'pending'
+        };
+        if (score) doc.verified_score = score;
+        await firebase.firestore().collection('testimonials').add(doc);
+        closeReviewModal();
+        const b = document.createElement('div');
+        b.className = 'payment-success-banner';
+        b.innerHTML = '<span>Thank you! Your review has been submitted for approval.</span>' +
+          '<button class="banner-close" onclick="this.parentElement.remove()">&#10005;</button>';
+        document.body.insertBefore(b, document.body.firstChild);
+        setTimeout(function() { if (b.parentNode) b.remove(); }, 6000);
+      } catch (err) {
+        errEl.textContent = 'Could not submit. Please try again.';
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit Review';
+      }
+    });
   }
 
   // ============================================================
@@ -1171,7 +1322,8 @@
     initTestEvents();
     initQuizEvents();
     initPayment();
-    initCarousel();
+    initTestimonials();
+    initReviewForm();
     initScrollAnimations();
     initHeroParticles();
     initTiltEffects();

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Moderation — Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --orange: #FF9900;
+      --green: #2ea043;
+      --red: #da3633;
+      --blue: #1f6feb;
+      --pending-bg: rgba(255,153,0,0.1);
+      --approved-bg: rgba(46,160,67,0.1);
+      --rejected-bg: rgba(218,54,51,0.1);
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; min-height: 100vh; }
+
+    /* Auth gate */
+    #admin-gate {
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh; flex-direction: column; gap: 1rem; color: var(--text-muted);
+    }
+    #admin-gate .spinner {
+      width: 32px; height: 32px; border: 3px solid var(--border);
+      border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Header */
+    #admin-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.875rem 1.5rem; background: var(--surface);
+      border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+    }
+    #admin-header h1 { font-size: 1rem; font-weight: 600; }
+    #admin-header .header-right { display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.85rem; }
+    .btn-signout { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: border-color 0.15s, color 0.15s; }
+    .btn-signout:hover { border-color: var(--text); color: var(--text); }
+
+    /* Main */
+    #admin-app { display: none; }
+    main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+    /* Counts bar */
+    .counts-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .count-chip {
+      padding: 0.35rem 0.9rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500;
+      border: 1px solid var(--border);
+    }
+    .count-chip.pending { background: var(--pending-bg); border-color: var(--orange); color: var(--orange); }
+    .count-chip.approved { background: var(--approved-bg); border-color: var(--green); color: var(--green); }
+    .count-chip.rejected { background: var(--rejected-bg); border-color: var(--red); color: var(--red); }
+
+    /* Section headings */
+    .review-section { margin-bottom: 2.5rem; }
+    .review-section h2 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .empty-state { color: var(--text-muted); font-size: 0.85rem; padding: 0.5rem 0; }
+
+    /* Review card */
+    .review-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.1rem; margin-bottom: 0.75rem;
+    }
+    .review-card.pending { border-left: 3px solid var(--orange); }
+    .review-card.approved { border-left: 3px solid var(--green); }
+    .review-card.rejected { border-left: 3px solid var(--red); opacity: 0.7; }
+
+    .review-meta { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+    .review-name { font-weight: 600; font-size: 0.9rem; }
+    .review-role { color: var(--text-muted); font-size: 0.8rem; }
+    .review-score { font-size: 0.8rem; color: var(--orange); font-weight: 500; }
+    .review-date { font-size: 0.75rem; color: var(--text-muted); margin-left: auto; }
+
+    .review-quote { font-size: 0.88rem; line-height: 1.55; color: var(--text); margin-bottom: 0.75rem; }
+
+    /* Edit textarea */
+    .edit-area { width: 100%; padding: 0.5rem 0.7rem; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.88rem; line-height: 1.5; resize: vertical; margin-bottom: 0.75rem; }
+    .edit-area:focus { outline: none; border-color: var(--orange); }
+
+    /* Actions */
+    .review-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn-action {
+      padding: 0.35rem 0.8rem; border-radius: 6px; border: 1px solid;
+      font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s;
+    }
+    .btn-action:hover { opacity: 0.8; }
+    .btn-approve { background: var(--approved-bg); border-color: var(--green); color: var(--green); }
+    .btn-reject  { background: var(--rejected-bg); border-color: var(--red); color: var(--red); }
+    .btn-edit    { background: transparent; border-color: var(--border); color: var(--text-muted); }
+    .btn-unapprove { background: transparent; border-color: var(--border); color: var(--text-muted); }
+    .btn-save    { background: rgba(31,111,235,0.15); border-color: var(--blue); color: var(--blue); }
+    .btn-cancel  { background: transparent; border-color: var(--border); color: var(--text-muted); }
+
+    /* Error banner */
+    .admin-error { background: var(--rejected-bg); border: 1px solid var(--red); color: var(--red); padding: 0.6rem 0.9rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; display: none; }
+  </style>
+</head>
+<body>
+
+  <div id="admin-gate">
+    <div class="spinner"></div>
+    <span>Checking access…</span>
+  </div>
+
+  <div id="admin-app">
+    <header id="admin-header">
+      <h1>&#9998; Review Moderation</h1>
+      <div class="header-right">
+        <span id="admin-user-email"></span>
+        <button class="btn-signout" id="admin-signout">Sign out</button>
+      </div>
+    </header>
+    <main>
+      <div class="admin-error" id="admin-error"></div>
+      <div class="counts-bar" id="counts-bar"></div>
+
+      <div class="review-section">
+        <h2>Pending</h2>
+        <div id="list-pending"></div>
+      </div>
+      <div class="review-section">
+        <h2>Approved</h2>
+        <div id="list-approved"></div>
+      </div>
+      <div class="review-section">
+        <h2>Rejected</h2>
+        <div id="list-rejected"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="site-config.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

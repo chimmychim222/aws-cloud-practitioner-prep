@@ -94,9 +94,16 @@
           if (!snap.exists) return;
           const data = snap.data();
 
-          // Update paid status in real time
+          const wasPaid = window.AppAuth.userPaid;
           window.AppAuth.userPaid = data.paid === true;
           updateUI();
+
+          // Webhook just set paid:true — swap confirming banner for success banner
+          if (!wasPaid && data.paid === true) {
+            const confirming = document.getElementById('payment-confirming-banner');
+            if (confirming) confirming.remove();
+            showPaymentSuccessBanner();
+          }
 
           // Check if we got kicked by another session
           if (data.sessionId && data.sessionId !== SESSION_ID) {
@@ -105,8 +112,8 @@
           }
         });
 
-        // Check for Stripe payment redirect
-        checkPaymentRedirect(user.uid, userRef);
+        // Show confirming banner if returning from Stripe checkout
+        checkPaymentRedirect();
 
       } catch (e) {
         console.error('Auth state error:', e);
@@ -122,36 +129,23 @@
   });
 
   // ---- Check Stripe redirect ----
-  function checkPaymentRedirect(uid, userRef) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sessionId = urlParams.get('session_id');
+  // paid:true is now set server-side by the Stripe webhook (api/stripe-webhook.js).
+  // The browser only shows a confirming banner and waits for the Firestore snapshot.
+  function checkPaymentRedirect() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('payment') !== 'pending') return;
+    window.history.replaceState({}, '', window.location.pathname);
+    showPaymentConfirmingBanner();
+  }
 
-    // Only accept Stripe checkout session IDs (start with cs_)
-    if (!sessionId || !sessionId.startsWith('cs_')) return;
-
-    // Check if this session ID was already used (prevent replay)
-    const sessionRef = db.collection('stripe_sessions').doc(sessionId);
-    sessionRef.get().then(function(snap) {
-      if (snap.exists) {
-        // Session already redeemed — ignore
-        window.history.replaceState({}, '', window.location.pathname);
-        return;
-      }
-
-      // Mark session as used and record which user redeemed it
-      sessionRef.set({
-        uid: uid,
-        redeemedAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      // Mark user as paid
-      userRef.update({ paid: true }).then(function() {
-        window.AppAuth.userPaid = true;
-        window.history.replaceState({}, '', window.location.pathname);
-        showPaymentSuccessBanner();
-        updateUI();
-      });
-    });
+  function showPaymentConfirmingBanner() {
+    if (document.getElementById('payment-confirming-banner')) return;
+    const banner = document.createElement('div');
+    banner.id = 'payment-confirming-banner';
+    banner.className = 'payment-success-banner';
+    banner.style.background = 'linear-gradient(90deg, #1565C0, #0D47A1)';
+    banner.innerHTML = '<span>Confirming your payment&#8230; this usually takes a few seconds.</span>';
+    document.body.insertBefore(banner, document.body.firstChild);
   }
 
   // ---- UI Updates ----

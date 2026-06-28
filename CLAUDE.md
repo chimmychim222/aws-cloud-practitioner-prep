@@ -1,9 +1,27 @@
 # cloudpractitionerprep.com — Developer Notes
 
 ## Hosting
-Static site deployed to GitHub Pages via GitHub Actions (`.github/workflows/deploy.yml`).
-Pushes to `main` trigger a workflow that copies the repo to the `gh-pages` branch,
-which GitHub Pages serves at `cloudpractitionerprep.com`.
+**Static site + serverless API deployed to Vercel.**
+Connect the GitHub repo to Vercel (vercel.com → New Project → import repo).
+Vercel deploys automatically on every push to `main`. The `api/` directory is
+served as Node.js serverless functions; everything else is served as static files.
+
+The old GitHub Actions GH Pages workflow (`.github/workflows/deploy.yml`) is
+superseded by Vercel's GitHub integration and can be removed.
+
+## Secrets — NEVER commit these
+The following must be set as **Vercel environment variables** (Project → Settings →
+Environment Variables). They must never appear in any committed file, `.env` file,
+or `site-config.js`.
+
+| Variable | What it is | Where to get it |
+|---|---|---|
+| `STRIPE_SECRET_KEY` | Stripe API secret key (`sk_live_…`) | Stripe Dashboard → Developers → API keys |
+| `STRIPE_PRICE_ID` | Stripe Price ID for the $49 product (`price_…`) | Stripe Dashboard → Products → your product → price |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret (`whsec_…`) | Stripe Dashboard → Developers → Webhooks → your endpoint |
+| `FIREBASE_SERVICE_ACCOUNT` | Firebase Admin SDK service account JSON (stringified) | Firebase Console → Project Settings → Service Accounts → Generate new private key |
+
+`.env` and `.env.*` files are in `.gitignore` and must never be committed.
 
 ## Firebase config
 `site-config.js` contains the Firebase Web SDK config (apiKey, authDomain, etc.) and

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequently Asked Questions — AWS Cloud Practitioner Prep</title>
+  <meta name="description" content="Answers to common questions about the AWS Certified Cloud Practitioner CLF-C02 exam: format, scoring, preparation time, and how this course works.">
+  <link rel="canonical" href="https://cloudpractitionerprep.com/faq">
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="FAQ — AWS Cloud Practitioner Prep">
+  <meta property="og:description" content="Common questions about the CLF-C02 exam and how to prepare with this course.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/faq">
+  <meta property="og:site_name"   content="AWS Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="FAQ — AWS Cloud Practitioner Prep">
+  <meta name="twitter:description" content="Common questions about the CLF-C02 exam and how to prepare.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%23232F3E'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='%23FF9900' font-family='Arial,sans-serif' font-weight='bold'>A</text></svg>">
+  <style>
+    .faq-section { padding: var(--sp-16) 0; }
+    .faq-list { max-width: 720px; margin: var(--sp-10) auto 0; display: flex; flex-direction: column; gap: var(--sp-4); }
+    .faq-item { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); overflow: hidden; }
+    .faq-question {
+      width: 100%; text-align: left; padding: var(--sp-5) var(--sp-6);
+      font-size: var(--fs-base); font-weight: 600; color: var(--text-primary);
+      display: flex; justify-content: space-between; align-items: center; gap: var(--sp-4);
+      cursor: pointer; transition: background var(--t-fast);
+    }
+    .faq-question:hover { background: var(--bg-page); }
+    .faq-question[aria-expanded="true"] { color: var(--aws-orange-hover); }
+    .faq-chevron { flex-shrink: 0; transition: transform var(--t-base); }
+    .faq-question[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height var(--t-slow), padding var(--t-slow);
+      font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.8;
+    }
+    .faq-answer.open { max-height: 600px; padding: 0 var(--sp-6) var(--sp-5); }
+    .faq-answer p + p { margin-top: var(--sp-3); }
+  </style>
+</head>
+<body>
+
+  <div id="site-header-mount">
+    <noscript>
+      <nav style="background:#232F3E;padding:0.75rem 1.5rem;display:flex;gap:1.5rem;align-items:center">
+        <a href="/"           style="color:#FF9900;font-weight:700;text-decoration:none">Home</a>
+        <a href="/faq"        style="color:#FF9900;font-weight:700;text-decoration:none">FAQ</a>
+        <a href="/exam-guide" style="color:rgba(255,255,255,.7);text-decoration:none">Exam Guide</a>
+      </nav>
+    </noscript>
+  </div>
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+
+    <section class="faq-section">
+      <div class="container">
+        <h1 class="section-title">Frequently Asked Questions</h1>
+        <p class="section-subtitle">Everything you need to know about the CLF-C02 exam and this course</p>
+
+        <div class="faq-list" id="faq-list">
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              What is the AWS Certified Cloud Practitioner exam?
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>The AWS Certified Cloud Practitioner (CLF-C02) is a foundational-level certification from Amazon Web Services. It validates knowledge of core AWS Cloud concepts, services, security, architecture, pricing, and support.</p>
+              <p>The exam consists of 65 questions (50 scored, 15 unscored), lasts 90 minutes, and requires a scaled score of 700 out of 1000 to pass.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              What are the four exam domains and their weightings?
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>The CLF-C02 exam covers four domains as defined in the official AWS exam guide:</p>
+              <p><strong>Domain 1 — Cloud Concepts (24%):</strong> Benefits and economics of cloud computing, cloud architecture design principles.</p>
+              <p><strong>Domain 2 — Security and Compliance (30%):</strong> Shared responsibility model, security and governance, identity and access management.</p>
+              <p><strong>Domain 3 — Cloud Technology and Services (34%):</strong> AWS global infrastructure, core services (compute, storage, databases, networking), managed services.</p>
+              <p><strong>Domain 4 — Billing, Pricing, and Support (12%):</strong> Pricing models, billing tools, AWS Support plans, cost management.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              What does the $49 purchase include?
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>A one-time payment of $49 unlocks all practice test durations (30-question, 45-question, and full 65-question exams), plus lifetime access to all future question bank updates. The 15-question quick test is always free.</p>
+              <p>Training mode (domain-by-domain study content with quick quizzes) is also included at no charge and does not require payment.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Is this affiliated with or endorsed by Amazon Web Services?
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>No. This is an independent, third-party exam preparation resource. It is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates.</p>
+              <p>All question content is original and written to reflect the CLF-C02 exam guide. AWS, Amazon Web Services, and related marks are trademarks of Amazon.com, Inc.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              What question types appear on the CLF-C02 exam?
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>The exam uses two question types: <strong>multiple-choice</strong> (one correct answer from four options) and <strong>multiple-response</strong> (two correct answers from four or five options). Both types appear in our practice tests.</p>
+              <p>Unscored questions look identical to scored ones and are not identified during the exam. They are used by AWS to evaluate new questions for future exams.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              How is the exam scored?
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Scores are reported on a scale of 100 to 1000. The passing score is 700. There is no penalty for wrong answers — unanswered questions count the same as incorrect ones, so always submit an answer for every question.</p>
+              <p>Our practice tests simulate this scoring: your scaled score is calculated from your percentage correct across all scored questions.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/firebase-auth.js"></script>
+
+  <script>
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var answer  = btn.nextElementSibling;
+        var isOpen  = answer.classList.contains('open');
+        // Collapse all
+        document.querySelectorAll('.faq-answer.open').forEach(function (a) { a.classList.remove('open'); });
+        document.querySelectorAll('.faq-question').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+        // Toggle clicked
+        if (!isOpen) {
+          answer.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

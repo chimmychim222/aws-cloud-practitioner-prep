@@ -123,22 +123,34 @@
     .pq-option-letter {
       font-weight: 700; color: var(--text-muted); min-width: 20px; flex-shrink: 0;
     }
-    /* Revealed states */
-    .pq-card.revealed .pq-option.correct {
+    /* ── Interactive options ── */
+    .pq-option { cursor: pointer; }
+    .pq-option:hover:not(.graded) { border-color: var(--aws-orange); background: rgba(255,153,0,.04); }
+    /* Multiple-response selection state */
+    .pq-option.answer-selected {
+      border-color: var(--aws-squid-ink); background: rgba(35,47,62,.04);
+      box-shadow: 0 0 0 1px var(--aws-squid-ink);
+    }
+    .pq-option.answer-selected .pq-option-letter { color: var(--aws-squid-ink); }
+    /* Graded: correct */
+    .pq-option.answer-correct {
       border-color: var(--color-success); background: var(--color-success-bg);
+      box-shadow: 0 0 0 1px var(--color-success);
     }
-    .pq-card.revealed .pq-option.correct .pq-option-letter { color: var(--color-success); }
-    .pq-reveal-btn {
-      display: block; width: calc(100% - var(--sp-10));
-      margin: 0 var(--sp-5) var(--sp-4);
-      padding: var(--sp-3);
-      background: var(--bg-page); border: 1px solid var(--border-color);
-      border-radius: var(--r-md); font-size: var(--fs-sm); font-weight: 600;
-      color: var(--text-secondary); cursor: pointer;
-      transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+    .pq-option.answer-correct .pq-option-letter { color: var(--color-success); font-weight: 800; }
+    /* Graded: incorrect (user picked but wrong) */
+    .pq-option.answer-incorrect {
+      border-color: var(--color-error); background: var(--color-error-bg);
+      box-shadow: 0 0 0 1px var(--color-error);
     }
-    .pq-reveal-btn:hover { background: var(--aws-orange-light); border-color: var(--aws-orange); color: var(--aws-orange-hover); }
-    .pq-card.revealed .pq-reveal-btn { display: none; }
+    .pq-option.answer-incorrect .pq-option-letter { color: var(--color-error); }
+    /* MR hint */
+    .pq-mr-hint {
+      padding: 0 var(--sp-5) var(--sp-2);
+      font-size: var(--fs-xs); color: var(--text-muted);
+      font-style: italic; font-weight: 500;
+    }
+    /* Explanation — shown by JS after answering */
     .pq-explanation {
       display: none;
       margin: 0 var(--sp-5) var(--sp-5);
@@ -147,44 +159,47 @@
       border-left: 4px solid var(--color-success);
       border-radius: 0 var(--r-md) var(--r-md) 0;
     }
-    .pq-card.revealed .pq-explanation { display: block; }
     .pq-explanation-label { font-size: var(--fs-xs); font-weight: 700; color: var(--color-success); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--sp-2); }
     .pq-explanation p { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin: 0; }
 
-    /* ── Locked bank preview ── */
-    .pq-bank-wrap { position: relative; border-radius: var(--r-xl); overflow: hidden; margin-top: var(--sp-6); }
+    /* ── Bank preview (fixed height, gradient fade) ── */
+    .pq-bank-preview {
+      position: relative; height: 200px; overflow: hidden;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      border: 1px solid var(--border-light); border-bottom: none;
+      margin-top: var(--sp-6);
+    }
     .pq-bank-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3);
-      filter: blur(3px);
-      pointer-events: none; user-select: none;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); padding: var(--sp-4);
+      filter: blur(3px); pointer-events: none; user-select: none;
     }
     .pq-bank-ghost {
       background: var(--bg-card); border: 1px solid var(--border-light);
       border-radius: var(--r-md); padding: var(--sp-4);
-      font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.6;
     }
     .pq-bank-ghost .ghost-tag {
-      display: inline-block; height: 16px; width: 80px;
+      display: block; height: 16px; width: 80px;
       background: var(--border-light); border-radius: var(--r-full); margin-bottom: var(--sp-2);
     }
     .pq-bank-ghost .ghost-line {
       height: 10px; background: var(--border-light); border-radius: 4px; margin-bottom: 6px;
     }
     .pq-bank-ghost .ghost-line.short { width: 60%; }
-    .pq-bank-lock {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(242,243,243,0) 0%, rgba(242,243,243,0.7) 30%, rgba(242,243,243,1) 55%);
-      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-      padding-bottom: var(--sp-10);
+    .pq-bank-fade {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--bg-page));
     }
-    .pq-bank-lock-card {
-      background: var(--bg-card); border: 1px solid var(--border-light);
-      border-radius: var(--r-xl); padding: var(--sp-8) var(--sp-10);
-      text-align: center; box-shadow: var(--shadow-lg); max-width: 480px; width: 90%;
+    /* Unlock card — sibling below preview, never clipped */
+    .pq-bank-unlock {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light); border-top: none;
+      border-radius: 0 0 var(--r-xl) var(--r-xl);
+      padding: var(--sp-8) var(--sp-6); text-align: center;
+      box-shadow: var(--shadow-md);
     }
     .pq-lock-icon { font-size: 2rem; margin-bottom: var(--sp-3); }
-    .pq-bank-lock-card h3 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-2); }
-    .pq-bank-lock-card p { color: var(--text-secondary); font-size: var(--fs-sm); line-height: 1.7; margin-bottom: var(--sp-5); }
+    .pq-bank-unlock h3 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-4); }
+    .pq-bank-unlock p { color: var(--text-secondary); font-size: var(--fs-sm); line-height: 1.7; margin-bottom: var(--sp-5); }
     .pq-bank-count { display: flex; justify-content: center; gap: var(--sp-6); margin-bottom: var(--sp-5); }
     .pq-bank-count-item strong { display: block; font-size: var(--fs-xl); font-weight: 800; color: var(--aws-orange); }
     .pq-bank-count-item span { font-size: var(--fs-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
@@ -216,11 +231,13 @@
       .pq-hero h1 { font-size: var(--fs-3xl); }
       .pq-how-grid { grid-template-columns: 1fr; }
       .pq-bank-grid { grid-template-columns: repeat(2, 1fr); }
+      .pq-bank-unlock { padding: var(--sp-6) var(--sp-5); }
       .pq-cta { padding: var(--sp-8) var(--sp-5); }
     }
     @media (max-width: 480px) {
       .pq-hero h1 { font-size: var(--fs-2xl); }
       .pq-bank-grid { grid-template-columns: 1fr; }
+      .pq-bank-count { gap: var(--sp-4); }
     }
   </style>
 </head>
@@ -271,6 +288,7 @@
 
           <!-- Q1 — Domain 1 — multiple-choice -->
           <article class="pq-card" data-correct="0">
+            data-type="multiple-choice"
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 1 — Cloud Concepts</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -278,12 +296,11 @@
             </div>
             <p class="pq-question-text">A company wants to avoid large upfront capital expenditures when launching new workloads. Which benefit of the AWS Cloud best addresses this requirement?</p>
             <div class="pq-options">
-              <div class="pq-option correct"><span class="pq-option-letter">A</span><span>Trade fixed expense for variable expense</span></div>
+              <div class="pq-option"><span class="pq-option-letter">A</span><span>Trade fixed expense for variable expense</span></div>
               <div class="pq-option"><span class="pq-option-letter">B</span><span>Benefit from massive economies of scale</span></div>
               <div class="pq-option"><span class="pq-option-letter">C</span><span>Increase speed and agility</span></div>
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Stop guessing capacity</span></div>
             </div>
-            <button class="pq-reveal-btn">Show answer</button>
             <div class="pq-explanation">
               <div class="pq-explanation-label">&#10003; Correct — A</div>
               <p>Trading fixed expense for variable expense means you pay only for what you consume instead of investing heavily in data centers before you know how much capacity you need. Economies of scale reduce per-unit cost but don't directly eliminate upfront capital. Speed/agility and capacity planning are separate benefits.</p>
@@ -292,6 +309,7 @@
 
           <!-- Q63 — Domain 2 — multiple-choice -->
           <article class="pq-card" data-correct="1">
+            data-type="multiple-choice"
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 2 — Security and Compliance</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -300,11 +318,10 @@
             <p class="pq-question-text">Under the AWS Shared Responsibility Model, which of the following is the customer's responsibility?</p>
             <div class="pq-options">
               <div class="pq-option"><span class="pq-option-letter">A</span><span>Patching the hypervisor on EC2 host machines</span></div>
-              <div class="pq-option correct"><span class="pq-option-letter">B</span><span>Managing security group rules for EC2 instances</span></div>
+              <div class="pq-option"><span class="pq-option-letter">B</span><span>Managing security group rules for EC2 instances</span></div>
               <div class="pq-option"><span class="pq-option-letter">C</span><span>Physical security of AWS data centers</span></div>
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Maintaining the global network infrastructure</span></div>
             </div>
-            <button class="pq-reveal-btn">Show answer</button>
             <div class="pq-explanation">
               <div class="pq-explanation-label">&#10003; Correct — B</div>
               <p>Customers are responsible for managing security group rules, which control inbound and outbound traffic to EC2 instances. AWS is responsible for the hypervisor, physical security of data centers, and the global network infrastructure.</p>
@@ -313,6 +330,7 @@
 
           <!-- Q7 — Domain 1 — multiple-response (format example) -->
           <article class="pq-card" data-correct="1,2">
+            data-type="multiple-response"
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 1 — Cloud Concepts</span>
               <span class="pq-tag pq-tag-type">Multiple-response</span>
@@ -322,12 +340,11 @@
             <p class="pq-instruction">(Select TWO.)</p>
             <div class="pq-options">
               <div class="pq-option"><span class="pq-option-letter">A</span><span>Eliminate the need for IT staff entirely</span></div>
-              <div class="pq-option correct"><span class="pq-option-letter">B</span><span>Go global in minutes</span></div>
-              <div class="pq-option correct"><span class="pq-option-letter">C</span><span>Benefit from massive economies of scale</span></div>
+              <div class="pq-option"><span class="pq-option-letter">B</span><span>Go global in minutes</span></div>
+              <div class="pq-option"><span class="pq-option-letter">C</span><span>Benefit from massive economies of scale</span></div>
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Guarantee 100% uptime for all services</span></div>
               <div class="pq-option"><span class="pq-option-letter">E</span><span>Avoid all security responsibilities</span></div>
             </div>
-            <button class="pq-reveal-btn">Show answer</button>
             <div class="pq-explanation">
               <div class="pq-explanation-label">&#10003; Correct — B and C</div>
               <p>Going global in minutes and benefiting from massive economies of scale are two of the six advantages of cloud computing listed by AWS. You still need IT staff (though in different roles), no service guarantees 100% uptime, and customers still share security responsibilities under the shared responsibility model.</p>
@@ -336,6 +353,7 @@
 
           <!-- Q146 — Domain 3 — multiple-choice -->
           <article class="pq-card" data-correct="1">
+            data-type="multiple-choice"
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 3 — Cloud Technology and Services</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -344,11 +362,10 @@
             <p class="pq-question-text">A team wants to deploy the same infrastructure consistently across development, staging, and production environments. Which approach is best?</p>
             <div class="pq-options">
               <div class="pq-option"><span class="pq-option-letter">A</span><span>Manually configure each environment through the Console</span></div>
-              <div class="pq-option correct"><span class="pq-option-letter">B</span><span>Use AWS CloudFormation templates to define and deploy infrastructure consistently</span></div>
+              <div class="pq-option"><span class="pq-option-letter">B</span><span>Use AWS CloudFormation templates to define and deploy infrastructure consistently</span></div>
               <div class="pq-option"><span class="pq-option-letter">C</span><span>Use different AWS accounts for each environment with no automation</span></div>
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Deploy only to production and skip other environments</span></div>
             </div>
-            <button class="pq-reveal-btn">Show answer</button>
             <div class="pq-explanation">
               <div class="pq-explanation-label">&#10003; Correct — B</div>
               <p>CloudFormation templates enable consistent, repeatable infrastructure deployment across environments. The same template ensures dev, staging, and production are identical. Manual configuration leads to drift and errors, and skipping environments is poor practice.</p>
@@ -357,6 +374,7 @@
 
           <!-- Q229 — Domain 4 — multiple-choice -->
           <article class="pq-card" data-correct="2">
+            data-type="multiple-choice"
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 4 — Billing, Pricing, and Support</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -366,10 +384,9 @@
             <div class="pq-options">
               <div class="pq-option"><span class="pq-option-letter">A</span><span>On-Demand</span></div>
               <div class="pq-option"><span class="pq-option-letter">B</span><span>Spot Instances</span></div>
-              <div class="pq-option correct"><span class="pq-option-letter">C</span><span>Reserved Instances (3-year, All Upfront)</span></div>
+              <div class="pq-option"><span class="pq-option-letter">C</span><span>Reserved Instances (3-year, All Upfront)</span></div>
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Savings Plans (1-year, No Upfront)</span></div>
             </div>
-            <button class="pq-reveal-btn">Show answer</button>
             <div class="pq-explanation">
               <div class="pq-explanation-label">&#10003; Correct — C</div>
               <p>A 3-year Reserved Instance with All Upfront payment provides the greatest discount (up to 72% off On-Demand). Longer terms and upfront payments yield bigger discounts. On-Demand is full price, Spot is cheapest but interruptible and not suitable for 24/7 steady workloads, and a 1-year Savings Plan with No Upfront provides less discount.</p>
@@ -386,9 +403,9 @@
           <p>395 more questions — randomized every attempt, weighted to the official CLF-C02 domain percentages. Unlock once for lifetime access.</p>
         </div>
 
-        <div class="pq-bank-wrap">
-          <!-- Blurred preview of what the full bank looks like -->
-          <div class="pq-bank-grid" aria-hidden="true">
+        <!-- Blurred preview — fixed height avoids clipping the CTA card -->
+        <div class="pq-bank-preview" aria-hidden="true">
+          <div class="pq-bank-grid">
             <div class="pq-bank-ghost"><div class="ghost-tag"></div><div class="ghost-line"></div><div class="ghost-line"></div><div class="ghost-line short"></div></div>
             <div class="pq-bank-ghost"><div class="ghost-tag"></div><div class="ghost-line"></div><div class="ghost-line short"></div></div>
             <div class="pq-bank-ghost"><div class="ghost-tag"></div><div class="ghost-line"></div><div class="ghost-line"></div><div class="ghost-line short"></div></div>
@@ -396,22 +413,19 @@
             <div class="pq-bank-ghost"><div class="ghost-tag"></div><div class="ghost-line"></div><div class="ghost-line"></div><div class="ghost-line short"></div></div>
             <div class="pq-bank-ghost"><div class="ghost-tag"></div><div class="ghost-line"></div><div class="ghost-line short"></div></div>
           </div>
-          <!-- Lock overlay -->
-          <div class="pq-bank-lock">
-            <div class="pq-bank-lock-card">
-              <div class="pq-lock-icon">&#128274;</div>
-              <h3>Unlock all 400 questions</h3>
-              <div class="pq-bank-count">
-                <div class="pq-bank-count-item"><strong>400</strong><span>Questions</span></div>
-                <div class="pq-bank-count-item"><strong>4</strong><span>Domains</span></div>
-                <div class="pq-bank-count-item"><strong>4</strong><span>Test lengths</span></div>
-              </div>
-              <p>One-time $49 payment. Timed tests from 15 to 65 questions. Every attempt draws a fresh randomized subset. Lifetime access.</p>
-              <button id="bank-pay-btn" class="btn btn-primary btn-lg" style="width:100%">
-                Unlock — $49 one-time
-              </button>
-            </div>
+          <div class="pq-bank-fade"></div>
+        </div>
+        <!-- CTA card below the preview — never clipped -->
+        <div class="pq-bank-unlock">
+          <div class="pq-lock-icon">&#128274;</div>
+          <h3>Unlock all 400 questions</h3>
+          <div class="pq-bank-count">
+            <div class="pq-bank-count-item"><strong>400</strong><span>Questions</span></div>
+            <div class="pq-bank-count-item"><strong>4</strong><span>Domains</span></div>
+            <div class="pq-bank-count-item"><strong>4</strong><span>Test lengths</span></div>
           </div>
+          <p>One-time $49 payment. Timed tests from 15 to 65 questions. Every attempt draws a fresh randomized subset. Lifetime access.</p>
+          <button id="bank-pay-btn" class="btn btn-primary btn-lg" style="width:100%">Unlock — $49 one-time</button>
         </div>
       </section>
 
@@ -516,10 +530,63 @@
 
   <script>
   (function () {
-    // ── Sample question reveal ────────────────────────────────────────────
+    // ── Interactive click-to-answer ───────────────────────────────────────
+    // Matches the logic of the real test engine: single-click grades MC,
+    // select-N then auto-grade for MR. Correct/incorrect styling reuses
+    // the same option state classes as DESIGN.md.
     document.querySelectorAll('.pq-card').forEach(function (card) {
-      var btn = card.querySelector('.pq-reveal-btn');
-      if (btn) btn.addEventListener('click', function () { card.classList.add('revealed'); });
+      var correctIdxs = (card.dataset.correct || '0').split(',').map(Number);
+      var isMR = card.dataset.type === 'multiple-response';
+      var options = Array.from(card.querySelectorAll('.pq-option'));
+      var selected = [];
+      var graded = false;
+
+      // MR: show how many to pick
+      if (isMR) {
+        var hint = document.createElement('p');
+        hint.className = 'pq-mr-hint';
+        hint.textContent = 'Select ' + correctIdxs.length + ' answers';
+        var optionsEl = card.querySelector('.pq-options');
+        if (optionsEl) optionsEl.parentNode.insertBefore(hint, optionsEl);
+      }
+
+      function grade() {
+        graded = true;
+        options.forEach(function (opt, i) {
+          opt.classList.remove('answer-selected');
+          opt.style.pointerEvents = 'none';
+          opt.style.cursor = 'default';
+          var isCorrect = correctIdxs.includes(i);
+          var wasPicked = selected.includes(i);
+          if (isCorrect && wasPicked)  opt.classList.add('answer-correct');
+          else if (isCorrect)          opt.classList.add('answer-correct'); // show correct even if not picked
+          else if (wasPicked)          opt.classList.add('answer-incorrect');
+        });
+        var exp = card.querySelector('.pq-explanation');
+        if (exp) exp.style.display = 'block';
+      }
+
+      options.forEach(function (opt, i) {
+        opt.addEventListener('click', function () {
+          if (graded) return;
+          if (!isMR) {
+            // Multiple-choice: grade on first click
+            selected = [i];
+            grade();
+          } else {
+            // Multiple-response: toggle selection, grade when N reached
+            var pos = selected.indexOf(i);
+            if (pos > -1) {
+              selected.splice(pos, 1);
+              opt.classList.remove('answer-selected');
+            } else if (selected.length < correctIdxs.length) {
+              selected.push(i);
+              opt.classList.add('answer-selected');
+            }
+            if (selected.length === correctIdxs.length) grade();
+          }
+        });
+      });
     });
 
     // ── Shared pay handler ────────────────────────────────────────────────

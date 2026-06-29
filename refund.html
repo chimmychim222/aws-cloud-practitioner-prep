@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+  LEGAL TEMPLATE — DRAFT ONLY
+  This document is a starting draft and has NOT been reviewed by a qualified
+  legal professional. It should not be relied upon as a binding refund policy
+  without independent legal review appropriate for your jurisdiction.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refund Policy — AWS Cloud Practitioner Prep</title>
+  <meta name="description" content="Refund policy for cloudpractitionerprep.com — 10-day money-back guarantee, no questions asked.">
+  <link rel="canonical" href="https://cloudpractitionerprep.com/refund">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%23232F3E'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='%23FF9900' font-family='Arial,sans-serif' font-weight='bold'>A</text></svg>">
+</head>
+<body>
+
+  <div id="site-header-mount">
+    <noscript>
+      <nav style="background:#232F3E;padding:.75rem 1.5rem;display:flex;gap:1.5rem;align-items:center">
+        <a href="/" style="color:#FF9900;font-weight:700;text-decoration:none">Home</a>
+        <a href="/refund" style="color:#FF9900;font-weight:700;text-decoration:none">Refund Policy</a>
+      </nav>
+    </noscript>
+  </div>
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+      <nav class="legal-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span><span>Refund Policy</span>
+      </nav>
+
+      <article class="legal-page">
+        <h1>Refund Policy</h1>
+        <p class="legal-updated">Last updated: 29 June 2026</p>
+
+        <div class="legal-draft-notice">
+          <strong>Draft document.</strong> This policy is a starting template and has not been reviewed by a qualified legal professional. It should be independently verified before being relied upon.
+        </div>
+
+        <h2>10-Day Money-Back Guarantee</h2>
+        <p>We offer a <strong>10-day money-back guarantee</strong> on all purchases. If you are not satisfied with your access to the practice question bank for any reason, you may request a full refund within 10 days of your purchase date — no questions asked.</p>
+
+        <h2>How to Request a Refund</h2>
+        <p>To request a refund, email us at <a href="mailto:support@cloudpractitionerprep.com">support@cloudpractitionerprep.com</a> with:</p>
+        <ul>
+          <li>The email address associated with your account</li>
+          <li>Your purchase date (or approximate date)</li>
+          <li>A brief note that you would like a refund (reason optional)</li>
+        </ul>
+        <p>We will process your refund within 5 business days of receiving your request. Refunds are returned to the original payment method via Stripe. Depending on your bank, the credit may take 5–10 additional business days to appear on your statement.</p>
+
+        <h2>After the 10-Day Window</h2>
+        <p>Refund requests received more than 10 days after the original purchase date are handled on a case-by-case basis at our discretion. We aim to be fair — if you have encountered a technical issue or exceptional circumstance, please contact us and we will do our best to help.</p>
+
+        <h2>Conditions</h2>
+        <ul>
+          <li>The guarantee applies to the one-time $49 purchase of practice-test access.</li>
+          <li>Only one refund per customer per purchase.</li>
+          <li>Refunds are not available for free-tier features (the 15-question diagnostic and free training content are already provided at no charge).</li>
+          <li>We reserve the right to deny refunds in cases of suspected abuse or violation of our <a href="/terms">Terms of Service</a>.</li>
+        </ul>
+
+        <h2>Contact</h2>
+        <p>Refund questions? Email <a href="mailto:support@cloudpractitionerprep.com">support@cloudpractitionerprep.com</a>. We typically respond within one business day.</p>
+      </article>
+    </div>
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/firebase-auth.js"></script>
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header"><h2>Welcome</h2><p class="auth-modal-subtitle">Sign in to access practice tests</p></div>
+      <div class="auth-tabs"><button class="auth-tab active" data-tab="login">Sign In</button><button class="auth-tab" data-tab="signup">Create Account</button></div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field"><label for="login-email">Email</label><input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="auth-field"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password"></div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field"><label for="signup-name">Your Name</label><input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name"></div>
+        <div class="auth-field"><label for="signup-email">Email</label><input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="auth-field"><label for="signup-password">Password</label><input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password"></div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

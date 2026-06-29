@@ -30,10 +30,20 @@
     return '<a href="' + l.href + '" class="footer-link">' + l.label + '</a>';
   }).join('<span class="footer-sep" aria-hidden="true">&middot;</span>');
 
+  var legalLinks = [
+    { label: 'Privacy Policy',   href: '/privacy' },
+    { label: 'Terms of Service', href: '/terms'   },
+    { label: 'Refund Policy',    href: '/refund'  }
+  ];
+  var legalHTML = legalLinks.map(function (l) {
+    return '<a href="' + l.href + '" class="footer-legal-link">' + l.label + '</a>';
+  }).join('<span class="footer-sep" aria-hidden="true">&middot;</span>');
+
   mount.outerHTML = [
     '<footer id="site-footer">',
     '  <div class="container">',
     '    <nav class="footer-nav" aria-label="Site links">' + linksHTML + '</nav>',
+    '    <nav class="footer-legal" aria-label="Legal links">' + legalHTML + '</nav>',
     '    <p class="footer-disclaimer">' + disclaimer + '</p>',
     '  </div>',
     '</footer>'

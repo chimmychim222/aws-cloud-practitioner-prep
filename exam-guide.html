@@ -634,32 +634,55 @@
     (function () {
       var btn = document.getElementById('eg-pay-btn');
       if (!btn) return;
+      var DEFAULT_TEXT = btn.textContent.trim();
+
+      function doStripeRedirect() {
+        var auth = window.AppAuth;
+        var link = window.SiteConfig && window.SiteConfig.stripePaymentLink;
+        if (!auth || !auth.isLoggedIn() || !link) return;
+        btn.disabled = true;
+        btn.textContent = 'Redirecting to Stripe…';
+        window.location.href = link + '?client_reference_id=' + encodeURIComponent(auth.currentUser.uid);
+      }
+
+      function waitDocReadyThenRedirect() {
+        var auth = window.AppAuth;
+        if (auth && auth.docReady) { doStripeRedirect(); return; }
+        btn.disabled = true;
+        btn.textContent = 'Preparing checkout…';
+        var poll = setInterval(function () {
+          var a = window.AppAuth;
+          if (a && a.docReady) { clearInterval(poll); doStripeRedirect(); }
+        }, 100);
+      }
+
       btn.addEventListener('click', function () {
         var auth = window.AppAuth;
         if (!auth || !auth.isLoggedIn()) {
+          // Remember intent — auto-redirect after signup/signin completes
+          sessionStorage.setItem('pendingBuyIntent', '1');
           if (window.showAuthModal) window.showAuthModal('login');
           return;
         }
-        if (auth.hasPaid()) {
-          // Already paid — send them to the practice tests
-          window.location.href = '/';
-          return;
-        }
-        var link = window.SiteConfig && window.SiteConfig.stripePaymentLink;
-        if (!link) return;
-        if (!auth.docReady) {
-          btn.textContent = 'Preparing checkout…';
-          btn.disabled = true;
-          var poll = setInterval(function () {
-            if (auth.docReady) { clearInterval(poll); doRedirect(); }
-          }, 100);
-          return;
-        }
-        doRedirect();
-        function doRedirect() {
-          btn.disabled = true;
-          btn.textContent = 'Redirecting to Stripe…';
-          window.location.href = link + '?client_reference_id=' + encodeURIComponent(auth.currentUser.uid);
+        if (auth.hasPaid()) { window.location.href = '/'; return; }
+        waitDocReadyThenRedirect();
+      });
+
+      // Auto-continue to Stripe after signup/signin if intent was set
+      document.addEventListener('auth-ready', function () {
+        if (!sessionStorage.getItem('pendingBuyIntent')) return;
+        var auth = window.AppAuth;
+        if (!auth || !auth.isLoggedIn()) return;
+        sessionStorage.removeItem('pendingBuyIntent');
+        if (auth.hasPaid()) return;
+        waitDocReadyThenRedirect();
+      });
+
+      // Reset button if user comes back from Stripe without paying (bfcache restore)
+      window.addEventListener('pageshow', function () {
+        if (!new URLSearchParams(window.location.search).get('session_id')) {
+          btn.disabled = false;
+          btn.textContent = DEFAULT_TEXT;
         }
       });
     })();

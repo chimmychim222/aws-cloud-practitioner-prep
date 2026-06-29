@@ -246,7 +246,12 @@
         showView('test');
         return;
       }
+      // Show home view but keep Practice Test highlighted in nav
+      // (test selection section lives on the home view)
       showView('home');
+      $$('.nav-link').forEach(b => b.classList.remove('active'));
+      const navTestBtn = $('#nav-test-btn');
+      if (navTestBtn) navTestBtn.classList.add('active');
       setTimeout(() => {
         const section = document.getElementById('test-selection');
         if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1300,6 +1305,8 @@
   function showPaymentModal() {
     // Must be logged in to pay
     if (window.AppAuth && !window.AppAuth.isLoggedIn()) {
+      // Store intent so BuyFlow auto-resumes Stripe redirect after signup/signin
+      sessionStorage.setItem('pendingBuyIntent', '1');
       window.showAuthModal('login');
       return;
     }
@@ -1343,38 +1350,13 @@
       }
     });
 
-    // Pay button → server-side Stripe checkout session (uid attached server-side)
+    // Pay button — delegate to shared BuyFlow module
     const payBtn = $('#stripe-pay-btn');
     if (payBtn) {
+      if (window.BuyFlow) window.BuyFlow.registerBtn('stripe-pay-btn', payBtn.textContent.trim());
       payBtn.addEventListener('click', function () {
-        const user = window.AppAuth && window.AppAuth.currentUser;
-        if (!user) { window.showAuthModal('login'); return; }
         if (hasPaid()) { hidePaymentModal(); return; }
-
-        const payLink = window.SiteConfig && window.SiteConfig.stripePaymentLink;
-        if (!payLink) { console.error('stripePaymentLink not configured in site-config.js'); return; }
-
-        payBtn.disabled = true;
-
-        function redirectToStripe() {
-          payBtn.textContent = 'Redirecting to Stripe…';
-          window.location.href = payLink + '?client_reference_id=' + encodeURIComponent(user.uid);
-        }
-
-        // Guard: on brand-new signups, onAuthStateChanged is still creating the Firestore
-        // doc when the user clicks Pay. Wait until docReady before redirecting so the
-        // doc is guaranteed to exist when checkPaymentRedirect writes paid:true on return.
-        if (window.AppAuth.docReady) {
-          redirectToStripe();
-        } else {
-          payBtn.textContent = 'Preparing checkout…';
-          var docPoll = setInterval(function () {
-            if (window.AppAuth.docReady) {
-              clearInterval(docPoll);
-              redirectToStripe();
-            }
-          }, 100);
-        }
+        if (window.BuyFlow) window.BuyFlow.handlePay();
       });
     }
   }

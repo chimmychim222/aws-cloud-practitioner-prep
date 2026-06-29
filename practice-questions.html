@@ -526,6 +526,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
   <script src="/firebase-auth.js"></script>
 
   <script>
@@ -614,73 +615,12 @@
       });
     });
 
-    // ── Pay handler — intent persistence + bfcache reset ─────────────────
-    // Default label for each pay button (used to reset after Back from Stripe)
-    var PAY_DEFAULTS = {
-      'bank-pay-btn': 'Unlock — $49 one-time',
-      'cta-pay-btn':  'Start practicing — $49'
-    };
-
-    function doStripeRedirect() {
-      var auth = window.AppAuth;
-      var link = window.SiteConfig && window.SiteConfig.stripePaymentLink;
-      if (!auth || !auth.isLoggedIn() || !link) return;
-      Object.keys(PAY_DEFAULTS).forEach(function (id) {
-        var b = document.getElementById(id);
-        if (b) { b.disabled = true; b.textContent = 'Redirecting to Stripe…'; }
-      });
-      window.location.href = link + '?client_reference_id=' + encodeURIComponent(auth.currentUser.uid);
-    }
-
-    function waitDocReadyThenRedirect() {
-      var auth = window.AppAuth;
-      if (auth && auth.docReady) { doStripeRedirect(); return; }
-      Object.keys(PAY_DEFAULTS).forEach(function (id) {
-        var b = document.getElementById(id);
-        if (b) { b.disabled = true; b.textContent = 'Preparing checkout…'; }
-      });
-      var poll = setInterval(function () {
-        var a = window.AppAuth;
-        if (a && a.docReady) { clearInterval(poll); doStripeRedirect(); }
-      }, 100);
-    }
-
-    function handlePay() {
-      var auth = window.AppAuth;
-      if (!auth || !auth.isLoggedIn()) {
-        // Remember intent — auto-redirect after the user completes signup/signin
-        sessionStorage.setItem('pendingBuyIntent', '1');
-        if (window.showAuthModal) window.showAuthModal('login');
-        return;
-      }
-      if (auth.hasPaid()) { window.location.href = '/'; return; }
-      waitDocReadyThenRedirect();
-    }
-
-    // Auto-continue to Stripe after signup/signin if intent was set
-    document.addEventListener('auth-ready', function () {
-      if (!sessionStorage.getItem('pendingBuyIntent')) return;
-      var auth = window.AppAuth;
-      if (!auth || !auth.isLoggedIn()) return;
-      sessionStorage.removeItem('pendingBuyIntent');
-      if (auth.hasPaid()) return; // already paid, nothing to do
-      waitDocReadyThenRedirect();
-    });
-
-    // Reset buttons if user returns from Stripe without completing payment
-    // (catches bfcache restore where the page is shown in its "Redirecting" state)
-    window.addEventListener('pageshow', function () {
-      if (!new URLSearchParams(window.location.search).get('session_id')) {
-        Object.keys(PAY_DEFAULTS).forEach(function (id) {
-          var b = document.getElementById(id);
-          if (b) { b.disabled = false; b.textContent = PAY_DEFAULTS[id]; }
-        });
-      }
-    });
-
+    // ── Pay buttons — shared BuyFlow module (components/payment.js) ─────────
+    window.BuyFlow.registerBtn('bank-pay-btn', 'Unlock — $49 one-time');
+    window.BuyFlow.registerBtn('cta-pay-btn',  'Start practicing — $49');
     ['bank-pay-btn', 'cta-pay-btn'].forEach(function (id) {
       var btn = document.getElementById(id);
-      if (btn) btn.addEventListener('click', handlePay);
+      if (btn) btn.addEventListener('click', window.BuyFlow.handlePay);
     });
   })();
   </script>

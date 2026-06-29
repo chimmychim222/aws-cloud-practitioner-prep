@@ -535,13 +535,21 @@
       var low = Math.max(100, mid - 80);
       var high = Math.min(1000, mid + 80);
 
-      // Strongest / weakest
-      var sorted = [1, 2, 3, 4].filter(function (d) { return domainStats[d].t > 0; })
-        .sort(function (a, b) {
-          return (domainStats[b].c / domainStats[b].t) - (domainStats[a].c / domainStats[a].t);
-        });
-      var strongest = sorted[0];
-      var weakest   = sorted[sorted.length - 1];
+      // Strongest / weakest — by percentage correct.
+      // Tie-breaking: prefer the domain with MORE questions answered (larger sample
+      // = more reliable signal). Use separate sorts so each end is independently correct.
+      var eligibleDomains = [1, 2, 3, 4].filter(function (d) { return domainStats[d].t > 0; });
+      function pct(d) { return domainStats[d].c / domainStats[d].t; }
+
+      var weakest = eligibleDomains.slice().sort(function (a, b) {
+        var diff = pct(a) - pct(b);                       // ascending: lowest % first
+        return diff !== 0 ? diff : domainStats[b].t - domainStats[a].t; // tie → larger sample first
+      })[0];
+
+      var strongest = eligibleDomains.slice().sort(function (a, b) {
+        var diff = pct(b) - pct(a);                       // descending: highest % first
+        return diff !== 0 ? diff : domainStats[b].t - domainStats[a].t; // tie → larger sample first
+      })[0];
 
       return { raw: raw, domainStats: domainStats, low: low, high: high, strongest: strongest, weakest: weakest };
     }

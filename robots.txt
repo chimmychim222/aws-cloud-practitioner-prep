@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Admin page — not for indexing
+Disallow: /admin.html
+Disallow: /admin
+
 Sitemap: https://cloudpractitionerprep.com/sitemap.xml

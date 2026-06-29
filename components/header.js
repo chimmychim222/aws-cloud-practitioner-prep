@@ -38,6 +38,10 @@
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>'
     },
     {
+      label: 'Diagnostic',  href: '/diagnostic', id: null,               view: null,
+      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>'
+    },
+    {
       label: 'Practice Qs', href: '/practice-questions', id: null, view: null,
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>'
     },

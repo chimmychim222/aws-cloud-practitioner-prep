@@ -75,6 +75,7 @@
     .sp-form-section h2 { font-size: var(--fs-xl); font-weight: 700; margin-bottom: var(--sp-6); }
     .sp-form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-5); margin-bottom: var(--sp-6); }
     .sp-field label { display: block; font-size: var(--fs-sm); font-weight: 600; color: var(--text-secondary); margin-bottom: var(--sp-2); }
+    .sp-field input[type="text"],
     .sp-field input[type="date"],
     .sp-field select,
     .sp-field input[type="number"] {
@@ -218,8 +219,8 @@
         <h2>Build your plan</h2>
         <div class="sp-form-grid">
           <div class="sp-field">
-            <label for="sp-exam-date">Exam date</label>
-            <input type="date" id="sp-exam-date">
+            <label for="sp-exam-date">Exam date <span style="font-weight:400;color:var(--text-muted)">(mm/dd/yyyy)</span></label>
+            <input type="text" id="sp-exam-date" placeholder="mm/dd/yyyy" inputmode="numeric" maxlength="10" autocomplete="off">
             <p class="sp-hint">Leave blank to use weeks below</p>
           </div>
           <div class="sp-field">
@@ -576,14 +577,22 @@
 
     // ── Generate button ───────────────────────────────────────────────────
     document.getElementById('sp-generate-btn').addEventListener('click', function() {
-      var examDate = document.getElementById('sp-exam-date').value;
-      var weeksInput = parseInt(document.getElementById('sp-weeks').value);
-      var intensity = document.getElementById('sp-intensity').value;
+      var examDateRaw = document.getElementById('sp-exam-date').value.trim();
+      var weeksInput  = parseInt(document.getElementById('sp-weeks').value);
+      var intensity   = document.getElementById('sp-intensity').value;
       var weeks;
 
-      if (examDate) {
+      if (examDateRaw) {
+        // Parse mm/dd/yyyy (text input format)
+        var parts = examDateRaw.split('/');
+        var exam  = parts.length === 3
+          ? new Date(parseInt(parts[2]), parseInt(parts[0]) - 1, parseInt(parts[1]))
+          : new Date(examDateRaw); // fallback: try raw string
+        if (isNaN(exam.getTime())) {
+          alert('Please enter the exam date as mm/dd/yyyy (e.g. 09/15/2025).');
+          return;
+        }
         var now  = new Date(); now.setHours(0,0,0,0);
-        var exam = new Date(examDate + 'T00:00:00');
         var diff = Math.round((exam - now) / (1000 * 60 * 60 * 24 * 7));
         weeks = Math.max(1, Math.min(12, diff));
       } else if (weeksInput >= 1) {
@@ -593,7 +602,7 @@
         return;
       }
 
-      renderPlan(weeks, intensity, examDate);
+      renderPlan(weeks, intensity, examDateRaw);
     });
 
     document.getElementById('sp-reset-btn').addEventListener('click', function() {

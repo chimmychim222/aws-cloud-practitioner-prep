@@ -204,12 +204,15 @@
     // Test option cards — require login, free tests bypass payment, others gated
     $$('.test-start-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        const isFree = btn.dataset.free === 'true';
         // Must be logged in for any test
         if (window.AppAuth && !window.AppAuth.isLoggedIn()) {
+          // For paid tests, store intent so BuyFlow auto-resumes Stripe redirect
+          // after the user completes signup — same path as all other buy CTAs
+          if (!isFree) sessionStorage.setItem('pendingBuyIntent', '1');
           window.showAuthModal('signup');
           return;
         }
-        const isFree = btn.dataset.free === 'true';
         if (!isFree && !hasPaid()) { showPaymentModal(); return; }
         const numQ = parseInt(btn.dataset.questions, 10) || 65;
         const timeS = parseInt(btn.dataset.time, 10) || 5400;

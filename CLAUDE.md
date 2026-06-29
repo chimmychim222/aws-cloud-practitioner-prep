@@ -487,6 +487,16 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /diagnostic_leads/{id} {
+      // Diagnostic email opt-in — unauthenticated users allowed (lead magnet).
+      // create-only: no reads, updates, or deletes from the client.
+      allow create: if request.resource.data.consent == true
+        && request.resource.data.source == 'diagnostic'
+        && request.resource.data.email is string
+        && request.resource.data.email.size() > 0;
+      allow read, update, delete: if false;
+    }
+
     function isAdmin(uid) {
       return uid != null &&
         get(/databases/$(database)/documents/admins/$(uid)).data.isAdmin == true;

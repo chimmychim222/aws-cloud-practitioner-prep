@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free CLF-C02 Readiness Diagnostic Test</title>
+  <meta name="description" content="Take our free 10-question CLF-C02 diagnostic. See your score, discover your weakest domain, and get a personalized study plan in under 5 minutes.">
+  <link rel="canonical" href="https://cloudpractitionerprep.com/diagnostic">
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Free CLF-C02 Readiness Diagnostic — Am I Ready?">
+  <meta property="og:description" content="10 real CLF-C02 questions. See your score, weakest domain, and estimated scaled score range. Free — no account required.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/diagnostic">
+  <meta property="og:site_name"   content="AWS Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Free CLF-C02 Readiness Diagnostic">
+  <meta name="twitter:description" content="10 real CLF-C02 questions. Instant score, weakest domain, and estimated scaled score range.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="robots" content="index, follow">
+
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "Free CLF-C02 Readiness Diagnostic",
+      "description": "A free 10-question readiness diagnostic for the AWS Certified Cloud Practitioner CLF-C02 exam. Covers all four exam domains with instant feedback.",
+      "url": "https://cloudpractitionerprep.com/diagnostic",
+      "provider": { "@type": "Organization", "name": "AWS Cloud Practitioner Prep", "url": "https://cloudpractitionerprep.com" },
+      "educationalLevel": "Foundational",
+      "isAccessibleForFree": true
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home",       "item": "https://cloudpractitionerprep.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Diagnostic", "item": "https://cloudpractitionerprep.com/diagnostic" }
+      ]
+    }
+  ]
+  </script>
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%23232F3E'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='%23FF9900' font-family='Arial,sans-serif' font-weight='bold'>A</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .dx-breadcrumb { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .dx-breadcrumb a { color: var(--text-muted); text-decoration: none; }
+    .dx-breadcrumb a:hover { color: var(--aws-orange); }
+    .dx-breadcrumb .sep { margin: 0 var(--sp-2); }
+
+    /* ── Hero ── */
+    .dx-hero { padding: var(--sp-10) 0 var(--sp-8); border-bottom: 1px solid var(--border-light); }
+    .dx-hero h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: var(--sp-3); }
+    .dx-hero .lead { font-size: var(--fs-lg); color: var(--text-secondary); max-width: 580px; line-height: 1.7; margin-bottom: var(--sp-5); }
+    .dx-meta-pills { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+    .dx-pill { font-size: var(--fs-xs); font-weight: 600; padding: 3px 10px; border-radius: var(--r-full); background: var(--aws-orange-light); color: var(--aws-orange-hover); border: 1px solid rgba(255,153,0,.3); }
+    .dx-pill.free { background: rgba(3,127,12,.1); color: var(--color-success); border-color: rgba(3,127,12,.3); }
+
+    /* ── Question cards ── */
+    .dx-questions { display: flex; flex-direction: column; gap: var(--sp-5); padding: var(--sp-10) 0; }
+    .dx-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .dx-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--sp-3) var(--sp-5); border-bottom: 1px solid var(--border-light);
+      background: var(--bg-page);
+    }
+    .dx-card-num { font-size: var(--fs-xs); font-weight: 700; color: var(--text-muted); }
+    .dx-card-domain { font-size: var(--fs-xs); font-weight: 600; padding: 2px 8px; border-radius: var(--r-full); background: var(--aws-orange-light); color: var(--aws-orange-hover); }
+    .dx-question-text { padding: var(--sp-5) var(--sp-5) var(--sp-3); font-size: var(--fs-base); font-weight: 500; line-height: 1.65; }
+    .dx-options { padding: 0 var(--sp-5) var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2); }
+    .dx-option {
+      display: flex; align-items: flex-start; gap: var(--sp-3);
+      padding: var(--sp-3) var(--sp-4);
+      border: 2px solid var(--border-light); border-radius: var(--r-md);
+      font-size: var(--fs-sm); line-height: 1.5; cursor: pointer;
+      transition: border-color var(--t-fast), background var(--t-fast);
+    }
+    .dx-option:hover:not([data-graded]) { border-color: var(--aws-orange); background: rgba(255,153,0,.04); }
+    .dx-opt-letter { font-weight: 700; color: var(--text-muted); min-width: 18px; flex-shrink: 0; }
+    .dx-option.opt-correct { border-color: var(--color-success); background: var(--color-success-bg); box-shadow: 0 0 0 1px var(--color-success); }
+    .dx-option.opt-correct .dx-opt-letter { color: var(--color-success); font-weight: 800; }
+    .dx-option.opt-wrong   { border-color: var(--color-error);   background: var(--color-error-bg);   box-shadow: 0 0 0 1px var(--color-error); }
+    .dx-option.opt-wrong   .dx-opt-letter { color: var(--color-error); }
+    .dx-explanation { display: none; margin: 0 var(--sp-5) var(--sp-5); padding: var(--sp-4) var(--sp-5); border-radius: 0 var(--r-md) var(--r-md) 0; border-left: 4px solid var(--color-success); background: var(--color-success-bg); }
+    .dx-explanation.wrong { border-left-color: var(--color-error); background: var(--color-error-bg); }
+    .dx-explanation-lbl { font-size: var(--fs-xs); font-weight: 700; color: var(--color-success); text-transform: uppercase; letter-spacing: .06em; margin-bottom: var(--sp-1); }
+    .dx-explanation.wrong .dx-explanation-lbl { color: var(--color-error); }
+    .dx-explanation p { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin: 0; }
+
+    /* ── Progress bar ── */
+    .dx-progress-wrap { display: flex; align-items: center; gap: var(--sp-3); padding: 0 0 var(--sp-2); }
+    .dx-progress-track { flex: 1; height: 6px; background: var(--border-light); border-radius: var(--r-full); overflow: hidden; }
+    .dx-progress-fill { height: 100%; background: linear-gradient(90deg, var(--aws-orange), var(--aws-orange-hover)); border-radius: var(--r-full); width: 0%; transition: width var(--t-base); }
+    .dx-progress-label { font-size: var(--fs-xs); font-weight: 600; color: var(--text-muted); min-width: 40px; text-align: right; }
+
+    /* ── Teaser results ── */
+    #dx-results { display: none; }
+    .dx-teaser {
+      background: var(--aws-squid-ink); border-radius: var(--r-xl);
+      padding: var(--sp-8) var(--sp-8) var(--sp-6); text-align: center; color: #fff;
+      margin-bottom: var(--sp-6);
+    }
+    .dx-score-display { margin-bottom: var(--sp-5); }
+    .dx-score-big { font-size: 4rem; font-weight: 800; color: var(--aws-orange); line-height: 1; }
+    .dx-score-denom { font-size: var(--fs-xl); color: rgba(255,255,255,.5); font-weight: 400; }
+    .dx-score-label { font-size: var(--fs-sm); color: rgba(255,255,255,.5); margin-top: var(--sp-1); }
+    .dx-teaser-summary { font-size: var(--fs-base); color: rgba(255,255,255,.75); line-height: 1.6; margin-bottom: var(--sp-4); }
+    .dx-teaser-summary strong { color: #fff; }
+
+    /* ── Email gate ── */
+    .dx-gate {
+      background: var(--bg-card); border: 1px solid var(--border-light);
+      border-radius: var(--r-xl); padding: var(--sp-8); margin-bottom: var(--sp-6);
+      box-shadow: var(--shadow-md);
+    }
+    .dx-gate h2 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-2); }
+    .dx-gate .dx-gate-sub { color: var(--text-secondary); font-size: var(--fs-sm); margin-bottom: var(--sp-5); line-height: 1.6; }
+    .dx-gate-preview {
+      display: flex; gap: var(--sp-4); flex-wrap: wrap; margin-bottom: var(--sp-6);
+    }
+    .dx-preview-item {
+      flex: 1; min-width: 130px; background: var(--bg-page);
+      border: 1px solid var(--border-light); border-radius: var(--r-md);
+      padding: var(--sp-4); text-align: center;
+      filter: blur(3px); user-select: none; pointer-events: none;
+    }
+    .dx-preview-item .preview-val { font-size: var(--fs-xl); font-weight: 800; color: var(--aws-orange); display: block; }
+    .dx-preview-item .preview-lbl { font-size: var(--fs-xs); color: var(--text-muted); }
+    .dx-email-row { display: flex; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-3); }
+    .dx-email-input {
+      flex: 1; min-width: 220px; padding: 12px 14px;
+      border: 1.5px solid var(--border-color); border-radius: var(--r-md);
+      font-size: var(--fs-sm); font-family: inherit;
+      transition: border-color var(--t-fast), box-shadow var(--t-fast);
+    }
+    .dx-email-input:focus { outline: none; border-color: var(--aws-orange); box-shadow: 0 0 0 3px rgba(255,153,0,.12); }
+    .dx-consent { display: flex; align-items: flex-start; gap: var(--sp-3); font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.5; margin-bottom: var(--sp-3); }
+    .dx-consent input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; width: 14px; height: 14px; accent-color: var(--aws-orange); }
+    .dx-gate-error { color: var(--color-error); font-size: var(--fs-xs); margin-bottom: var(--sp-2); display: none; }
+
+    /* ── Full results ── */
+    #dx-full-results { display: none; }
+    .dx-full-header { margin-bottom: var(--sp-6); }
+    .dx-full-header h2 { font-size: var(--fs-2xl); font-weight: 800; margin-bottom: var(--sp-2); }
+    .dx-full-header p { color: var(--text-secondary); }
+    .dx-domain-bars { display: flex; flex-direction: column; gap: var(--sp-4); margin-bottom: var(--sp-8); }
+    .dx-domain-bar-item { display: flex; align-items: center; gap: var(--sp-4); }
+    .dx-domain-name { font-size: var(--fs-sm); font-weight: 600; min-width: 200px; }
+    .dx-domain-track { flex: 1; height: 10px; background: var(--border-light); border-radius: var(--r-full); overflow: hidden; }
+    .dx-domain-fill { height: 100%; border-radius: var(--r-full); background: linear-gradient(90deg, var(--aws-orange), var(--aws-orange-hover)); transition: width 1s cubic-bezier(.4,0,.2,1); width: 0%; }
+    .dx-domain-fill.fail { background: linear-gradient(90deg, var(--color-error), #EF5350); }
+    .dx-domain-pct { font-size: var(--fs-sm); font-weight: 700; min-width: 36px; text-align: right; }
+
+    .dx-estimate-card {
+      background: var(--bg-card); border: 1px solid var(--border-light);
+      border-radius: var(--r-lg); padding: var(--sp-6); margin-bottom: var(--sp-6);
+      box-shadow: var(--shadow-sm);
+    }
+    .dx-estimate-card h3 { font-size: var(--fs-base); font-weight: 700; margin-bottom: var(--sp-2); }
+    .dx-estimate-range { font-size: var(--fs-3xl); font-weight: 800; color: var(--aws-orange); margin-bottom: var(--sp-2); }
+    .dx-estimate-disclaimer { font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.6; border-top: 1px solid var(--border-light); padding-top: var(--sp-3); margin-top: var(--sp-3); }
+
+    .dx-recs { background: var(--color-info-bg); border-left: 4px solid var(--color-info); border-radius: 0 var(--r-md) var(--r-md) 0; padding: var(--sp-5); margin-bottom: var(--sp-8); }
+    .dx-recs h3 { font-size: var(--fs-base); font-weight: 700; color: var(--color-info); margin-bottom: var(--sp-3); }
+    .dx-recs ul { padding-left: var(--sp-4); color: var(--text-secondary); font-size: var(--fs-sm); line-height: 1.9; }
+    .dx-recs li { list-style: disc; margin-bottom: var(--sp-1); }
+
+    .dx-cta-grid { display: flex; gap: var(--sp-4); flex-wrap: wrap; margin-bottom: var(--sp-4); }
+    .dx-cta-note { font-size: var(--fs-xs); color: var(--text-muted); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .dx-hero h1 { font-size: var(--fs-2xl); }
+      .dx-teaser { padding: var(--sp-6) var(--sp-5); }
+      .dx-gate { padding: var(--sp-6) var(--sp-5); }
+      .dx-email-row { flex-direction: column; }
+      .dx-domain-name { min-width: 130px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-header-mount">
+    <noscript>
+      <nav style="background:#232F3E;padding:.75rem 1.5rem;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
+        <a href="/"           style="color:#FF9900;font-weight:700;text-decoration:none">Home</a>
+        <a href="/diagnostic" style="color:#FF9900;font-weight:700;text-decoration:none">Diagnostic</a>
+        <a href="/exam-guide" style="color:rgba(255,255,255,.7);text-decoration:none">Exam Guide</a>
+        <a href="/faq"        style="color:rgba(255,255,255,.7);text-decoration:none">FAQ</a>
+      </nav>
+    </noscript>
+  </div>
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="dx-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span><span>Diagnostic</span>
+      </nav>
+
+      <!-- Hero -->
+      <section class="dx-hero">
+        <h1>Free CLF-C02 Readiness Diagnostic</h1>
+        <p class="lead">Answer 10 real exam-style questions — no account needed. You'll get an instant score, your weakest domain, and an estimated scaled score range.</p>
+        <div class="dx-meta-pills">
+          <span class="dx-pill free">&#10003; Free</span>
+          <span class="dx-pill">10 questions</span>
+          <span class="dx-pill">All 4 domains</span>
+          <span class="dx-pill">~5 minutes</span>
+        </div>
+      </section>
+
+      <!-- Progress bar -->
+      <div class="dx-progress-wrap" style="margin-top:var(--sp-8)">
+        <div class="dx-progress-track"><div class="dx-progress-fill" id="dx-progress-fill"></div></div>
+        <span class="dx-progress-label" id="dx-progress-label">0 / 10</span>
+      </div>
+
+      <!-- 10 Questions -->
+      <div class="dx-questions" id="dx-questions"></div>
+
+      <!-- Results (hidden until all 10 answered) -->
+      <div id="dx-results">
+
+        <!-- Teaser (free, no gate) -->
+        <div class="dx-teaser">
+          <div class="dx-score-display">
+            <span class="dx-score-big" id="dx-score-num">—</span><span class="dx-score-denom"> / 10</span>
+            <div class="dx-score-label">questions correct</div>
+          </div>
+          <p class="dx-teaser-summary" id="dx-teaser-summary"></p>
+        </div>
+
+        <!-- Email gate -->
+        <div class="dx-gate" id="dx-gate">
+          <h2>See your full results</h2>
+          <p class="dx-gate-sub">Enter your email to unlock per-domain scores, an estimated scaled score range, and tailored study recommendations.</p>
+
+          <!-- Blurred preview of what's behind the gate -->
+          <div class="dx-gate-preview" aria-hidden="true">
+            <div class="dx-preview-item"><span class="preview-val">68%</span><span class="preview-lbl">Security score</span></div>
+            <div class="dx-preview-item"><span class="preview-val">580–680</span><span class="preview-lbl">Estimated range</span></div>
+            <div class="dx-preview-item"><span class="preview-val">D2</span><span class="preview-lbl">Focus domain</span></div>
+          </div>
+
+          <div class="dx-gate-error" id="dx-gate-error"></div>
+          <form id="dx-email-form" novalidate>
+            <div class="dx-email-row">
+              <input type="email" class="dx-email-input" id="dx-email" placeholder="you@example.com" required autocomplete="email">
+              <button type="submit" class="btn btn-primary btn-lg" id="dx-submit-btn">Show my full results</button>
+            </div>
+            <label class="dx-consent">
+              <input type="checkbox" id="dx-consent" required>
+              <span>I agree to receive study tips and course updates from CLF-C02 Prep. I can unsubscribe at any time.</span>
+            </label>
+          </form>
+        </div>
+
+        <!-- Full results (shown after email submit) -->
+        <div id="dx-full-results">
+          <div class="dx-full-header">
+            <h2>Your CLF-C02 Readiness Breakdown</h2>
+            <p>Based on 10 questions — see how you scored across all four exam domains.</p>
+          </div>
+
+          <!-- Per-domain bars -->
+          <div class="dx-domain-bars" id="dx-domain-bars"></div>
+
+          <!-- Scaled estimate -->
+          <div class="dx-estimate-card">
+            <h3>Estimated Scaled Score Range</h3>
+            <div class="dx-estimate-range" id="dx-estimate-range">—</div>
+            <div class="dx-estimate-disclaimer">
+              <strong>Informal estimate from 10 questions</strong> — not an official AWS score and not a guarantee of exam results. AWS uses a proprietary scaled scoring model across 50 scored questions. This range reflects your domain-weighted performance on this sample and has ±80 point uncertainty.
+            </div>
+          </div>
+
+          <!-- Study recommendations -->
+          <div class="dx-recs" id="dx-recs"></div>
+
+          <!-- CTAs -->
+          <div class="dx-cta-grid">
+            <a href="/study-plan" class="btn btn-primary btn-lg">
+              Build your free study plan
+              <span style="font-size:.75em;opacity:.65;margin-left:6px">(coming soon)</span>
+            </a>
+            <button id="dx-pay-btn" class="btn btn-secondary btn-lg">Unlock all practice tests — $49</button>
+          </div>
+          <p class="dx-cta-note">10-day money-back guarantee &middot; one-time payment &middot; lifetime access</p>
+        </div>
+      </div><!-- /#dx-results -->
+
+    </div><!-- /.container -->
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <!-- Auth modal -->
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header"><h2>Welcome</h2><p class="auth-modal-subtitle">Sign in to access practice tests</p></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field"><label for="login-email">Email</label><input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="auth-field"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password"></div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field"><label for="signup-name">Your Name</label><input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name"></div>
+        <div class="auth-field"><label for="signup-email">Email</label><input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="auth-field"><label for="signup-password">Password</label><input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password"></div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/firebase-auth.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ── Question bank (10 real questions from questions.js, domain-weighted 2/3/4/1) ──
+    var BANK = [
+      // Domain 1 — Cloud Concepts (2)
+      { id: 2,  domain: 1, name: "Cloud Concepts",
+        q: "Which advantage of cloud computing allows AWS to offer lower pay-as-you-go prices compared to what most individual companies can achieve on their own?",
+        opts: ["Global infrastructure","Economies of scale","High availability","Elasticity"], ci: 1,
+        exp: "AWS aggregates usage from hundreds of thousands of customers, achieving higher economies of scale. This translates into lower pay-as-you-go prices. Global infrastructure is about geographic reach, high availability is about uptime, and elasticity is about scaling resources dynamically." },
+      { id: 3,  domain: 1, name: "Cloud Concepts",
+        q: "A startup needs to deploy its application in multiple geographic locations to serve users with low latency. Which AWS Cloud benefit makes this feasible without building physical data centers?",
+        opts: ["Elasticity","Agility","Global reach of AWS infrastructure","Pay-as-you-go pricing"], ci: 2,
+        exp: "AWS operates Regions and edge locations around the world. A startup can deploy globally in minutes using this existing infrastructure rather than building data centers. Elasticity refers to scaling, agility to speed of deployment, and pay-as-you-go to the pricing model." },
+
+      // Domain 2 — Security and Compliance (3)
+      { id: 64, domain: 2, name: "Security and Compliance",
+        q: "Under the Shared Responsibility Model, who is responsible for patching the operating system on an Amazon EC2 instance?",
+        opts: ["AWS","The customer","Both AWS and the customer equally","Neither — it is handled automatically"], ci: 1,
+        exp: "When using EC2 (IaaS), the customer is responsible for patching and maintaining the guest operating system, including security patches. AWS manages the underlying infrastructure and hypervisor. This is a key distinction in the shared responsibility model." },
+      { id: 72, domain: 2, name: "Security and Compliance",
+        q: "Which AWS service records API calls made on your account and delivers log files for auditing purposes?",
+        opts: ["Amazon CloudWatch","AWS CloudTrail","AWS Config","Amazon GuardDuty"], ci: 1,
+        exp: "AWS CloudTrail records API calls for your AWS account, including who made the call, when, from where, and what was requested. This is essential for security auditing and compliance. CloudWatch monitors metrics and logs, Config tracks resource configuration, and GuardDuty is for threat detection." },
+      { id: 88, domain: 2, name: "Security and Compliance",
+        q: "What is Multi-Factor Authentication (MFA) in the context of AWS IAM?",
+        opts: ["Using multiple IAM users to access a single resource","Requiring a password plus a code from an authentication device to sign in","Encrypting data with multiple encryption keys simultaneously","Running the same workload across multiple AWS Regions"], ci: 1,
+        exp: "MFA adds an extra layer of protection by requiring something you know (password) and something you have (a code from a hardware or virtual MFA device) to sign in. This significantly reduces the risk of unauthorized access even if passwords are compromised." },
+
+      // Domain 3 — Cloud Technology and Services (4)
+      { id: 148, domain: 3, name: "Cloud Technology & Services",
+        q: "What is an AWS Region?",
+        opts: ["A single data center","A geographic area containing two or more Availability Zones","A content delivery network endpoint","A virtual private cloud"], ci: 1,
+        exp: "An AWS Region is a geographic area that contains two or more isolated Availability Zones. Each Region is completely independent to provide fault tolerance and stability. A single data center is part of an AZ, CDN endpoints are edge locations, and VPC is a networking construct." },
+      { id: 164, domain: 3, name: "Cloud Technology & Services",
+        q: "A company runs a web application that must scale between 2 and 20 EC2 instances based on CPU utilization. Which service should they configure?",
+        opts: ["AWS Lambda","Amazon EC2 Auto Scaling with a target tracking scaling policy","Elastic Load Balancing","Amazon CloudFront"], ci: 1,
+        exp: "EC2 Auto Scaling with a target tracking policy lets you define a target CPU utilization. Auto Scaling adjusts the number of instances (between your min and max) to maintain that target. Lambda doesn't use EC2, ELB distributes traffic, and CloudFront is a CDN." },
+      { id: 165, domain: 3, name: "Cloud Technology & Services",
+        q: "Which AWS service is a managed relational database that supports MySQL, PostgreSQL, MariaDB, Oracle, and SQL Server?",
+        opts: ["Amazon DynamoDB","Amazon RDS","Amazon Redshift","Amazon ElastiCache"], ci: 1,
+        exp: "Amazon RDS (Relational Database Service) is a managed service that supports multiple relational database engines. DynamoDB is NoSQL, Redshift is a data warehouse, and ElastiCache is an in-memory cache." },
+      { id: 166, domain: 3, name: "Cloud Technology & Services",
+        q: "Which AWS database is a fully managed, serverless, key-value and document NoSQL database?",
+        opts: ["Amazon RDS","Amazon DynamoDB","Amazon Aurora","Amazon Redshift"], ci: 1,
+        exp: "Amazon DynamoDB is a fully managed, serverless NoSQL database that provides key-value and document data models with single-digit millisecond performance at any scale. RDS and Aurora are relational, and Redshift is a data warehouse." },
+
+      // Domain 4 — Billing, Pricing, and Support (1)
+      { id: 231, domain: 4, name: "Billing, Pricing, and Support",
+        q: "Which AWS pricing model provides significant discounts for unused EC2 capacity that AWS can reclaim with a two-minute warning?",
+        opts: ["Reserved Instances","On-Demand Instances","Spot Instances","Savings Plans"], ci: 2,
+        exp: "Spot Instances let you use unused EC2 capacity at up to 90% discount. However, AWS can reclaim them with a two-minute interruption notice. They are ideal for fault-tolerant, flexible workloads. Reserved Instances and Savings Plans require commitments, and On-Demand is full price." }
+    ];
+
+    var DOMAIN_WEIGHTS = { 1: 0.24, 2: 0.30, 3: 0.34, 4: 0.12 };
+    var DOMAIN_NAMES   = { 1: "Cloud Concepts", 2: "Security and Compliance", 3: "Cloud Technology and Services", 4: "Billing, Pricing, and Support" };
+    var LABELS = 'ABCDE';
+
+    // ── State ──────────────────────────────────────────────────────────────
+    var state = {
+      questions: [],   // shuffled, each with shuffledOpts + shuffledCorrect
+      answers:   {},   // { idx: userPickedIndex }
+      answered:  0
+    };
+
+    // ── Shuffle ────────────────────────────────────────────────────────────
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    // ── Render questions ───────────────────────────────────────────────────
+    function init() {
+      // Shuffle question order
+      state.questions = shuffle(BANK);
+
+      // Shuffle options within each question, remap correct index
+      state.questions.forEach(function (q) {
+        var idxArr = [0, 1, 2, 3];
+        var shuffled = shuffle(idxArr);
+        q.shuffledOpts    = shuffled.map(function (i) { return q.opts[i]; });
+        q.shuffledCorrect = shuffled.indexOf(q.ci);
+      });
+
+      var container = document.getElementById('dx-questions');
+      state.questions.forEach(function (q, qi) {
+        var card = document.createElement('article');
+        card.className = 'dx-card';
+        card.id = 'dx-card-' + qi;
+
+        var header = '<div class="dx-card-header">' +
+          '<span class="dx-card-num">Question ' + (qi + 1) + ' of 10</span>' +
+          '<span class="dx-card-domain">' + q.name + '</span>' +
+          '</div>';
+
+        var optHtml = q.shuffledOpts.map(function (opt, oi) {
+          return '<div class="dx-option" data-qi="' + qi + '" data-oi="' + oi + '">' +
+            '<span class="dx-opt-letter">' + LABELS[oi] + '</span><span>' + opt + '</span></div>';
+        }).join('');
+
+        card.innerHTML = header +
+          '<p class="dx-question-text">' + q.q + '</p>' +
+          '<div class="dx-options">' + optHtml + '</div>' +
+          '<div class="dx-explanation" id="dx-exp-' + qi + '">' +
+            '<div class="dx-explanation-lbl" id="dx-exp-lbl-' + qi + '"></div>' +
+            '<p>' + q.exp + '</p>' +
+          '</div>';
+
+        container.appendChild(card);
+
+        // Wire click handlers
+        card.querySelectorAll('.dx-option').forEach(function (opt) {
+          opt.addEventListener('click', function () {
+            handleAnswer(parseInt(opt.dataset.qi), parseInt(opt.dataset.oi));
+          });
+        });
+      });
+    }
+
+    function handleAnswer(qi, oi) {
+      if (state.answers[qi] !== undefined) return; // already answered
+      state.answers[qi] = oi;
+      state.answered++;
+
+      var q         = state.questions[qi];
+      var isCorrect = (oi === q.shuffledCorrect);
+      var card      = document.getElementById('dx-card-' + qi);
+      var expEl     = document.getElementById('dx-exp-' + qi);
+      var lblEl     = document.getElementById('dx-exp-lbl-' + qi);
+
+      // Grade options
+      card.querySelectorAll('.dx-option').forEach(function (opt, i) {
+        opt.setAttribute('data-graded', '1');
+        opt.style.cursor = 'default';
+        if (i === q.shuffledCorrect) opt.classList.add('opt-correct');
+        else if (i === oi && !isCorrect) opt.classList.add('opt-wrong');
+      });
+
+      // Explanation
+      if (!isCorrect) expEl.classList.add('wrong');
+      lblEl.textContent = isCorrect
+        ? '✓ Correct!'
+        : '✗ Incorrect — correct answer is ' + LABELS[q.shuffledCorrect] + '.';
+      expEl.style.display = 'block';
+
+      // Progress
+      updateProgress();
+
+      // All done?
+      if (state.answered === 10) {
+        setTimeout(showTeaser, 600);
+      }
+    }
+
+    function updateProgress() {
+      var fill  = document.getElementById('dx-progress-fill');
+      var label = document.getElementById('dx-progress-label');
+      if (fill)  fill.style.width = (state.answered / 10 * 100) + '%';
+      if (label) label.textContent = state.answered + ' / 10';
+    }
+
+    // ── Scoring ────────────────────────────────────────────────────────────
+    function computeResults() {
+      var raw = 0;
+      var domainStats = { 1:{c:0,t:0}, 2:{c:0,t:0}, 3:{c:0,t:0}, 4:{c:0,t:0} };
+
+      state.questions.forEach(function (q, qi) {
+        var correct = state.answers[qi] === q.shuffledCorrect;
+        if (correct) raw++;
+        domainStats[q.domain].t++;
+        if (correct) domainStats[q.domain].c++;
+      });
+
+      // Domain-weighted performance
+      var weighted = 0;
+      [1, 2, 3, 4].forEach(function (d) {
+        var ds = domainStats[d];
+        var pct = ds.t > 0 ? ds.c / ds.t : 0;
+        weighted += pct * DOMAIN_WEIGHTS[d];
+      });
+      var mid = Math.round(100 + weighted * 900);
+      var low = Math.max(100, mid - 80);
+      var high = Math.min(1000, mid + 80);
+
+      // Strongest / weakest
+      var sorted = [1, 2, 3, 4].filter(function (d) { return domainStats[d].t > 0; })
+        .sort(function (a, b) {
+          return (domainStats[b].c / domainStats[b].t) - (domainStats[a].c / domainStats[a].t);
+        });
+      var strongest = sorted[0];
+      var weakest   = sorted[sorted.length - 1];
+
+      return { raw: raw, domainStats: domainStats, low: low, high: high, strongest: strongest, weakest: weakest };
+    }
+
+    function showTeaser() {
+      var r = computeResults();
+
+      document.getElementById('dx-score-num').textContent = r.raw;
+      var pct = Math.round(r.raw / 10 * 100);
+      var readiness = pct >= 70 ? 'Strong' : pct >= 50 ? 'Developing' : 'Needs work';
+      document.getElementById('dx-teaser-summary').innerHTML =
+        'Overall readiness: <strong>' + readiness + ' (' + pct + '%)</strong>. ' +
+        'Strongest domain: <strong>' + DOMAIN_NAMES[r.strongest] + '</strong>. ' +
+        'Focus area: <strong>' + DOMAIN_NAMES[r.weakest] + '</strong>.';
+
+      var results = document.getElementById('dx-results');
+      results.style.display = 'block';
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── Email gate ─────────────────────────────────────────────────────────
+    document.getElementById('dx-email-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var errEl   = document.getElementById('dx-gate-error');
+      var email   = document.getElementById('dx-email').value.trim();
+      var consent = document.getElementById('dx-consent').checked;
+      var btn     = document.getElementById('dx-submit-btn');
+
+      errEl.style.display = 'none';
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errEl.textContent = 'Please enter a valid email address.';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (!consent) {
+        errEl.textContent = 'Please check the consent box to continue.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Loading…';
+
+      var r = computeResults();
+
+      // ── Firestore write ──────────────────────────────────────────────────
+      // TODO: trigger welcome email via your email provider (Sendgrid, Mailchimp, etc.)
+      // before or after this write. Hook: email=email, score=r.raw, weakest=r.weakest
+      var leadData = {
+        email:        email,
+        consent:      true,
+        consentAt:    firebase.firestore.FieldValue.serverTimestamp(),
+        score:        r.raw,
+        scorePct:     Math.round(r.raw / 10 * 100),
+        scaledLow:    r.low,
+        scaledHigh:   r.high,
+        weakestDomain:   String(r.weakest),
+        strongestDomain: String(r.strongest),
+        domainScores: {
+          d1: { correct: r.domainStats[1].c, total: r.domainStats[1].t },
+          d2: { correct: r.domainStats[2].c, total: r.domainStats[2].t },
+          d3: { correct: r.domainStats[3].c, total: r.domainStats[3].t },
+          d4: { correct: r.domainStats[4].c, total: r.domainStats[4].t }
+        },
+        source: 'diagnostic',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      firebase.firestore().collection('diagnostic_leads').add(leadData)
+        .then(function () { showFullResults(r); })
+        .catch(function (err) {
+          console.error('Lead write failed:', err);
+          // Still show results — don't block the user on a Firestore error
+          showFullResults(r);
+        });
+    });
+
+    function showFullResults(r) {
+      document.getElementById('dx-gate').style.display = 'none';
+
+      // Domain bars
+      var barsEl = document.getElementById('dx-domain-bars');
+      [1, 2, 3, 4].forEach(function (d) {
+        var ds  = r.domainStats[d];
+        var pct = ds.t > 0 ? Math.round(ds.c / ds.t * 100) : 0;
+        var row = document.createElement('div');
+        row.className = 'dx-domain-bar-item';
+        row.innerHTML =
+          '<span class="dx-domain-name">' + DOMAIN_NAMES[d] + '</span>' +
+          '<div class="dx-domain-track"><div class="dx-domain-fill' + (pct < 70 ? ' fail' : '') +
+          '" id="dx-bar-' + d + '" style="width:0%"></div></div>' +
+          '<span class="dx-domain-pct">' + ds.c + '/' + ds.t + '</span>';
+        barsEl.appendChild(row);
+        setTimeout(function () {
+          var fill = document.getElementById('dx-bar-' + d);
+          if (fill) fill.style.width = pct + '%';
+        }, 200);
+      });
+
+      // Scaled estimate
+      document.getElementById('dx-estimate-range').textContent = r.low + ' – ' + r.high;
+
+      // Study recommendations
+      var recsEl = document.getElementById('dx-recs');
+      var weakName = DOMAIN_NAMES[r.weakest];
+      var recs = buildRecs(r);
+      recsEl.innerHTML = '<h3>&#128218; Recommended focus areas</h3><ul>' +
+        recs.map(function (rec) { return '<li>' + rec + '</li>'; }).join('') + '</ul>';
+
+      document.getElementById('dx-full-results').style.display = 'block';
+      document.getElementById('dx-full-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Register pay button with BuyFlow
+      var payBtn = document.getElementById('dx-pay-btn');
+      if (payBtn && window.BuyFlow) {
+        window.BuyFlow.registerBtn('dx-pay-btn', 'Unlock all practice tests — $49');
+        payBtn.addEventListener('click', window.BuyFlow.handlePay);
+      }
+    }
+
+    function buildRecs(r) {
+      var recs = [];
+      [1, 2, 3, 4].forEach(function (d) {
+        var ds  = r.domainStats[d];
+        var pct = ds.t > 0 ? ds.c / ds.t : 1;
+        if (pct < 0.7) {
+          var tips = {
+            1: "Review the six advantages of cloud computing and the Well-Architected Framework pillars — these appear frequently.",
+            2: "Focus on the Shared Responsibility Model and IAM fundamentals (users, roles, policies, MFA) — Domain 2 is 30% of the real exam.",
+            3: "Study the core services: EC2, S3, RDS, DynamoDB, VPC, and Lambda. Know which service fits which use case.",
+            4: "Review EC2 pricing models (On-Demand, Reserved, Spot, Savings Plans) and the AWS Support plan tiers."
+          };
+          recs.push('<strong>' + DOMAIN_NAMES[d] + ':</strong> ' + tips[d]);
+        }
+      });
+      if (recs.length === 0) {
+        recs.push('Strong performance across all four domains! Take a full 65-question timed test to simulate exam-day conditions and confirm your readiness.');
+      } else {
+        recs.push('Practice timed 65-question tests to reinforce timing and build exam confidence across all four domains.');
+      }
+      return recs;
+    }
+
+    // ── Bootstrap ──────────────────────────────────────────────────────────
+    init();
+  })();
+  </script>
+
+</body>
+</html>

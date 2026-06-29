@@ -289,9 +289,8 @@
 
           <!-- CTAs -->
           <div class="dx-cta-grid">
-            <a href="/study-plan" class="btn btn-primary btn-lg">
+            <a href="/study-plan" class="btn btn-primary btn-lg" id="dx-study-plan-link">
               Build your free study plan
-              <span style="font-size:.75em;opacity:.65;margin-left:6px">(coming soon)</span>
             </a>
             <button id="dx-pay-btn" class="btn btn-secondary btn-lg">Unlock all practice tests — $49</button>
           </div>
@@ -623,6 +622,17 @@
 
     function showFullResults(r) {
       document.getElementById('dx-gate').style.display = 'none';
+
+      // Wire study-plan CTA with diagnostic results so the plan can weight weak domains
+      var spLink = document.getElementById('dx-study-plan-link');
+      if (spLink) {
+        spLink.href = '/study-plan?weakest=' + r.weakest +
+          '&d1=' + Math.round(r.domainStats[1].c / Math.max(r.domainStats[1].t, 1) * 100) +
+          '&d2=' + Math.round(r.domainStats[2].c / Math.max(r.domainStats[2].t, 1) * 100) +
+          '&d3=' + Math.round(r.domainStats[3].c / Math.max(r.domainStats[3].t, 1) * 100) +
+          '&d4=' + Math.round(r.domainStats[4].c / Math.max(r.domainStats[4].t, 1) * 100) +
+          '&score=' + Math.round(r.raw / 10 * 100);
+      }
 
       // Domain bars
       var barsEl = document.getElementById('dx-domain-bars');

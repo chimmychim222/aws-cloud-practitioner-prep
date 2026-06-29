@@ -17,6 +17,7 @@
   var links = [
     { label: 'Home',               href: '/' },
     { label: 'Exam Guide',         href: '/exam-guide' },
+    { label: 'Study Plan',         href: '/study-plan' },
     { label: 'Diagnostic',         href: '/diagnostic' },
     { label: 'Practice Questions', href: '/practice-questions' },
     { label: 'FAQ',                href: '/faq' }

@@ -474,11 +474,13 @@
     }
 
     // ── Render ────────────────────────────────────────────────────────────
-    var planKey = '';
+    // Checkbox keys use a fixed stable prefix (no plan parameters) so they
+    // are always the same key on save and on restore, regardless of what
+    // settings generated the plan.
+    var CB_PREFIX = 'sp_cb_';
 
     function renderPlan(weeks, intensity, examDateStr, suppressScroll) {
       var result = buildPlan(weeks, intensity);
-      planKey = 'sp_' + weeks + '_' + intensity + '_' + (examDateStr || 'nodate');
 
       // Subtitle
       var titleEl = document.getElementById('sp-plan-title');
@@ -535,7 +537,7 @@
           dayDiv.className = 'sp-day';
           var sessionHtml = '<div class="sp-sessions-list">' +
             day.sessions.map(function(s, si) {
-              var cbId = planKey + '_w' + wi + '_d' + di + '_s' + si;
+              var cbId = CB_PREFIX + 'w' + wi + '_d' + di + '_s' + si;
               var checked = localStorage.getItem(cbId) === '1';
               return '<label class="sp-session' + (checked ? ' done' : '') + '" data-key="' + cbId + '">' +
                 '<input type="checkbox"' + (checked ? ' checked' : '') + ' data-key="' + cbId + '">' +
@@ -607,6 +609,9 @@
 
     document.getElementById('sp-reset-btn').addEventListener('click', function() {
       localStorage.removeItem('sp_last_config');
+      // Clear all checkbox state so a fresh plan starts unticked
+      Object.keys(localStorage).filter(function(k) { return k.indexOf(CB_PREFIX) === 0; })
+        .forEach(function(k) { localStorage.removeItem(k); });
       document.getElementById('sp-output').style.display = 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -614,23 +619,27 @@
     // ── Auto-restore last plan on page load ───────────────────────────────
     // Diagnostic handoff: pre-fill but don't auto-render (let user confirm settings).
     // Returning visit: auto-regenerate silently so checkboxes are restored immediately.
-    if (hasDiag) {
-      document.getElementById('sp-weeks').value = '4';
-    } else {
-      var savedCfg = localStorage.getItem('sp_last_config');
-      if (savedCfg) {
-        try {
-          var cfg = JSON.parse(savedCfg);
-          if (cfg.weeks >= 1 && cfg.weeks <= 12) {
-            if (cfg.examDate) document.getElementById('sp-exam-date').value = cfg.examDate;
-            document.getElementById('sp-weeks').value = cfg.weeks;
-            document.getElementById('sp-intensity').value = cfg.intensity || 'moderate';
-            // suppressScroll=true: page just loaded, don't scroll the user away from the top
-            renderPlan(cfg.weeks, cfg.intensity || 'moderate', cfg.examDate || '', true);
-          }
-        } catch (e) { localStorage.removeItem('sp_last_config'); }
+    // Diagnostic handoff: pre-fill weeks if arriving from /diagnostic
+    if (hasDiag) document.getElementById('sp-weeks').value = '4';
+
+    // Auto-restore last plan — runs ALWAYS, regardless of hasDiag.
+    // Reads sp_last_config, restores form values and regenerates the plan
+    // so checkbox state (keyed by position, not plan params) is found and restored.
+    (function autoRestore() {
+      var raw = localStorage.getItem('sp_last_config');
+      if (!raw) return;
+      try {
+        var cfg = JSON.parse(raw);
+        if (!cfg || cfg.weeks < 1 || cfg.weeks > 12) return;
+        if (cfg.examDate) document.getElementById('sp-exam-date').value = cfg.examDate;
+        document.getElementById('sp-weeks').value = cfg.weeks;
+        document.getElementById('sp-intensity').value = cfg.intensity || 'moderate';
+        // suppressScroll=true — page just loaded, don't hijack scroll position
+        renderPlan(cfg.weeks, cfg.intensity || 'moderate', cfg.examDate || '', true);
+      } catch (e) {
+        localStorage.removeItem('sp_last_config');
       }
-    }
+    })();
 
   })();
   </script>

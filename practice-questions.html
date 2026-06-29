@@ -155,11 +155,16 @@
       display: none;
       margin: 0 var(--sp-5) var(--sp-5);
       padding: var(--sp-4) var(--sp-5);
-      background: var(--color-success-bg);
       border-left: 4px solid var(--color-success);
+      background: var(--color-success-bg);
       border-radius: 0 var(--r-md) var(--r-md) 0;
     }
-    .pq-explanation-label { font-size: var(--fs-xs); font-weight: 700; color: var(--color-success); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--sp-2); }
+    .pq-explanation.pq-wrong {
+      border-left-color: var(--color-error);
+      background: var(--color-error-bg);
+    }
+    .pq-explanation-label { font-size: var(--fs-sm); font-weight: 700; color: var(--color-success); margin-bottom: var(--sp-2); }
+    .pq-explanation.pq-wrong .pq-explanation-label { color: var(--color-error); }
     .pq-explanation p { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; margin: 0; }
 
     /* ── Bank preview (fixed height, gradient fade) ── */
@@ -287,8 +292,7 @@
         <div class="pq-questions">
 
           <!-- Q1 — Domain 1 — multiple-choice -->
-          <article class="pq-card" data-correct="0">
-            data-type="multiple-choice"
+          <article class="pq-card" data-correct="0" data-type="multiple-choice">
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 1 — Cloud Concepts</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -302,14 +306,13 @@
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Stop guessing capacity</span></div>
             </div>
             <div class="pq-explanation">
-              <div class="pq-explanation-label">&#10003; Correct — A</div>
+              <div class="pq-explanation-label"></div>
               <p>Trading fixed expense for variable expense means you pay only for what you consume instead of investing heavily in data centers before you know how much capacity you need. Economies of scale reduce per-unit cost but don't directly eliminate upfront capital. Speed/agility and capacity planning are separate benefits.</p>
             </div>
           </article>
 
           <!-- Q63 — Domain 2 — multiple-choice -->
-          <article class="pq-card" data-correct="1">
-            data-type="multiple-choice"
+          <article class="pq-card" data-correct="1" data-type="multiple-choice">
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 2 — Security and Compliance</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -323,14 +326,13 @@
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Maintaining the global network infrastructure</span></div>
             </div>
             <div class="pq-explanation">
-              <div class="pq-explanation-label">&#10003; Correct — B</div>
+              <div class="pq-explanation-label"></div>
               <p>Customers are responsible for managing security group rules, which control inbound and outbound traffic to EC2 instances. AWS is responsible for the hypervisor, physical security of data centers, and the global network infrastructure.</p>
             </div>
           </article>
 
           <!-- Q7 — Domain 1 — multiple-response (format example) -->
-          <article class="pq-card" data-correct="1,2">
-            data-type="multiple-response"
+          <article class="pq-card" data-correct="1,2" data-type="multiple-response">
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 1 — Cloud Concepts</span>
               <span class="pq-tag pq-tag-type">Multiple-response</span>
@@ -346,14 +348,13 @@
               <div class="pq-option"><span class="pq-option-letter">E</span><span>Avoid all security responsibilities</span></div>
             </div>
             <div class="pq-explanation">
-              <div class="pq-explanation-label">&#10003; Correct — B and C</div>
+              <div class="pq-explanation-label"></div>
               <p>Going global in minutes and benefiting from massive economies of scale are two of the six advantages of cloud computing listed by AWS. You still need IT staff (though in different roles), no service guarantees 100% uptime, and customers still share security responsibilities under the shared responsibility model.</p>
             </div>
           </article>
 
           <!-- Q146 — Domain 3 — multiple-choice -->
-          <article class="pq-card" data-correct="1">
-            data-type="multiple-choice"
+          <article class="pq-card" data-correct="1" data-type="multiple-choice">
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 3 — Cloud Technology and Services</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -367,14 +368,13 @@
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Deploy only to production and skip other environments</span></div>
             </div>
             <div class="pq-explanation">
-              <div class="pq-explanation-label">&#10003; Correct — B</div>
+              <div class="pq-explanation-label"></div>
               <p>CloudFormation templates enable consistent, repeatable infrastructure deployment across environments. The same template ensures dev, staging, and production are identical. Manual configuration leads to drift and errors, and skipping environments is poor practice.</p>
             </div>
           </article>
 
           <!-- Q229 — Domain 4 — multiple-choice -->
-          <article class="pq-card" data-correct="2">
-            data-type="multiple-choice"
+          <article class="pq-card" data-correct="2" data-type="multiple-choice">
             <div class="pq-card-meta">
               <span class="pq-tag pq-tag-domain">Domain 4 — Billing, Pricing, and Support</span>
               <span class="pq-tag pq-tag-type">Multiple-choice</span>
@@ -388,7 +388,7 @@
               <div class="pq-option"><span class="pq-option-letter">D</span><span>Savings Plans (1-year, No Upfront)</span></div>
             </div>
             <div class="pq-explanation">
-              <div class="pq-explanation-label">&#10003; Correct — C</div>
+              <div class="pq-explanation-label"></div>
               <p>A 3-year Reserved Instance with All Upfront payment provides the greatest discount (up to 72% off On-Demand). Longer terms and upfront payments yield bigger discounts. On-Demand is full price, Spot is cheapest but interruptible and not suitable for 24/7 steady workloads, and a 1-year Savings Plan with No Upfront provides less discount.</p>
             </div>
           </article>
@@ -552,18 +552,43 @@
 
       function grade() {
         graded = true;
+        var LABELS = 'ABCDE';
+
+        // Did the user get it right?
+        var userCorrect = correctIdxs.length === selected.length &&
+          correctIdxs.every(function (ci) { return selected.includes(ci); });
+
+        // Colour the options
         options.forEach(function (opt, i) {
           opt.classList.remove('answer-selected');
           opt.style.pointerEvents = 'none';
           opt.style.cursor = 'default';
           var isCorrect = correctIdxs.includes(i);
           var wasPicked = selected.includes(i);
-          if (isCorrect && wasPicked)  opt.classList.add('answer-correct');
-          else if (isCorrect)          opt.classList.add('answer-correct'); // show correct even if not picked
-          else if (wasPicked)          opt.classList.add('answer-incorrect');
+          if (isCorrect)   opt.classList.add('answer-correct');   // always show correct in green
+          else if (wasPicked) opt.classList.add('answer-incorrect'); // wrong pick in red
         });
+
+        // Build dynamic label text
+        var labelText;
+        if (userCorrect) {
+          labelText = '✓ Correct!';
+        } else if (!isMR) {
+          var pickedLetter  = LABELS[selected[0]];
+          var correctLetter = LABELS[correctIdxs[0]];
+          labelText = '✗ Incorrect — you selected ' + pickedLetter +
+                      '. The correct answer is ' + correctLetter + '.';
+        } else {
+          var correctLetters = correctIdxs.map(function (ci) { return LABELS[ci]; }).join(' and ');
+          labelText = '✗ Incorrect. The correct answers are ' + correctLetters + '.';
+        }
+
         var exp = card.querySelector('.pq-explanation');
-        if (exp) exp.style.display = 'block';
+        if (!exp) return;
+        var lbl = exp.querySelector('.pq-explanation-label');
+        if (lbl) lbl.textContent = labelText;
+        if (!userCorrect) exp.classList.add('pq-wrong');
+        exp.style.display = 'block';
       }
 
       options.forEach(function (opt, i) {

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Cloud Practitioner Study Plan — CLF-C02</title>
+  <meta name="description" content="Free personalized CLF-C02 study plan. Enter your exam date and get a week-by-week schedule across all four domains — no account needed.">
+  <link rel="canonical" href="https://cloudpractitionerprep.com/study-plan">
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Free AWS Cloud Practitioner Study Plan — CLF-C02">
+  <meta property="og:description" content="Enter your exam date and get a personalized week-by-week CLF-C02 study schedule, weighted by domain. Free, printable, no account needed.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/study-plan">
+  <meta property="og:site_name"   content="AWS Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Free CLF-C02 Study Plan Generator">
+  <meta name="twitter:description" content="Week-by-week study schedule for the AWS Cloud Practitioner exam. Enter your date, get your plan instantly.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+  <meta name="robots" content="index, follow">
+
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "AWS Cloud Practitioner CLF-C02 Study Plan Generator",
+      "description": "Free personalized study plan for the AWS Certified Cloud Practitioner CLF-C02 exam. Week-by-week schedule weighted by official domain percentages.",
+      "url": "https://cloudpractitionerprep.com/study-plan",
+      "provider": { "@type": "Organization", "name": "AWS Cloud Practitioner Prep", "url": "https://cloudpractitionerprep.com" },
+      "educationalLevel": "Foundational",
+      "isAccessibleForFree": true
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home",       "item": "https://cloudpractitionerprep.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Study Plan", "item": "https://cloudpractitionerprep.com/study-plan" }
+      ]
+    }
+  ]
+  </script>
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%23232F3E'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='%23FF9900' font-family='Arial,sans-serif' font-weight='bold'>A</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .sp-bc { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .sp-bc a { color: var(--text-muted); text-decoration: none; }
+    .sp-bc a:hover { color: var(--aws-orange); }
+    .sp-bc .sep { margin: 0 var(--sp-2); }
+
+    /* ── Hero ── */
+    .sp-hero { padding: var(--sp-10) 0 var(--sp-8); border-bottom: 1px solid var(--border-light); }
+    .sp-hero h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; line-height: 1.15; margin-bottom: var(--sp-3); }
+    .sp-hero .lead { font-size: var(--fs-lg); color: var(--text-secondary); max-width: 580px; line-height: 1.7; }
+
+    /* ── Diagnostic banner ── */
+    .sp-diag-banner {
+      display: none; /* shown by JS if params present */
+      background: var(--color-info-bg); border-left: 4px solid var(--color-info);
+      border-radius: 0 var(--r-md) var(--r-md) 0;
+      padding: var(--sp-4) var(--sp-5); margin: var(--sp-6) 0 0;
+      font-size: var(--fs-sm); color: var(--text-primary); line-height: 1.6;
+    }
+    .sp-diag-banner strong { color: var(--color-info); }
+
+    /* ── Form ── */
+    .sp-form-section { padding: var(--sp-10) 0; border-bottom: 1px solid var(--border-light); }
+    .sp-form-section h2 { font-size: var(--fs-xl); font-weight: 700; margin-bottom: var(--sp-6); }
+    .sp-form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-5); margin-bottom: var(--sp-6); }
+    .sp-field label { display: block; font-size: var(--fs-sm); font-weight: 600; color: var(--text-secondary); margin-bottom: var(--sp-2); }
+    .sp-field input[type="date"],
+    .sp-field select,
+    .sp-field input[type="number"] {
+      width: 100%; padding: 11px 13px;
+      border: 1.5px solid var(--border-color); border-radius: var(--r-md);
+      font-size: var(--fs-sm); font-family: inherit; background: var(--bg-card);
+      color: var(--text-primary);
+      transition: border-color var(--t-fast), box-shadow var(--t-fast);
+      box-sizing: border-box;
+    }
+    .sp-field input:focus, .sp-field select:focus {
+      outline: none; border-color: var(--aws-orange);
+      box-shadow: 0 0 0 3px rgba(255,153,0,.12);
+    }
+    .sp-field .sp-hint { font-size: var(--fs-xs); color: var(--text-muted); margin-top: var(--sp-1); }
+    .sp-form-or { display: flex; align-items: center; gap: var(--sp-4); margin: var(--sp-4) 0; font-size: var(--fs-xs); color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .sp-form-or::before, .sp-form-or::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+
+    /* ── Plan output ── */
+    #sp-output { display: none; }
+    .sp-plan-header { padding: var(--sp-10) 0 var(--sp-6); }
+    .sp-plan-header h2 { font-size: var(--fs-2xl); font-weight: 800; margin-bottom: var(--sp-2); }
+    .sp-plan-header p { color: var(--text-secondary); font-size: var(--fs-sm); }
+    .sp-plan-meta { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin: var(--sp-5) 0; }
+    .sp-meta-chip {
+      background: var(--bg-card); border: 1px solid var(--border-light);
+      border-radius: var(--r-full); padding: 4px 14px;
+      font-size: var(--fs-xs); font-weight: 600; color: var(--text-secondary);
+    }
+    .sp-meta-chip span { color: var(--aws-orange); font-weight: 700; }
+
+    /* ── Domain weight bar ── */
+    .sp-domain-weights { display: flex; flex-direction: column; gap: var(--sp-2); margin-bottom: var(--sp-8); padding: var(--sp-5); background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); }
+    .sp-weight-row { display: flex; align-items: center; gap: var(--sp-3); }
+    .sp-weight-name { font-size: var(--fs-xs); font-weight: 600; min-width: 180px; color: var(--text-secondary); }
+    .sp-weight-track { flex: 1; height: 8px; background: var(--border-light); border-radius: var(--r-full); overflow: hidden; }
+    .sp-weight-fill { height: 100%; border-radius: var(--r-full); background: linear-gradient(90deg, var(--aws-orange), var(--aws-orange-hover)); }
+    .sp-weight-fill.boosted { background: linear-gradient(90deg, var(--color-info), #1565C0); }
+    .sp-weight-pct { font-size: var(--fs-xs); font-weight: 700; color: var(--aws-orange); min-width: 34px; text-align: right; }
+    .sp-weight-pct.boosted { color: var(--color-info); }
+
+    /* ── Week cards ── */
+    .sp-weeks { display: flex; flex-direction: column; gap: var(--sp-5); margin-bottom: var(--sp-10); }
+    .sp-week {
+      background: var(--bg-card); border: 1px solid var(--border-light);
+      border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm);
+      page-break-inside: avoid;
+    }
+    .sp-week-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--aws-squid-ink); color: #fff;
+    }
+    .sp-week-header.review { background: linear-gradient(90deg, #1565C0, #0D47A1); }
+    .sp-week-num { font-size: var(--fs-base); font-weight: 800; }
+    .sp-week-focus { font-size: var(--fs-xs); color: rgba(255,255,255,.6); }
+    .sp-week-sessions { font-size: var(--fs-xs); color: rgba(255,255,255,.5); white-space: nowrap; }
+    .sp-days { display: flex; flex-direction: column; }
+    .sp-day {
+      display: flex; align-items: flex-start; gap: var(--sp-4);
+      padding: var(--sp-3) var(--sp-5);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .sp-day:last-child { border-bottom: none; }
+    .sp-day-name { font-size: var(--fs-xs); font-weight: 700; color: var(--text-muted); min-width: 72px; padding-top: 2px; text-transform: uppercase; letter-spacing: .05em; }
+    .sp-sessions-list { display: flex; flex-direction: column; gap: var(--sp-2); flex: 1; }
+    .sp-session {
+      display: flex; align-items: flex-start; gap: var(--sp-3);
+      font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.5; cursor: pointer;
+    }
+    .sp-session input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--aws-orange); width: 15px; height: 15px; }
+    .sp-session.done { text-decoration: line-through; color: var(--text-muted); }
+    .sp-session-icon { flex-shrink: 0; }
+    .sp-session-text { flex: 1; }
+    .sp-session-dur { font-size: var(--fs-xs); color: var(--text-muted); flex-shrink: 0; }
+
+    /* ── Print controls ── */
+    .sp-print-bar { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-6); flex-wrap: wrap; }
+    .sp-print-bar p { font-size: var(--fs-sm); color: var(--text-muted); margin: 0; }
+
+    /* ── CTA ── */
+    .sp-cta { background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark)); border-radius: var(--r-xl); padding: var(--sp-8); text-align: center; margin-bottom: var(--sp-12); }
+    .sp-cta h2 { color: #fff; font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-2); }
+    .sp-cta p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: var(--sp-5); }
+    .sp-cta-row { display: flex; gap: var(--sp-4); justify-content: center; flex-wrap: wrap; }
+    .sp-cta-note { font-size: var(--fs-xs); color: rgba(255,255,255,.35); margin-top: var(--sp-3); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .sp-form-grid { grid-template-columns: 1fr; }
+      .sp-hero h1 { font-size: var(--fs-2xl); }
+      .sp-day { flex-direction: column; gap: var(--sp-1); }
+      .sp-day-name { min-width: auto; }
+      .sp-weight-name { min-width: 130px; }
+    }
+
+    /* ── Print styles ── */
+    @media print {
+      #site-header, #site-footer, .sp-form-section, .sp-diag-banner,
+      .sp-print-bar, .sp-cta, .sp-bc, .sp-hero { display: none !important; }
+      #sp-output { display: block !important; }
+      .sp-week { box-shadow: none; border: 1px solid #ccc; }
+      .sp-week-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { background: #fff; }
+      .container { max-width: 100%; padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-header-mount">
+    <noscript>
+      <nav style="background:#232F3E;padding:.75rem 1.5rem;display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
+        <a href="/"            style="color:#FF9900;font-weight:700;text-decoration:none">Home</a>
+        <a href="/study-plan"  style="color:#FF9900;font-weight:700;text-decoration:none">Study Plan</a>
+        <a href="/exam-guide"  style="color:rgba(255,255,255,.7);text-decoration:none">Exam Guide</a>
+        <a href="/faq"         style="color:rgba(255,255,255,.7);text-decoration:none">FAQ</a>
+      </nav>
+    </noscript>
+  </div>
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <nav class="sp-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span><span>Study Plan</span>
+      </nav>
+
+      <!-- Hero -->
+      <section class="sp-hero">
+        <h1>CLF-C02 Study Plan Generator</h1>
+        <p class="lead">Enter your exam date and study intensity. We'll build a free week-by-week schedule across all four CLF-C02 domains — weighted by official exam percentages, and adjusted for your weak areas if you've taken the diagnostic.</p>
+      </section>
+
+      <!-- Diagnostic banner (shown if URL params present) -->
+      <div class="sp-diag-banner" id="sp-diag-banner"></div>
+
+      <!-- Input form -->
+      <section class="sp-form-section">
+        <h2>Build your plan</h2>
+        <div class="sp-form-grid">
+          <div class="sp-field">
+            <label for="sp-exam-date">Exam date</label>
+            <input type="date" id="sp-exam-date">
+            <p class="sp-hint">Leave blank to use weeks below</p>
+          </div>
+          <div class="sp-field">
+            <label for="sp-weeks">Or: weeks available</label>
+            <input type="number" id="sp-weeks" min="1" max="12" placeholder="e.g. 4" value="">
+            <p class="sp-hint">1–12 weeks; ignored if exam date is set</p>
+          </div>
+          <div class="sp-field">
+            <label for="sp-intensity">Study intensity</label>
+            <select id="sp-intensity">
+              <option value="light">Light — ~1 hr/day (1 session)</option>
+              <option value="moderate" selected>Moderate — ~1.5 hr/day (2 sessions)</option>
+              <option value="intensive">Intensive — ~2.5 hr/day (3 sessions)</option>
+            </select>
+            <p class="sp-hint">Mon–Fri schedule</p>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-lg" id="sp-generate-btn" style="min-width:200px">Generate my plan</button>
+      </section>
+
+      <!-- Output (generated plan) -->
+      <div id="sp-output">
+
+        <div class="sp-plan-header">
+          <h2 id="sp-plan-title">Your CLF-C02 Study Plan</h2>
+          <p id="sp-plan-subtitle"></p>
+          <div class="sp-plan-meta" id="sp-plan-meta"></div>
+        </div>
+
+        <!-- Domain weight breakdown -->
+        <div class="sp-domain-weights" id="sp-weights-viz"></div>
+
+        <!-- Print / reset controls -->
+        <div class="sp-print-bar">
+          <button class="btn btn-outline btn-sm" onclick="window.print()">&#128438; Print / Save PDF</button>
+          <button class="btn btn-outline btn-sm" id="sp-reset-btn">&#8635; Change settings</button>
+          <p>Check off sessions as you complete them — progress is saved in your browser.</p>
+        </div>
+
+        <!-- Week cards -->
+        <div class="sp-weeks" id="sp-weeks-container"></div>
+
+        <!-- CTA -->
+        <div class="sp-cta">
+          <h2>Ready to put the plan into practice?</h2>
+          <p>400 exam-style questions, domain-weighted and shuffled every attempt — with detailed explanations for every answer.</p>
+          <div class="sp-cta-row">
+            <button id="sp-pay-btn" class="btn btn-primary btn-lg">Start practicing — $49</button>
+          </div>
+          <p class="sp-cta-note">10-day money-back guarantee &middot; one-time payment &middot; lifetime access</p>
+        </div>
+
+      </div><!-- /#sp-output -->
+
+    </div><!-- /.container -->
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <!-- Auth modal -->
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header"><h2>Welcome</h2><p class="auth-modal-subtitle">Sign in to access practice tests</p></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field"><label for="login-email">Email</label><input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="auth-field"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password"></div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field"><label for="signup-name">Your Name</label><input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name"></div>
+        <div class="auth-field"><label for="signup-email">Email</label><input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="auth-field"><label for="signup-password">Password</label><input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password"></div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/firebase-auth.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+    var DOMAIN_NAMES = {
+      1: 'Cloud Concepts',
+      2: 'Security and Compliance',
+      3: 'Cloud Technology & Services',
+      4: 'Billing, Pricing, and Support'
+    };
+
+    // Session pools per domain — cycling if more sessions needed than pool size
+    var SESSION_POOLS = {
+      1: [
+        { icon: '📖', text: 'Read: Benefits of the AWS Cloud (Task 1.1) — six advantages, cloud value proposition', dur: '~30 min' },
+        { icon: '📖', text: 'Read: Well-Architected Framework design principles (Task 1.2) — six pillars', dur: '~30 min' },
+        { icon: '📖', text: 'Read: Cloud migration strategies (Task 1.3) — 6 Rs, Cloud Adoption Framework', dur: '~30 min' },
+        { icon: '📖', text: 'Read: Cloud economics and TCO (Task 1.4) — CapEx vs. OpEx, cost savings', dur: '~25 min' },
+        { icon: '✏️', text: 'Quick quiz: Cloud Concepts — 10 practice questions, review all explanations', dur: '~20 min' }
+      ],
+      2: [
+        { icon: '📖', text: 'Read: AWS Shared Responsibility Model (Task 2.1) — what AWS owns vs. what you own', dur: '~35 min' },
+        { icon: '📖', text: 'Read: Security services (Task 2.2) — GuardDuty, Inspector, Shield, WAF, Macie, CloudTrail', dur: '~40 min' },
+        { icon: '📖', text: 'Read: AWS IAM (Task 2.3) — users, groups, roles, policies, least privilege, MFA', dur: '~40 min' },
+        { icon: '📖', text: 'Read: Network security (Task 2.4) — Security Groups, NACLs, encryption at rest and in transit', dur: '~30 min' },
+        { icon: '✏️', text: 'Quick quiz: Security & Compliance — 10 practice questions, review all explanations', dur: '~20 min' }
+      ],
+      3: [
+        { icon: '📖', text: 'Read: Deployment methods (Task 3.1) — Console, CLI, SDKs, CloudFormation, Elastic Beanstalk', dur: '~30 min' },
+        { icon: '📖', text: 'Read: AWS global infrastructure (Task 3.2) — Regions, Availability Zones, edge locations', dur: '~30 min' },
+        { icon: '📖', text: 'Read: Compute services (Task 3.3) — EC2 types, Lambda, ECS, EKS, Fargate, Auto Scaling', dur: '~40 min' },
+        { icon: '📖', text: 'Read: Database services (Task 3.4) — RDS, Aurora, DynamoDB, Redshift, ElastiCache', dur: '~35 min' },
+        { icon: '📖', text: 'Read: Networking (Task 3.5) — VPC, subnets, ELB, CloudFront, Route 53, VPN, Direct Connect', dur: '~35 min' },
+        { icon: '📖', text: 'Read: Storage services (Task 3.6) — S3 classes, EBS, EFS, S3 Glacier, Storage Gateway', dur: '~30 min' },
+        { icon: '📖', text: 'Read: AI/ML, analytics, and integration services (Tasks 3.7–3.8)', dur: '~30 min' },
+        { icon: '✏️', text: 'Quick quiz: Cloud Technology & Services — 10 practice questions, review all explanations', dur: '~20 min' }
+      ],
+      4: [
+        { icon: '📖', text: 'Read: EC2 pricing models (Task 4.1) — On-Demand, Reserved, Spot, Savings Plans, Dedicated', dur: '~30 min' },
+        { icon: '📖', text: 'Read: Billing and cost management tools (Task 4.2) — Cost Explorer, Budgets, CUR, Pricing Calculator', dur: '~25 min' },
+        { icon: '📖', text: 'Read: AWS Support plans (Task 4.3) — Basic, Developer, Business, Enterprise; TAM, Trusted Advisor', dur: '~25 min' },
+        { icon: '✏️', text: 'Quick quiz: Billing, Pricing & Support — 10 practice questions, review all explanations', dur: '~20 min' }
+      ]
+    };
+
+    var REVIEW_POOL = [
+      { icon: '⏱️', text: 'Free diagnostic test (10 questions) — identify any remaining weak spots', dur: '~20 min' },
+      { icon: '⏱️', text: '30-question timed practice test — review every wrong answer carefully', dur: '~50 min' },
+      { icon: '🔍', text: 'Targeted review: re-read your weakest domain training content', dur: '~40 min' },
+      { icon: '⏱️', text: '45-question timed practice test — aim for 70%+ before the full exam', dur: '~65 min' },
+      { icon: '⏱️', text: 'Full 65-question timed exam simulation (90 min) — exam-day conditions', dur: '90 min' },
+      { icon: '🔍', text: 'Final review: re-read explanations for every question you missed this week', dur: '~45 min' },
+      { icon: '📋', text: 'Exam-day checklist — what to bring, arrival time, test-centre rules', dur: '~10 min' },
+      { icon: '⏱️', text: 'Second full 65-question exam simulation — track improvement', dur: '90 min' },
+      { icon: '✏️', text: 'Quick quiz on your weakest domain — reinforce before the real exam', dur: '~20 min' },
+      { icon: '📖', text: 'Skim all domain highlights — a fast pass through key facts and service names', dur: '~30 min' }
+    ];
+
+    // ── URL params (diagnostic integration) ───────────────────────────────
+    var params     = new URLSearchParams(window.location.search);
+    var weakDomain = parseInt(params.get('weakest')) || 0;
+    var diagScore  = parseInt(params.get('score'))   || 0;
+    var diagD      = { 1: parseInt(params.get('d1')) || 0, 2: parseInt(params.get('d2')) || 0, 3: parseInt(params.get('d3')) || 0, 4: parseInt(params.get('d4')) || 0 };
+    var hasDiag    = weakDomain >= 1 && weakDomain <= 4;
+
+    if (hasDiag) {
+      var banner = document.getElementById('sp-diag-banner');
+      banner.style.display = 'block';
+      banner.innerHTML = '<strong>&#128202; Personalized from your diagnostic results</strong> — ' +
+        'Score: <strong>' + diagScore + '%</strong> &nbsp;&middot;&nbsp; ' +
+        'Focus area: <strong>' + DOMAIN_NAMES[weakDomain] + '</strong>. ' +
+        'Your plan allocates extra time to this domain.';
+    }
+
+    // ── Algorithm ─────────────────────────────────────────────────────────
+    function adjustWeights(base, weak) {
+      if (!weak || weak < 1 || weak > 4) return base;
+      var adj = Object.assign({}, base);
+      // Boost weak domain proportional to how badly it scored
+      var weakness = diagD[weak] > 0 ? Math.max(0, 100 - diagD[weak]) / 100 : 0.4;
+      var boost = 1 + weakness * 1.2; // up to 2.2× for 0% score
+      adj[weak] = adj[weak] * boost;
+      var total = [1,2,3,4].reduce(function(s, d) { return s + adj[d]; }, 0);
+      [1,2,3,4].forEach(function(d) { adj[d] = adj[d] / total; });
+      return adj;
+    }
+
+    function buildPlan(weeks, intensity) {
+      var spd = { light: 1, moderate: 2, intensive: 3 }[intensity];
+      var BASE = { 1: 0.24, 2: 0.30, 3: 0.34, 4: 0.12 };
+      var weights = adjustWeights(BASE, weakDomain);
+
+      var studyWeeks = Math.max(1, weeks - 1);
+      var hasReview  = weeks >= 2;
+      if (weeks === 1) { studyWeeks = 1; hasReview = false; }
+
+      var studySessions = studyWeeks * 5 * spd;
+
+      // Allocate sessions per domain
+      var alloc = {}, allocated = 0;
+      [1,2,3].forEach(function(d) {
+        alloc[d] = Math.max(1, Math.round(studySessions * weights[d]));
+        allocated += alloc[d];
+      });
+      alloc[4] = Math.max(1, studySessions - allocated);
+
+      // Build flat session list in domain order
+      var flat = [];
+      [1,2,3,4].forEach(function(d) {
+        var pool = SESSION_POOLS[d];
+        for (var i = 0; i < alloc[d]; i++) {
+          flat.push({ domain: d, icon: pool[i % pool.length].icon, text: pool[i % pool.length].text, dur: pool[i % pool.length].dur });
+        }
+      });
+
+      // Slice into weeks → days
+      var schedule = [];
+      var idx = 0;
+      for (var w = 0; w < studyWeeks; w++) {
+        var weekSessions = flat.slice(idx, idx + 5 * spd);
+        idx += 5 * spd;
+        var days = [];
+        for (var d = 0; d < 5; d++) {
+          var daySessions = weekSessions.slice(d * spd, d * spd + spd);
+          if (daySessions.length) days.push({ name: DAYS[d], sessions: daySessions });
+        }
+        // Label the week by its dominant domain
+        var domCount = { 1:0, 2:0, 3:0, 4:0 };
+        weekSessions.forEach(function(s) { domCount[s.domain]++; });
+        var domDom = [1,2,3,4].reduce(function(a,b) { return domCount[a] >= domCount[b] ? a : b; });
+        var focusLabel = 'Focus: ' + DOMAIN_NAMES[domDom];
+        if (hasDiag && domDom === weakDomain) focusLabel += ' ★ priority domain';
+        schedule.push({ label: 'Week ' + (w + 1), focus: focusLabel, days: days, isReview: false });
+      }
+
+      if (hasReview) {
+        var revSessions = REVIEW_POOL.slice(0, 5 * spd);
+        var revDays = [];
+        for (var d = 0; d < 5; d++) {
+          var ds = revSessions.slice(d * spd, d * spd + spd);
+          if (ds.length) revDays.push({ name: DAYS[d], sessions: ds });
+        }
+        schedule.push({ label: 'Week ' + weeks + ' — Practice & Review', focus: 'Full exam simulations and weak-area reinforcement', days: revDays, isReview: true });
+      }
+
+      return { schedule: schedule, weights: weights, alloc: alloc, spd: spd };
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────
+    var planKey = '';
+
+    function renderPlan(weeks, intensity, examDateStr) {
+      var result = buildPlan(weeks, intensity);
+      planKey = 'sp_' + weeks + '_' + intensity + '_' + (examDateStr || 'nodate');
+
+      // Subtitle
+      var titleEl = document.getElementById('sp-plan-title');
+      var subEl   = document.getElementById('sp-plan-subtitle');
+      var metaEl  = document.getElementById('sp-plan-meta');
+      titleEl.textContent = weeks + '-Week CLF-C02 Study Plan';
+      var subtitle = '';
+      if (examDateStr) {
+        var d = new Date(examDateStr + 'T00:00:00');
+        subtitle = 'Exam date: ' + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + '. ';
+      }
+      subtitle += 'Mon–Fri schedule, ' + result.spd + ' session' + (result.spd > 1 ? 's' : '') + '/day.';
+      subEl.textContent = subtitle;
+
+      // Meta chips
+      var intensityLabel = { light: '~1 hr/day', moderate: '~1.5 hr/day', intensive: '~2.5 hr/day' }[intensity];
+      var totalSessions = result.schedule.reduce(function(s, w) { return s + w.days.reduce(function(s2, d) { return s2 + d.sessions.length; }, 0); }, 0);
+      metaEl.innerHTML =
+        '<span class="sp-meta-chip"><span>' + weeks + '</span> weeks</span>' +
+        '<span class="sp-meta-chip"><span>' + intensityLabel + '</span></span>' +
+        '<span class="sp-meta-chip"><span>' + totalSessions + '</span> sessions</span>' +
+        (hasDiag ? '<span class="sp-meta-chip"><span>Diagnostic-personalized</span></span>' : '');
+
+      // Weight visualization
+      var weightsEl = document.getElementById('sp-weights-viz');
+      weightsEl.innerHTML = '<p style="font-size:var(--fs-xs);font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:var(--sp-3)">Time allocation by domain</p>';
+      [1,2,3,4].forEach(function(d) {
+        var pct = Math.round(result.weights[d] * 100);
+        var base = { 1:24, 2:30, 3:34, 4:12 }[d];
+        var boosted = hasDiag && d === weakDomain && pct > base;
+        var row = document.createElement('div');
+        row.className = 'sp-weight-row';
+        row.innerHTML = '<span class="sp-weight-name">' + DOMAIN_NAMES[d] + '</span>' +
+          '<div class="sp-weight-track"><div class="sp-weight-fill' + (boosted ? ' boosted' : '') + '" style="width:' + pct + '%"></div></div>' +
+          '<span class="sp-weight-pct' + (boosted ? ' boosted' : '') + '">' + pct + '%' + (boosted ? ' ↑' : '') + '</span>';
+        weightsEl.appendChild(row);
+      });
+
+      // Week cards
+      var weeksEl = document.getElementById('sp-weeks-container');
+      weeksEl.innerHTML = '';
+      result.schedule.forEach(function(week, wi) {
+        var card = document.createElement('div');
+        card.className = 'sp-week';
+        var totalWk = week.days.reduce(function(s, d) { return s + d.sessions.length; }, 0);
+        card.innerHTML = '<div class="sp-week-header' + (week.isReview ? ' review' : '') + '">' +
+          '<div><div class="sp-week-num">' + week.label + '</div>' +
+          '<div class="sp-week-focus">' + week.focus + '</div></div>' +
+          '<div class="sp-week-sessions">' + totalWk + ' sessions</div></div>' +
+          '<div class="sp-days"></div>';
+        var daysEl = card.querySelector('.sp-days');
+        week.days.forEach(function(day, di) {
+          var dayDiv = document.createElement('div');
+          dayDiv.className = 'sp-day';
+          var sessionHtml = '<div class="sp-sessions-list">' +
+            day.sessions.map(function(s, si) {
+              var cbId = planKey + '_w' + wi + '_d' + di + '_s' + si;
+              var checked = localStorage.getItem(cbId) === '1';
+              return '<label class="sp-session' + (checked ? ' done' : '') + '" data-key="' + cbId + '">' +
+                '<input type="checkbox"' + (checked ? ' checked' : '') + ' data-key="' + cbId + '">' +
+                '<span class="sp-session-icon">' + s.icon + '</span>' +
+                '<span class="sp-session-text">' + s.text + '</span>' +
+                '<span class="sp-session-dur">' + s.dur + '</span></label>';
+            }).join('') + '</div>';
+          dayDiv.innerHTML = '<div class="sp-day-name">' + day.name + '</div>' + sessionHtml;
+          daysEl.appendChild(dayDiv);
+        });
+        weeksEl.appendChild(card);
+      });
+
+      // Wire checkboxes — save to localStorage, toggle done class
+      weeksEl.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+        cb.addEventListener('change', function() {
+          var key = cb.getAttribute('data-key');
+          var label = cb.closest('.sp-session');
+          if (cb.checked) { localStorage.setItem(key, '1'); label.classList.add('done'); }
+          else            { localStorage.removeItem(key);    label.classList.remove('done'); }
+        });
+      });
+
+      document.getElementById('sp-output').style.display = 'block';
+      document.getElementById('sp-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Register pay button
+      var payBtn = document.getElementById('sp-pay-btn');
+      if (payBtn && window.BuyFlow) {
+        window.BuyFlow.registerBtn('sp-pay-btn', 'Start practicing — $49');
+        payBtn.addEventListener('click', window.BuyFlow.handlePay);
+      }
+    }
+
+    // ── Generate button ───────────────────────────────────────────────────
+    document.getElementById('sp-generate-btn').addEventListener('click', function() {
+      var examDate = document.getElementById('sp-exam-date').value;
+      var weeksInput = parseInt(document.getElementById('sp-weeks').value);
+      var intensity = document.getElementById('sp-intensity').value;
+      var weeks;
+
+      if (examDate) {
+        var now  = new Date(); now.setHours(0,0,0,0);
+        var exam = new Date(examDate + 'T00:00:00');
+        var diff = Math.round((exam - now) / (1000 * 60 * 60 * 24 * 7));
+        weeks = Math.max(1, Math.min(12, diff));
+      } else if (weeksInput >= 1) {
+        weeks = Math.min(12, weeksInput);
+      } else {
+        alert('Please enter your exam date or the number of weeks available.');
+        return;
+      }
+
+      renderPlan(weeks, intensity, examDate);
+    });
+
+    document.getElementById('sp-reset-btn').addEventListener('click', function() {
+      document.getElementById('sp-output').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Auto-generate if URL params suggest a diagnostic handoff ─────────
+    if (hasDiag) {
+      // Pre-fill 4-week moderate plan and auto-generate so the user lands on a ready plan
+      document.getElementById('sp-weeks').value = '4';
+      // Don't auto-render — let the user confirm settings first
+    }
+
+  })();
+  </script>
+
+</body>
+</html>

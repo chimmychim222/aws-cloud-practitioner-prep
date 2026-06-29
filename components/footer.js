@@ -15,9 +15,10 @@
 
   // Add new content pages here as they are built
   var links = [
-    { label: 'Home',       href: '/' },
-    { label: 'Exam Guide', href: '/exam-guide' },
-    { label: 'FAQ',        href: '/faq' }
+    { label: 'Home',               href: '/' },
+    { label: 'Exam Guide',         href: '/exam-guide' },
+    { label: 'Practice Questions', href: '/practice-questions' },
+    { label: 'FAQ',                href: '/faq' }
     // { label: 'Diagnostic', href: '/diagnostic' },
     // { label: 'Study Plan', href: '/study-plan' },
     // { label: 'Blog',       href: '/blog' },

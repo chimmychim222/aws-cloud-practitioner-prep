@@ -47,6 +47,21 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Blog -->
+  <url>
+    <loc>https://cloudpractitionerprep.com/blog</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://cloudpractitionerprep.com/blog/aws-cloud-practitioner-passing-score-explained</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <!-- Legal -->
   <url>
     <loc>https://cloudpractitionerprep.com/privacy</loc>

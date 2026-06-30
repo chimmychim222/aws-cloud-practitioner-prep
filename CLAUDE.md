@@ -121,6 +121,42 @@ CSS class, which switches `display` from `none` to `block`.
 
 ---
 
+## Shared Header
+
+The site nav is **static HTML, duplicated identically across every page**, not
+JS-injected. This is a deliberate crawlability decision: every nav link (Home,
+Training, Practice Test, and the six items grouped under the "Resources"
+dropdown — Exam Guide, Study Plan, Diagnostic, Practice Qs, Blog, FAQ) must
+exist as a real `<a href>` in the raw served HTML, visible in view-source with
+zero JS execution.
+
+**`components/header.js` does not build any markup.** It only enhances the
+static `<header id="site-header">` block already present in each page:
+- active-state highlighting (`.nav-link.active`) based on `window.location.pathname`
+- the Resources dropdown's open/close behavior (click, Escape, outside-click —
+  desktop hover-to-open is pure CSS, no JS)
+- the mobile hamburger menu toggle
+
+**To add, remove, or rename a nav link:** edit the static `<header>...</header>`
+block (plus its `<noscript><style>...</noscript>` fallback) in `page-template.html`,
+then propagate the *identical* block to every other page that has one — currently
+`index.html`, `faq.html`, `exam-guide.html`, `diagnostic.html`, `study-plan.html`,
+`practice-questions.html`, `privacy.html`, `terms.html`, `refund.html`,
+`blog/index.html`, `blog/post-template.html`, and every published post under
+`blog/`. There is no build step to do this automatically — it is manual,
+identical-block duplication by design, traded off against JS-rendered markup
+that would not be crawlable as static HTML.
+
+The `<noscript>` block forces the nav fully visible (abandoning the
+collapsible hamburger and hover-only dropdown) when JavaScript is unavailable,
+so the site remains fully navigable without JS.
+
+**Logo text is static**, not driven by `site-config.js` for non-SPA pages
+(see Duplication Checklist below for the implication when cloning this site
+for a new certification).
+
+---
+
 ## Design Tokens
 
 All tokens are CSS custom properties on `:root` in `styles.css`. **Never hardcode

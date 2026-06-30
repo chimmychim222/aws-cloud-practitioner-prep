@@ -37,7 +37,7 @@
       targetKeyword: 'AWS Well-Architected Framework pillars',
       category: 'cloud-concepts',
       slug: 'aws-well-architected-framework-pillars-explained',
-      status: 'queued'
+      status: 'drafted'
     },
     {
       topic: 'Cloud Economics: CapEx vs OpEx for the CLF-C02 Exam',

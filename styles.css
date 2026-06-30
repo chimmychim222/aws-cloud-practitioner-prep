@@ -206,6 +206,26 @@ fieldset { border: none; }
 .nav-link svg { opacity: 0.7; transition: opacity var(--t-fast); }
 .nav-link:hover svg, .nav-link.active svg { opacity: 1; }
 
+/* Resources dropdown — desktop: floating panel on hover/click.
+   Mobile: inline accordion inside the hamburger menu (same .open class,
+   different positioning via the media query below). */
+.nav-dropdown { position: relative; }
+.nav-dropdown-trigger {
+  background: none; border: none; font: inherit; cursor: pointer; appearance: none;
+}
+.nav-caret { margin-left: 2px; transition: transform var(--t-fast); flex-shrink: 0; }
+.nav-dropdown.open .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-panel {
+  display: none; flex-direction: column; gap: 2px;
+  position: absolute; top: calc(100% + 4px); left: 0; min-width: 210px;
+  background: var(--aws-squid-ink); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-md); padding: var(--sp-2); box-shadow: var(--shadow-lg);
+  z-index: 1100;
+}
+.nav-dropdown-panel a { white-space: nowrap; }
+.nav-dropdown:hover .nav-dropdown-panel,
+.nav-dropdown.open .nav-dropdown-panel { display: flex; }
+
 /* Mobile menu */
 .mobile-menu-btn {
   display: none; flex-direction: column; gap: 5px; padding: 8px;
@@ -897,6 +917,15 @@ fieldset { border: none; }
     animation: slideDown 0.2s ease;
   }
   .mobile-menu-btn { display: flex; }
+
+  /* Resources dropdown becomes an inline, indented accordion section
+     inside the vertical mobile menu instead of a floating panel. */
+  .nav-dropdown { width: 100%; }
+  .nav-dropdown-trigger { width: 100%; justify-content: space-between; }
+  .nav-dropdown-panel {
+    position: static; box-shadow: none; border: none;
+    background: rgba(0,0,0,0.15); margin-top: 2px; padding-left: var(--sp-4);
+  }
 
   .hero h1 { font-size: var(--fs-3xl); }
   .hero-subtitle { font-size: var(--fs-base); }

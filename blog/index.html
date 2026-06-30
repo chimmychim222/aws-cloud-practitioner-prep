@@ -46,18 +46,52 @@
     .bi-bc a:hover { color: var(--aws-orange); }
     .bi-bc .sep { margin: 0 var(--sp-2); }
 
-    .bi-hero { padding: var(--sp-10) 0 var(--sp-8); border-bottom: 1px solid var(--border-light); }
+    .bi-hero { padding: var(--sp-10) 0 var(--sp-6); border-bottom: 1px solid var(--border-light); }
     .bi-hero h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; margin-bottom: var(--sp-3); }
     .bi-hero p { font-size: var(--fs-lg); color: var(--text-secondary); max-width: 580px; line-height: 1.7; }
 
-    .bi-list { padding: var(--sp-10) 0; display: flex; flex-direction: column; gap: var(--sp-5); }
-    .bi-card { display: block; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-6); text-decoration: none; box-shadow: var(--shadow-sm); transition: box-shadow var(--t-fast), transform var(--t-fast); }
-    .bi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
-    .bi-card-title { font-size: var(--fs-xl); font-weight: 800; color: var(--text-primary); margin-bottom: var(--sp-2); }
-    .bi-card-meta { font-size: var(--fs-xs); color: var(--text-muted); margin-bottom: var(--sp-3); }
-    .bi-card-desc { font-size: var(--fs-base); color: var(--text-secondary); line-height: 1.7; }
+    /* ── Category filters ── */
+    .bi-filters { display: flex; flex-wrap: wrap; gap: var(--sp-2); padding: var(--sp-6) 0; }
+    .bi-filter-btn {
+      padding: 6px 16px; border-radius: var(--r-full); border: 1.5px solid var(--border-color);
+      background: var(--bg-card); color: var(--text-secondary);
+      font-size: var(--fs-sm); font-weight: 600; cursor: pointer;
+      transition: all var(--t-fast);
+    }
+    .bi-filter-btn:hover { border-color: var(--aws-orange); color: var(--text-primary); }
+    .bi-filter-btn.active { background: var(--aws-squid-ink); border-color: var(--aws-squid-ink); color: #fff; }
 
-    .bi-more { text-align: center; padding: var(--sp-8) 0; color: var(--text-muted); font-size: var(--fs-sm); }
+    /* ── Card grid ── */
+    .bi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sp-5); padding-bottom: var(--sp-6); }
+    .bi-card {
+      display: flex; flex-direction: column;
+      background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg);
+      padding: var(--sp-6); text-decoration: none; box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--t-fast), transform var(--t-fast);
+    }
+    .bi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
+    .bi-card-tag {
+      align-self: flex-start; font-size: var(--fs-xs); font-weight: 600;
+      padding: 3px 10px; border-radius: var(--r-full); margin-bottom: var(--sp-3);
+    }
+    .bi-tag-cloud-concepts      { background: rgba(255,153,0,.1);  color: var(--aws-orange-hover); }
+    .bi-tag-security-compliance { background: rgba(9,114,211,.1);  color: var(--color-info); }
+    .bi-tag-cloud-technology    { background: rgba(3,127,12,.1);   color: var(--color-success); }
+    .bi-tag-billing-pricing     { background: rgba(184,134,11,.1); color: var(--color-warning); }
+    .bi-card-title { font-size: var(--fs-lg); font-weight: 800; color: var(--text-primary); margin-bottom: var(--sp-2); line-height: 1.35; }
+    .bi-card-meta { font-size: var(--fs-xs); color: var(--text-muted); margin-bottom: var(--sp-3); }
+    .bi-card-excerpt { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; flex: 1; }
+
+    .bi-empty { display: none; text-align: center; padding: var(--sp-12) 0; color: var(--text-muted); }
+
+    /* ── Load more ── */
+    .bi-load-more-wrap { text-align: center; padding: var(--sp-4) 0 var(--sp-12); }
+    #bi-load-more { display: none; }
+
+    @media (max-width: 640px) {
+      .bi-hero h1 { font-size: var(--fs-2xl); }
+      .bi-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -143,15 +177,21 @@
         <p>Study guides, exam tips, and AWS Cloud Practitioner explainers — written for people actually preparing for the exam.</p>
       </section>
 
-      <section class="bi-list">
-        <a href="/blog/aws-cloud-practitioner-passing-score-explained" class="bi-card">
-          <div class="bi-card-title">AWS Cloud Practitioner Passing Score Explained</div>
-          <div class="bi-card-meta">30 June 2026 &middot; 6 min read</div>
-          <div class="bi-card-desc">What's the AWS Cloud Practitioner passing score? How CLF-C02's scaled scoring (700/1000) actually works, why it isn't a raw percentage, and what counts as exam-ready.</div>
-        </a>
-      </section>
+      <div class="bi-filters" id="bi-filters" role="group" aria-label="Filter by category">
+        <button type="button" class="bi-filter-btn active" data-category="all">All</button>
+        <button type="button" class="bi-filter-btn" data-category="cloud-concepts">Cloud Concepts</button>
+        <button type="button" class="bi-filter-btn" data-category="security-compliance">Security &amp; Compliance</button>
+        <button type="button" class="bi-filter-btn" data-category="cloud-technology">Cloud Technology &amp; Services</button>
+        <button type="button" class="bi-filter-btn" data-category="billing-pricing">Billing &amp; Pricing</button>
+      </div>
 
-      <p class="bi-more">More articles coming soon.</p>
+      <div class="bi-grid" id="bi-grid"></div>
+
+      <p class="bi-empty" id="bi-empty">No posts in this category yet.</p>
+
+      <div class="bi-load-more-wrap">
+        <button type="button" class="btn btn-outline btn-lg" id="bi-load-more">Load more</button>
+      </div>
 
     </div>
   </main>
@@ -217,6 +257,89 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="/components/payment.js"></script>
   <script src="/firebase-auth.js"></script>
+  <script src="/blog/posts.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var PAGE_SIZE = 6;
+    var CATEGORY_LABELS = {
+      'cloud-concepts':      'Cloud Concepts',
+      'security-compliance': 'Security & Compliance',
+      'cloud-technology':    'Cloud Technology & Services',
+      'billing-pricing':     'Billing & Pricing'
+    };
+
+    var posts = (window.BlogPosts || []).slice().sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    var state = { category: 'all', visibleCount: PAGE_SIZE };
+
+    function formatDate(iso) {
+      var d = new Date(iso + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function escapeHTML(s) {
+      var div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    function render() {
+      var filtered = state.category === 'all'
+        ? posts
+        : posts.filter(function (p) { return p.category === state.category; });
+
+      var visible = filtered.slice(0, state.visibleCount);
+      var grid = document.getElementById('bi-grid');
+      var empty = document.getElementById('bi-empty');
+      var loadMoreBtn = document.getElementById('bi-load-more');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        loadMoreBtn.style.display = 'none';
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
+
+      grid.innerHTML = visible.map(function (p) {
+        var label = CATEGORY_LABELS[p.category] || p.category;
+        return '<a href="/blog/' + p.slug + '" class="bi-card">' +
+          '<span class="bi-card-tag bi-tag-' + p.category + '">' + escapeHTML(label) + '</span>' +
+          '<h2 class="bi-card-title">' + escapeHTML(p.title) + '</h2>' +
+          '<div class="bi-card-meta">' + formatDate(p.date) + ' &middot; ' + escapeHTML(p.readingTime) + '</div>' +
+          '<p class="bi-card-excerpt">' + escapeHTML(p.excerpt) + '</p>' +
+          '</a>';
+      }).join('');
+
+      loadMoreBtn.style.display = visible.length < filtered.length ? 'inline-flex' : 'none';
+    }
+
+    document.querySelectorAll('.bi-filter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.bi-filter-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        state.category = btn.dataset.category;
+        state.visibleCount = PAGE_SIZE;
+        render();
+      });
+    });
+
+    document.getElementById('bi-load-more').addEventListener('click', function () {
+      state.visibleCount += PAGE_SIZE;
+      render();
+    });
+
+    render();
+  })();
+  </script>
 
 </body>
 </html>

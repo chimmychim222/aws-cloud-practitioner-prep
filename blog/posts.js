@@ -10,9 +10,17 @@
 //   date         — YYYY-MM-DD, used for sorting (newest first) and display
 //   readingTime  — e.g. "6 min read", must match the post page's meta line
 //   excerpt      — 1-2 sentences, shown on the card
-//   category     — one of: cloud-concepts | security-compliance |
-//                  cloud-technology | billing-pricing
-//                  (matches the four official CLF-C02 exam domains)
+//   category     — exactly ONE of:
+//                  cloud-concepts       (exam domain 1 — domain-study content)
+//                  security-compliance  (exam domain 2 — domain-study content)
+//                  cloud-technology     (exam domain 3 — domain-study content)
+//                  billing-pricing      (exam domain 4 — domain-study content)
+//                  aws-basics           (free tier, account setup, general
+//                                        AWS explainers not tied to a domain)
+//                  exam-prep-tips       (study strategies, exam-day advice,
+//                                        scoring/format, how-to-pass content)
+//                  career-salary        (salary data, job prospects, cert
+//                                        comparisons)
 
 window.BlogPosts = [
   {
@@ -21,6 +29,6 @@ window.BlogPosts = [
     date: '2026-06-30',
     readingTime: '6 min read',
     excerpt: "What's the AWS Cloud Practitioner passing score? Learn how CLF-C02's scaled scoring (700/1000) actually works and what counts as exam-ready.",
-    category: 'cloud-concepts'
+    category: 'exam-prep-tips'
   }
 ];

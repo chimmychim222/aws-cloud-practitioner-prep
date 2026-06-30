@@ -78,6 +78,9 @@
     .bi-tag-security-compliance { background: rgba(9,114,211,.1);  color: var(--color-info); }
     .bi-tag-cloud-technology    { background: rgba(3,127,12,.1);   color: var(--color-success); }
     .bi-tag-billing-pricing     { background: rgba(184,134,11,.1); color: var(--color-warning); }
+    .bi-tag-aws-basics          { background: rgba(35,47,62,.08);  color: var(--aws-squid-ink); }
+    .bi-tag-exam-prep-tips      { background: rgba(124,58,237,.1); color: #7C3AED; }
+    .bi-tag-career-salary       { background: rgba(13,148,136,.1); color: #0D9488; }
     .bi-card-title { font-size: var(--fs-lg); font-weight: 800; color: var(--text-primary); margin-bottom: var(--sp-2); line-height: 1.35; }
     .bi-card-meta { font-size: var(--fs-xs); color: var(--text-muted); margin-bottom: var(--sp-3); }
     .bi-card-excerpt { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; flex: 1; }
@@ -183,6 +186,9 @@
         <button type="button" class="bi-filter-btn" data-category="security-compliance">Security &amp; Compliance</button>
         <button type="button" class="bi-filter-btn" data-category="cloud-technology">Cloud Technology &amp; Services</button>
         <button type="button" class="bi-filter-btn" data-category="billing-pricing">Billing &amp; Pricing</button>
+        <button type="button" class="bi-filter-btn" data-category="aws-basics">AWS Basics</button>
+        <button type="button" class="bi-filter-btn" data-category="exam-prep-tips">Exam Prep &amp; Tips</button>
+        <button type="button" class="bi-filter-btn" data-category="career-salary">Career &amp; Salary</button>
       </div>
 
       <div class="bi-grid" id="bi-grid"></div>
@@ -268,7 +274,10 @@
       'cloud-concepts':      'Cloud Concepts',
       'security-compliance': 'Security & Compliance',
       'cloud-technology':    'Cloud Technology & Services',
-      'billing-pricing':     'Billing & Pricing'
+      'billing-pricing':     'Billing & Pricing',
+      'aws-basics':          'AWS Basics',
+      'exam-prep-tips':      'Exam Prep & Tips',
+      'career-salary':       'Career & Salary'
     };
 
     var posts = (window.BlogPosts || []).slice().sort(function (a, b) {

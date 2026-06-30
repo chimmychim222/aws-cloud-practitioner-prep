@@ -1,0 +1,81 @@
+name: Generate Blog Draft
+
+# Runs Monday and Thursday mornings (08:00 UTC), generates ONE draft from
+# the next queued topic in blog/topics.js, and opens a PR with the new
+# files in /blog-drafts/. NEVER auto-merges, NEVER publishes.
+#
+# /blog-drafts/ is excluded from the GitHub Pages deploy (see
+# .github/workflows/deploy.yml exclude_assets) — drafts cannot go live
+# even if this PR is merged. Taking a draft live requires the separate,
+# manual steps in blog-drafts/PUBLISHING.md.
+#
+# Requires a repo secret: ANTHROPIC_API_KEY
+
+on:
+  schedule:
+    - cron: '0 8 * * 1,4'   # Monday and Thursday, 08:00 UTC
+  workflow_dispatch: {}      # allow manual triggering for testing
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate draft from next queued topic
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/generate-blog-draft.js
+
+      - name: Check for changes
+        id: check
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open draft PR for human review
+        if: steps.check.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: blog-draft/run-${{ github.run_number }}
+          commit-message: 'Blog draft: automated generation from topic queue'
+          title: '[DRAFT — needs fact-check] New blog draft from topic queue'
+          labels: blog-draft, needs-fact-check
+          body: |
+            Automated draft generated from the next queued topic in
+            `blog/topics.js`.
+
+            **This is a DRAFT ONLY — nothing here is live or will become
+            live by merging this PR.**
+
+            - Files added live in `/blog-drafts/`, which is excluded from
+              the GitHub Pages deploy — they cannot be served on the live
+              site even after merge.
+            - `blog/posts.js` (the manifest the blog index reads) is
+              **not** modified.
+            - `sitemap.xml` is **not** modified.
+            - No `/blog/*.html` page is created.
+
+            Before this content can go live, a human must:
+            1. Read the draft and verify every item in the companion
+               `.factcheck.md` checklist against official AWS docs.
+            2. Follow the full publish checklist in
+               `blog-drafts/PUBLISHING.md`.
+
+            Merging this PR only commits the draft + fact-check files and
+            the topic's queue status (`queued` → `drafted`) — it does
+            **not** publish anything.

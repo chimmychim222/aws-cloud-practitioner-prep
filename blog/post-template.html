@@ -39,7 +39,8 @@
 
   <meta name="robots" content="index, follow">
 
-  <!-- TODO: Article + BreadcrumbList JSON-LD — fill in headline/description/dates/url -->
+  <!-- TODO: Article + BreadcrumbList + FAQPage JSON-LD — fill in headline/description/dates/url/questions.
+       Delete the FAQPage block entirely if this post has no FAQ section. -->
   <script type="application/ld+json">
   [
     {
@@ -66,6 +67,22 @@
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cloudpractitionerprep.com/" },
         { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://cloudpractitionerprep.com/blog" },
         { "@type": "ListItem", "position": 3, "name": "TODO Post Title", "item": "https://cloudpractitionerprep.com/blog/todo-slug" }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "TODO question 1, copied from the draft's FAQ section",
+          "acceptedAnswer": { "@type": "Answer", "text": "TODO answer 1." }
+        },
+        {
+          "@type": "Question",
+          "name": "TODO question 2",
+          "acceptedAnswer": { "@type": "Answer", "text": "TODO answer 2." }
+        }
       ]
     }
   ]

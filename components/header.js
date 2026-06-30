@@ -1,146 +1,55 @@
 // components/header.js
-// Injects the canonical site header into <div id="site-header-mount">.
-// Must load AFTER site-config.js (which sets window.SiteConfig).
-// firebase-auth.js wires auth state display and the Sign In button separately.
+// Enhances the STATIC header markup already present in every page's HTML
+// (for crawlability — nav links are real <a href> elements in the served
+// HTML, not JS-injected; view-source shows them with zero JS execution).
 //
-// Nav links use <a href> so they are crawlable by all search engines,
-// including those that do not execute JavaScript. The Resources dropdown
-// panel is built into the same innerHTML write as everything else — its
-// links exist in the DOM on page load, just visually hidden via CSS until
-// opened. This is standard disclosure-menu behavior, not cloaking.
+// This script does NOT build any markup. It only adds:
+//   - active-state highlighting (current path / SPA view)
+//   - Resources dropdown open/close (click, Escape, outside-click —
+//     hover-to-open on desktop is pure CSS, no JS involved)
+//   - mobile hamburger menu toggle
+//
+// To add/remove/rename a nav link: edit the static <header> block in
+// page-template.html, then propagate the identical block to every other
+// page. See CLAUDE.md "Shared Header" section.
 
 (function () {
-  var mount = document.getElementById('site-header-mount');
-  if (!mount) return;
+  var header = document.getElementById('site-header');
+  if (!header) return;
 
-  var cfg = window.SiteConfig || {};
-  var logoText   = cfg.logoText   || 'CLF-C02';
-  var logoAccent = cfg.logoAccent || 'Prep';
-
-  var path = window.location.pathname.replace(/\/$/, '') || '/';
+  var path  = window.location.pathname.replace(/\/$/, '') || '/';
   var isSPA = (path === '/' || path === '/index' || path === '/index.html');
 
-  function isItemActive(item) {
-    return item.view
-      ? (isSPA && item.view === 'home')
-      : (path === item.href || path.indexOf(item.href + '/') === 0);
+  // ── Active-state highlighting ───────────────────────────────────────────
+  // Flat SPA-view items are keyed by id -> view name; everything else is
+  // keyed by href matching the current path (including nested prefixes,
+  // e.g. /blog matches /blog/some-post).
+  var primaryViewMap = { 'nav-home-btn': 'home', 'nav-training-btn': 'training', 'nav-test-btn': 'test' };
+
+  function isLinkActive(link) {
+    var view = primaryViewMap[link.id];
+    if (view) return isSPA && view === 'home';
+    var href = link.getAttribute('href');
+    return path === href || path.indexOf(href + '/') === 0;
   }
 
-  function buildLinkHTML(item) {
-    var isActive = isItemActive(item);
-    var attrs = 'href="' + item.href + '" class="nav-link' + (isActive ? ' active' : '') + '"';
-    if (item.id)   attrs += ' id="'        + item.id   + '"';
-    if (item.view) attrs += ' data-view="' + item.view + '"';
-    return '<a ' + attrs + '>' + item.icon + item.label + '</a>';
+  header.querySelectorAll('.header-nav a.nav-link[href]').forEach(function (link) {
+    link.classList.toggle('active', isLinkActive(link));
+  });
+
+  var resourcesPanel = document.getElementById('nav-resources-panel');
+  var resourcesBtn   = document.getElementById('nav-resources-btn');
+  if (resourcesPanel && resourcesBtn) {
+    var isResourcesActive = Array.prototype.some.call(
+      resourcesPanel.querySelectorAll('a[href]'),
+      isLinkActive
+    );
+    resourcesBtn.classList.toggle('active', isResourcesActive);
   }
 
-  // Flat, always-visible items: the three SPA views.
-  var primaryItems = [
-    {
-      label: 'Home',         href: '/',    id: 'nav-home-btn',     view: 'home',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>'
-    },
-    {
-      label: 'Training',     href: '/',    id: 'nav-training-btn', view: 'training',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>'
-    },
-    {
-      label: 'Practice Test', href: '/',   id: 'nav-test-btn',     view: 'test',
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>'
-    }
-  ];
-
-  // Grouped under the "Resources" dropdown. Add new content pages here.
-  // Use clean paths — never .html extensions.
-  var resourceItems = [
-    {
-      label: 'Exam Guide',   href: '/exam-guide', id: null, view: null,
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>'
-    },
-    {
-      label: 'Study Plan',   href: '/study-plan', id: null, view: null,
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>'
-    },
-    {
-      label: 'Diagnostic',   href: '/diagnostic', id: null, view: null,
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>'
-    },
-    {
-      label: 'Practice Qs',  href: '/practice-questions', id: null, view: null,
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>'
-    },
-    {
-      label: 'Blog',         href: '/blog', id: null, view: null,
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>'
-    },
-    {
-      label: 'FAQ',          href: '/faq', id: null, view: null,
-      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>'
-    }
-  ];
-
-  var primaryHTML = primaryItems.map(buildLinkHTML).join('');
-  var resourceLinksHTML = resourceItems.map(buildLinkHTML).join('');
-  var isResourcesActive = resourceItems.some(isItemActive);
-
-  var dropdownHTML = [
-    '<div class="nav-dropdown" id="nav-resources-dropdown">',
-    '  <button type="button" class="nav-link nav-dropdown-trigger' + (isResourcesActive ? ' active' : '') + '"',
-    '          id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">',
-    '    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>',
-    '    Resources',
-    '    <svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>',
-    '  </button>',
-    '  <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">',
-    resourceLinksHTML,
-    '  </div>',
-    '</div>'
-  ].join('\n');
-
-  var navHTML = primaryHTML + dropdownHTML;
-
-  mount.innerHTML = [
-    '<header id="site-header">',
-    '  <div class="header-inner">',
-
-    '    <a href="/" class="header-logo" aria-label="' + logoText + ' ' + logoAccent + ' — Home">',
-    '      <svg class="logo-aws" width="40" height="24" viewBox="0 0 40 24" fill="none" aria-hidden="true">',
-    '        <path d="M11.2 14.8c0 .4.1.8.2 1 .1.3.3.5.5.8.1.1.1.2.1.3 0 .1-.1.3-.3.4l-1 .7c-.1.1-.3.1-.4.1-.2 0-.3-.1-.5-.3-.2-.2-.4-.5-.5-.8-.7.8-1.5 1.2-2.5 1.2-.7 0-1.3-.2-1.7-.6-.4-.4-.7-1-.7-1.7 0-.7.3-1.3.8-1.8.5-.4 1.2-.6 2.1-.6.3 0 .6 0 .9.1.3.1.7.1 1 .2v-.6c0-.7-.1-1.2-.4-1.5-.3-.3-.8-.4-1.5-.4-.3 0-.7.1-1 .2-.3.1-.7.2-1 .4l-.5.2c-.1 0-.2-.1-.2-.3v-.5c0-.2 0-.3.1-.4.1-.1.2-.2.4-.3.3-.2.7-.3 1.1-.4.4-.1.9-.2 1.4-.2.8 0 1.5.2 1.9.6.4.4.6 1 .6 1.9v2.5zm-3.4 1.3c.3 0 .6-.1.9-.2.3-.1.6-.4.7-.7.1-.2.2-.4.2-.6V14c-.2-.1-.5-.1-.8-.2-.3-.1-.6-.1-.8-.1-.6 0-1 .1-1.3.3-.3.2-.5.6-.5 1 0 .4.1.7.3.9.2.3.6.4 1.1.4h.2zm6.7 1c-.2 0-.3 0-.4-.1-.1-.1-.2-.2-.3-.4L11.4 10c-.1-.2-.1-.3-.1-.4 0-.2.1-.3.3-.3h1.5c.2 0 .3 0 .4.1.1.1.2.2.2.4l1.6 6.5 1.5-6.5c.1-.2.1-.3.2-.4.1-.1.3-.1.4-.1h1.2c.2 0 .3 0 .4.1.1.1.2.2.2.4l1.5 6.6 1.7-6.6c.1-.2.1-.3.2-.4.1-.1.3-.1.4-.1h1.4c.2 0 .3.1.3.3 0 .1 0 .1-.1.2 0 .1 0 .2-.1.3l-2.5 6.6c-.1.2-.1.3-.3.4-.1.1-.3.1-.4.1h-1.3c-.2 0-.3 0-.4-.1-.1-.1-.2-.2-.2-.4l-1.5-6.3-1.5 6.3c-.1.2-.1.3-.2.4-.1.1-.3.1-.4.1h-1.3zm10.7.3c-.5 0-.9-.1-1.4-.2-.5-.1-.8-.3-1-.4-.1-.1-.2-.2-.2-.3v-.6c0-.2.1-.3.2-.3h.1l.2.1c.3.1.7.2 1 .3.4.1.7.1 1 .1.5 0 1-.1 1.2-.3.3-.2.4-.5.4-.8 0-.2-.1-.5-.3-.6-.2-.2-.5-.3-1-.5l-1.4-.5c-.7-.2-1.2-.5-1.5-1-.3-.4-.5-.9-.5-1.4 0-.4.1-.8.3-1.1.2-.3.4-.6.7-.8.3-.2.6-.4 1-.5.4-.1.8-.2 1.2-.2.2 0 .4 0 .7.1.2 0 .5.1.7.2.2.1.4.1.6.2.2.1.3.2.4.2.1.1.2.2.2.3.1.1.1.3.1.4v.6c0 .2-.1.3-.2.3-.1 0-.2-.1-.4-.2-.6-.3-1.3-.4-2-.4-.5 0-.9.1-1.1.2-.3.2-.4.4-.4.8 0 .2.1.5.3.6.2.2.6.3 1.1.5l1.4.4c.7.2 1.2.5 1.5.9.3.4.4.9.4 1.3 0 .4-.1.8-.3 1.2-.2.3-.4.6-.8.8-.3.2-.7.4-1.1.5-.4.1-.9.2-1.4.2z" fill="#fff"/>',
-    '        <path d="M30.5 18.5c-3 2.2-7.3 3.4-11 3.4-5.2 0-9.9-1.9-13.5-5.1-.3-.3 0-.6.3-.4 3.8 2.2 8.6 3.6 13.5 3.6 3.3 0 6.9-.7 10.3-2.1.5-.2.9.3.4.6z" fill="#F90"/>',
-    '        <path d="M31.8 17c-.4-.5-2.5-.2-3.5-.1-.3 0-.3-.2-.1-.4 1.7-1.2 4.5-.9 4.8-.5.3.4-.1 3.2-1.7 4.6-.2.2-.5.1-.4-.2.4-.9 1.2-3 .9-3.4z" fill="#F90"/>',
-    '      </svg>',
-    '      <span class="logo-text">' + logoText + ' <span class="logo-accent">' + logoAccent + '</span></span>',
-    '    </a>',
-
-    '    <nav class="header-nav" id="header-nav" aria-label="Main navigation">',
-    navHTML,
-    '    </nav>',
-
-    '    <div class="auth-header-wrap">',
-    '      <button class="auth-header-btn" id="auth-header-btn" aria-label="Sign in or view account">Sign In</button>',
-    '      <div class="user-menu hidden" id="user-menu" role="menu">',
-    '        <div class="user-menu-info">',
-    '          <div class="user-menu-name" id="user-menu-name"></div>',
-    '          <div class="user-menu-email" id="user-menu-email"></div>',
-    '        </div>',
-    '        <div class="user-menu-divider"></div>',
-    '        <button class="user-menu-item" id="user-menu-logout" role="menuitem">Sign Out</button>',
-    '      </div>',
-    '    </div>',
-
-    '    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">',
-    '      <span></span><span></span><span></span>',
-    '    </button>',
-
-    '  </div>',
-    '</header>'
-  ].join('\n');
-
-  // ── Wire interactions ──────────────────────────────────────────────────
-  var mobileBtn = document.getElementById('mobile-menu-btn');
-  var nav       = document.getElementById('header-nav');
-  var dropdown  = document.getElementById('nav-resources-dropdown');
-  var trigger   = document.getElementById('nav-resources-btn');
+  // ── Resources dropdown ──────────────────────────────────────────────────
+  var dropdown = document.getElementById('nav-resources-dropdown');
+  var trigger  = document.getElementById('nav-resources-btn');
 
   function closeDropdown() {
     if (!dropdown) return;
@@ -148,18 +57,7 @@
     if (trigger) trigger.setAttribute('aria-expanded', 'false');
   }
 
-  if (mobileBtn && nav) {
-    mobileBtn.addEventListener('click', function () {
-      var open = nav.classList.toggle('open');
-      mobileBtn.classList.toggle('open', open);
-      mobileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (!open) closeDropdown();
-    });
-  }
-
   if (dropdown && trigger) {
-    // Click toggles the panel — works for both desktop (alongside :hover, CSS-driven)
-    // and mobile/touch, where :hover never persists.
     trigger.addEventListener('click', function (e) {
       e.stopPropagation();
       var open = dropdown.classList.toggle('open');
@@ -170,6 +68,19 @@
         closeDropdown();
         trigger.focus();
       }
+    });
+  }
+
+  // ── Mobile hamburger menu ───────────────────────────────────────────────
+  var mobileBtn = document.getElementById('mobile-menu-btn');
+  var nav       = document.getElementById('header-nav');
+
+  if (mobileBtn && nav) {
+    mobileBtn.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      mobileBtn.classList.toggle('open', open);
+      mobileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (!open) closeDropdown();
     });
   }
 

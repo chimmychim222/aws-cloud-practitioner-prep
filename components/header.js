@@ -4,7 +4,10 @@
 // firebase-auth.js wires auth state display and the Sign In button separately.
 //
 // Nav links use <a href> so they are crawlable by all search engines,
-// including those that do not execute JavaScript.
+// including those that do not execute JavaScript. The Resources dropdown
+// panel is built into the same innerHTML write as everything else — its
+// links exist in the DOM on page load, just visually hidden via CSS until
+// opened. This is standard disclosure-menu behavior, not cloaking.
 
 (function () {
   var mount = document.getElementById('site-header-mount');
@@ -14,13 +17,25 @@
   var logoText   = cfg.logoText   || 'CLF-C02';
   var logoAccent = cfg.logoAccent || 'Prep';
 
-  // Nav items: add new content pages here as they are built.
-  // Use clean paths — never .html extensions.
-  // SPA view items carry id + view so app.js can wire click handlers and
-  // showView() can find them by ID to manage the active state.
   var path = window.location.pathname.replace(/\/$/, '') || '/';
   var isSPA = (path === '/' || path === '/index' || path === '/index.html');
-  var navItems = [
+
+  function isItemActive(item) {
+    return item.view
+      ? (isSPA && item.view === 'home')
+      : (path === item.href || path.indexOf(item.href + '/') === 0);
+  }
+
+  function buildLinkHTML(item) {
+    var isActive = isItemActive(item);
+    var attrs = 'href="' + item.href + '" class="nav-link' + (isActive ? ' active' : '') + '"';
+    if (item.id)   attrs += ' id="'        + item.id   + '"';
+    if (item.view) attrs += ' data-view="' + item.view + '"';
+    return '<a ' + attrs + '>' + item.icon + item.label + '</a>';
+  }
+
+  // Flat, always-visible items: the three SPA views.
+  var primaryItems = [
     {
       label: 'Home',         href: '/',    id: 'nav-home-btn',     view: 'home',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>'
@@ -32,43 +47,57 @@
     {
       label: 'Practice Test', href: '/',   id: 'nav-test-btn',     view: 'test',
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>'
-    },
+    }
+  ];
+
+  // Grouped under the "Resources" dropdown. Add new content pages here.
+  // Use clean paths — never .html extensions.
+  var resourceItems = [
     {
-      label: 'Exam Guide',   href: '/exam-guide', id: null,        view: null,
+      label: 'Exam Guide',   href: '/exam-guide', id: null, view: null,
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>'
     },
     {
-      label: 'Study Plan',   href: '/study-plan', id: null,        view: null,
+      label: 'Study Plan',   href: '/study-plan', id: null, view: null,
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>'
     },
     {
-      label: 'Diagnostic',  href: '/diagnostic', id: null,               view: null,
+      label: 'Diagnostic',   href: '/diagnostic', id: null, view: null,
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>'
     },
     {
-      label: 'Practice Qs', href: '/practice-questions', id: null, view: null,
+      label: 'Practice Qs',  href: '/practice-questions', id: null, view: null,
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>'
     },
     {
-      label: 'FAQ',          href: '/faq', id: null,               view: null,
+      label: 'Blog',         href: '/blog', id: null, view: null,
+      icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>'
+    },
+    {
+      label: 'FAQ',          href: '/faq', id: null, view: null,
       icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>'
     }
   ];
 
-  var navHTML = navItems.map(function (item) {
-    // SPA view items (home/training/test): active only when on the SPA and it's
-    // the home view (initial state). showView() takes over after first click.
-    // Content page items: active when the path matches their href.
-    var isActive = item.view
-      ? (isSPA && item.view === 'home')
-      : (path === item.href || path.indexOf(item.href + '/') === 0);
+  var primaryHTML = primaryItems.map(buildLinkHTML).join('');
+  var resourceLinksHTML = resourceItems.map(buildLinkHTML).join('');
+  var isResourcesActive = resourceItems.some(isItemActive);
 
-    var attrs = 'href="' + item.href + '" class="nav-link' + (isActive ? ' active' : '') + '"';
-    if (item.id)   attrs += ' id="'        + item.id   + '"';
-    if (item.view) attrs += ' data-view="' + item.view + '"';
+  var dropdownHTML = [
+    '<div class="nav-dropdown" id="nav-resources-dropdown">',
+    '  <button type="button" class="nav-link nav-dropdown-trigger' + (isResourcesActive ? ' active' : '') + '"',
+    '          id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">',
+    '    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>',
+    '    Resources',
+    '    <svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>',
+    '  </button>',
+    '  <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">',
+    resourceLinksHTML,
+    '  </div>',
+    '</div>'
+  ].join('\n');
 
-    return '<a ' + attrs + '>' + item.icon + item.label + '</a>';
-  }).join('');
+  var navHTML = primaryHTML + dropdownHTML;
 
   mount.innerHTML = [
     '<header id="site-header">',
@@ -107,22 +136,52 @@
     '</header>'
   ].join('\n');
 
-  // Wire mobile menu toggle — auth wiring is handled by firebase-auth.js
+  // ── Wire interactions ──────────────────────────────────────────────────
   var mobileBtn = document.getElementById('mobile-menu-btn');
   var nav       = document.getElementById('header-nav');
+  var dropdown  = document.getElementById('nav-resources-dropdown');
+  var trigger   = document.getElementById('nav-resources-btn');
+
+  function closeDropdown() {
+    if (!dropdown) return;
+    dropdown.classList.remove('open');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  }
+
   if (mobileBtn && nav) {
     mobileBtn.addEventListener('click', function () {
       var open = nav.classList.toggle('open');
       mobileBtn.classList.toggle('open', open);
       mobileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (!open) closeDropdown();
     });
-    // Close on outside click
-    document.addEventListener('click', function (e) {
-      if (!mobileBtn.contains(e.target) && !nav.contains(e.target)) {
-        nav.classList.remove('open');
-        mobileBtn.classList.remove('open');
-        mobileBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  if (dropdown && trigger) {
+    // Click toggles the panel — works for both desktop (alongside :hover, CSS-driven)
+    // and mobile/touch, where :hover never persists.
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = dropdown.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+        closeDropdown();
+        trigger.focus();
       }
     });
   }
+
+  // Single outside-click handler closes both the mobile menu and the dropdown.
+  document.addEventListener('click', function (e) {
+    if (mobileBtn && nav && !mobileBtn.contains(e.target) && !nav.contains(e.target)) {
+      nav.classList.remove('open');
+      mobileBtn.classList.remove('open');
+      mobileBtn.setAttribute('aria-expanded', 'false');
+    }
+    if (dropdown && !dropdown.contains(e.target)) {
+      closeDropdown();
+    }
+  });
 })();

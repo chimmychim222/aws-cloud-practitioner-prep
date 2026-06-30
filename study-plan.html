@@ -90,11 +90,22 @@
       transition: border-color var(--t-fast), box-shadow var(--t-fast);
       box-sizing: border-box;
     }
-    /* iOS/some Android WebKit: date input's internal fields can still force extra
-       width via the picker-indicator pseudo-element; cap it so the icon stays
-       inside the visible box instead of pushing the input past the edge. */
+    /* Root cause of the mobile overflow: type="date" defaults to
+       -webkit-appearance:auto, which renders native OS picker chrome in a
+       shadow DOM that does NOT fully respect box-sizing:border-box the way
+       plain text content does — it can demand more width than the box has,
+       and the overflow gets clipped (cutting off the calendar icon). Other
+       inputs in this same selector group (number/text) don't have this
+       issue because their default appearance is a plain textfield.
+       Stripping the native appearance forces WebKit to size it like a
+       normal text box, matching every other field in this form. */
+    .sp-field input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+    }
     .sp-field input[type="date"]::-webkit-calendar-picker-indicator {
       margin-left: 4px;
+      cursor: pointer;
     }
     .sp-field input:focus, .sp-field select:focus {
       outline: none; border-color: var(--aws-orange);

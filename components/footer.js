@@ -20,10 +20,8 @@
     { label: 'Study Plan',         href: '/study-plan' },
     { label: 'Diagnostic',         href: '/diagnostic' },
     { label: 'Practice Questions', href: '/practice-questions' },
+    { label: 'Blog',               href: '/blog' },
     { label: 'FAQ',                href: '/faq' }
-    // { label: 'Diagnostic', href: '/diagnostic' },
-    // { label: 'Study Plan', href: '/study-plan' },
-    // { label: 'Blog',       href: '/blog' },
   ];
 
   var linksHTML = links.map(function (l) {

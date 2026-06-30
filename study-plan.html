@@ -219,8 +219,8 @@
         <h2>Build your plan</h2>
         <div class="sp-form-grid">
           <div class="sp-field">
-            <label for="sp-exam-date">Exam date <span style="font-weight:400;color:var(--text-muted)">(mm/dd/yyyy)</span></label>
-            <input type="text" id="sp-exam-date" placeholder="mm/dd/yyyy" inputmode="numeric" maxlength="10" autocomplete="off">
+            <label for="sp-exam-date">Exam date</label>
+            <input type="date" id="sp-exam-date">
             <p class="sp-hint">Leave blank to use weeks below</p>
           </div>
           <div class="sp-field">
@@ -382,6 +382,15 @@
       { icon: '✏️', text: 'Quick quiz on your weakest domain — reinforce before the real exam', dur: '~20 min' },
       { icon: '📖', text: 'Skim all domain highlights — a fast pass through key facts and service names', dur: '~30 min' }
     ];
+
+    // Prevent picking a past exam date — min is today in yyyy-mm-dd (native date input format)
+    (function () {
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      var mm   = String(today.getMonth() + 1).padStart(2, '0');
+      var dd   = String(today.getDate()).padStart(2, '0');
+      document.getElementById('sp-exam-date').min = yyyy + '-' + mm + '-' + dd;
+    })();
 
     // ── URL params (diagnostic integration) ───────────────────────────────
     var params     = new URLSearchParams(window.location.search);
@@ -579,21 +588,15 @@
 
     // ── Generate button ───────────────────────────────────────────────────
     document.getElementById('sp-generate-btn').addEventListener('click', function() {
-      var examDateRaw = document.getElementById('sp-exam-date').value.trim();
+      // Native <input type="date"> always yields a valid yyyy-mm-dd string (or empty) —
+      // the browser's own picker/validation rules out malformed input.
+      var examDateRaw = document.getElementById('sp-exam-date').value;
       var weeksInput  = parseInt(document.getElementById('sp-weeks').value);
       var intensity   = document.getElementById('sp-intensity').value;
       var weeks;
 
       if (examDateRaw) {
-        // Parse mm/dd/yyyy (text input format)
-        var parts = examDateRaw.split('/');
-        var exam  = parts.length === 3
-          ? new Date(parseInt(parts[2]), parseInt(parts[0]) - 1, parseInt(parts[1]))
-          : new Date(examDateRaw); // fallback: try raw string
-        if (isNaN(exam.getTime())) {
-          alert('Please enter the exam date as mm/dd/yyyy (e.g. 09/15/2025).');
-          return;
-        }
+        var exam = new Date(examDateRaw + 'T00:00:00');
         var now  = new Date(); now.setHours(0,0,0,0);
         var diff = Math.round((exam - now) / (1000 * 60 * 60 * 24 * 7));
         weeks = Math.max(1, Math.min(12, diff));

@@ -231,7 +231,7 @@
         <div class="blog-cta">
           <h3>Not sure where you stand?</h3>
           <p>Take the free 10-question CLF-C02 diagnostic and get an instant score, your weakest domain, and a study plan — no account required.</p>
-          <a href="/diagnostic" class="btn btn-primary btn-lg">Take the free diagnostic</a>
+          <a href="/diagnostic" class="btn btn-primary btn-lg" data-cta="primary">Take the free diagnostic</a>
         </div>
 
         <h2 id="fifty-scored">Why only 50 of the 65 questions count</h2>
@@ -370,7 +370,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
   <script src="/firebase-auth.js"></script>
+  <script>CTA.initSticky({ text: 'Test your CLF-C02 readiness', threshold: 600 });</script>
 
 </body>
 </html>

@@ -44,16 +44,53 @@ const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6';
 const API_KEY = process.env.ANTHROPIC_API_KEY;
 
 // Verified CLF-C02 facts the model must not contradict — sourced from
-// CLAUDE.md "Exam Facts (CLF-C02)", which is itself sourced from the
-// official AWS exam guide. Keep this block in sync with CLAUDE.md.
+// CLAUDE.md "Exam Facts (CLF-C02)" and its task-statement breakdown, which
+// are themselves sourced from the official AWS exam guide. Keep this block
+// in sync with CLAUDE.md whenever the exam guide is updated.
 const CLF_C02_FACTS = `
+EXAM MECHANICS
 - Exam code: CLF-C02. Full name: AWS Certified Cloud Practitioner. Level: Foundational.
-- 65 total questions per exam: 50 scored + 15 unscored (unscored questions are not identifiable during the exam).
-- Duration: 90 minutes.
-- Passing score: 700 out of 1000. Score range: 100-1000 (scaled, not a raw percentage).
-- Standard exam registration fee: $100 USD (subject to change; do not state this as permanent).
-- Domain weightings: 1) Cloud Concepts 24% — 2) Security and Compliance 30% — 3) Cloud Technology and Services 34% — 4) Billing, Pricing, and Support 12%.
-- Question types: multiple-choice (1 correct answer) and multiple-response (exactly 2 correct answers, no partial credit).
+- 65 total questions: 50 scored + 15 unscored (unscored questions are not identifiable during the exam).
+- Duration: 90 minutes. Passing score: 700/1000 (scaled, range 100-1000 — not a raw percentage).
+- Standard registration fee: $100 USD (subject to change; do not state as permanent).
+- Question types: multiple-choice (1 correct answer) and multiple-response (exactly 2 correct answers; no partial credit).
+
+DOMAIN WEIGHTINGS
+- Domain 1 Cloud Concepts: 24%
+- Domain 2 Security and Compliance: 30%
+- Domain 3 Cloud Technology and Services: 34%
+- Domain 4 Billing, Pricing, and Support: 12%
+
+DOMAIN 1 — CLOUD CONCEPTS
+- Six advantages of cloud computing: trade CapEx for variable expense; economies of scale; stop guessing capacity; increase speed and agility; stop spending money running data centres; go global in minutes.
+- AWS Well-Architected Framework — exactly SIX pillars (not five, not seven): Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability.
+- AWS Cloud Adoption Framework (CAF) — exactly SIX perspectives: Business, People, Governance, Platform, Security, Operations.
+- Migration strategies — the core 6 Rs: Rehost (lift-and-shift), Replatform, Repurchase, Refactor/Re-architect, Retire, Retain. A 7th (Relocate) appears in some AWS docs but exam focus is the core 6.
+
+DOMAIN 2 — SECURITY AND COMPLIANCE
+- Shared responsibility model: AWS is responsible for security OF the cloud (hardware, AZs, hypervisor, global network); customer is responsible for security IN the cloud (OS patches, app config, IAM, data encryption, security groups, firewall rules).
+- AWS CloudTrail: records API calls for auditing (who, when, from where, what). NOT a metrics/performance tool.
+- Amazon GuardDuty: threat detection using ML, anomaly detection, and threat intelligence feeds.
+- Amazon Inspector: vulnerability scanning for EC2, container images, and Lambda functions.
+- AWS Shield: Standard (free, automatic) protects against common DDoS; Advanced (paid) adds enhanced detection and a DDoS Response Team.
+- IAM: users, groups, roles, policies; principle of least privilege; MFA is a best practice, especially for the root account.
+
+DOMAIN 3 — CLOUD TECHNOLOGY AND SERVICES
+- AWS Regions: geographically isolated, each contains two or more Availability Zones.
+- Availability Zones (AZs): one or more discrete data centres with redundant power, networking, and connectivity within a Region.
+- Edge Locations: used by CloudFront (CDN) and Route 53; not the same as AZs or Regions.
+- Amazon RDS supports: MySQL, PostgreSQL, MariaDB, Oracle, SQL Server. It does NOT natively support NoSQL.
+- Amazon Aurora: MySQL- and PostgreSQL-compatible; designed for the cloud; up to 5× the throughput of standard MySQL.
+- Amazon DynamoDB: fully managed, serverless NoSQL (key-value + document). NOT a relational database.
+- Amazon Redshift: managed data warehouse for SQL analytics at petabyte scale. NOT a transactional database.
+- AWS Lambda: serverless, event-driven compute; you do not manage servers or operating systems.
+- EC2 instance families (for context only — exam tests concepts, not memorisation): General Purpose, Compute Optimized, Memory Optimized, Storage Optimized, Accelerated Computing.
+- S3 storage classes (in rough cost/access-frequency order): Standard, Intelligent-Tiering, Standard-IA, One Zone-IA, Glacier Instant Retrieval, Glacier Flexible Retrieval, Glacier Deep Archive.
+
+DOMAIN 4 — BILLING, PRICING, AND SUPPORT
+- EC2 pricing models: On-Demand (pay per second/hour, no commitment); Spot Instances (unused capacity, up to ~90% discount, can be reclaimed by AWS with a 2-minute notice); Reserved Instances — Standard (highest discount, less flexible) and Convertible (moderate discount, can change instance attributes); Savings Plans — Compute (most flexible, applies to EC2+Lambda+Fargate) and EC2 Instance (specific family); Dedicated Hosts (for compliance/licensing).
+- AWS Support plan tiers (in order): Basic (free), Developer, Business, Enterprise On-Ramp, Enterprise. Enterprise includes a Technical Account Manager (TAM). Business and Enterprise provide 24/7 phone/chat support.
+- AWS Trusted Advisor: checks across five categories: Cost Optimization, Security, Fault Tolerance, Performance, Service Limits. Core checks available on all plans; full checks require Business or higher.
 `.trim();
 
 const CATEGORY_VALUES = [

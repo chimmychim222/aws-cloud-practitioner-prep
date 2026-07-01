@@ -685,6 +685,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
   <script src="/firebase-auth.js"></script>
 
   <!-- Pay button — no app.js needed; reuses SiteConfig + AppAuth -->
@@ -695,6 +696,7 @@
       window.BuyFlow.registerBtn('eg-pay-btn', btn.textContent.trim());
       btn.addEventListener('click', window.BuyFlow.handlePay);
     })();
+    CTA.initSticky({ text: 'Prepare for the CLF-C02 exam', threshold: 600 });
   </script>
 
 </body>

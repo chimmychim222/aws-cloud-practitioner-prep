@@ -30,5 +30,13 @@ window.BlogPosts = [
     readingTime: '6 min read',
     excerpt: "What's the AWS Cloud Practitioner passing score? Learn how CLF-C02's scaled scoring (700/1000) actually works and what counts as exam-ready.",
     category: 'exam-prep-tips'
+  },
+  {
+    slug: 'aws-well-architected-framework-pillars-explained',
+    title: 'AWS Well-Architected Framework: The 6 Pillars Explained',
+    date: '2026-07-01',
+    readingTime: '8 min read',
+    excerpt: 'Learn the 6 pillars of the AWS Well-Architected Framework and why they matter for the CLF-C02 Cloud Practitioner exam.',
+    category: 'cloud-concepts'
   }
 ];

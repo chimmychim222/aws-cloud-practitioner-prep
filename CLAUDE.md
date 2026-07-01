@@ -260,6 +260,53 @@ Practice tests sample questions in proportion to these weights. The rounding
 adjustment is applied to the largest domain (Domain 3) to ensure the total
 equals the requested question count exactly.
 
+### Task statements (official CLF-C02 exam guide)
+
+Source: AWS Certified Cloud Practitioner Exam Guide (CLF-C02), publicly available
+from aws.amazon.com/certification. Task statements define the sub-topics tested
+within each domain. This breakdown is used to ground the blog generation script
+(`scripts/generate-blog-draft.js`) and should be kept in sync with any future
+exam guide revision.
+
+**Domain 1 — Cloud Concepts (24%)**
+
+| Task | Statement | Key topics for blog grounding |
+|---|---|---|
+| 1.1 | Define the benefits of the AWS Cloud | Value proposition; six advantages: trade CapEx for variable expense, economies of scale, stop guessing capacity, increase speed and agility, stop spending on data centres, go global in minutes; high availability, elasticity, agility, scalability |
+| 1.2 | Identify design principles of the AWS Cloud | **AWS Well-Architected Framework** — six pillars: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability; AWS Well-Architected Tool |
+| 1.3 | Understand migration strategies to the AWS Cloud | **AWS Cloud Adoption Framework (CAF)** — six perspectives: Business, People, Governance, Platform, Security, Operations; migration strategies (the "6 Rs": Rehost, Replatform, Repurchase, Refactor/Re-architect, Retire, Retain; AWS documentation also lists a 7th — Relocate — but exam focus is on the core 6); AWS Snow Family (Snowcone, Snowball Edge, Snowmobile); AWS DataSync |
+| 1.4 | Understand concepts of cloud economics | Rightsizing; automation benefits; managed services reducing operational overhead; TCO (Total Cost of Ownership); AWS Pricing Calculator for estimates |
+
+**Domain 2 — Security and Compliance (30%)**
+
+| Task | Statement | Key topics for blog grounding |
+|---|---|---|
+| 2.1 | Understand the AWS shared responsibility model | AWS responsible for security OF the cloud (hardware, AZs, global network, hypervisor); customer responsible for security IN the cloud (OS patches, app config, IAM, data encryption, security groups) |
+| 2.2 | Cloud security, governance, and compliance | AWS Artifact (compliance reports); AWS Audit Manager; AWS Config; AWS CloudTrail (API audit logs); Amazon GuardDuty (threat detection); Amazon Inspector (vulnerability scanning); AWS Security Hub; Amazon Macie (sensitive data discovery); encryption at rest and in transit; AWS KMS; AWS CloudHSM |
+| 2.3 | AWS access management | IAM users, groups, roles, policies; principle of least privilege; MFA; IAM Identity Center (AWS SSO); Amazon Cognito; AWS Directory Service; root account best practices |
+| 2.4 | Security resources and network security | AWS Shield (Standard free / Advanced paid, DDoS protection); AWS WAF (web application firewall); Amazon VPC security groups vs NACLs; AWS Network Firewall; AWS Firewall Manager; Amazon Route 53 (DNS) |
+
+**Domain 3 — Cloud Technology and Services (34%)**
+
+| Task | Statement | Key topics for blog grounding |
+|---|---|---|
+| 3.1 | Deploying and operating in the AWS Cloud | AWS Management Console; AWS CLI; AWS SDKs; AWS CloudFormation (IaC); AWS Elastic Beanstalk (PaaS); AWS OpsWorks; AWS CodePipeline / CodeBuild / CodeDeploy / CodeCommit (DevOps toolchain) |
+| 3.2 | AWS global infrastructure | Regions (geographically isolated, 2+ AZs each); Availability Zones (one or more discrete data centres, redundant power/networking); Edge Locations (CloudFront CDN, Route 53); AWS Local Zones; AWS Wavelength; AWS Outposts |
+| 3.3 | AWS compute services | EC2 (instance families: General Purpose, Compute Optimized, Memory Optimized, Storage Optimized, Accelerated Computing); EC2 Auto Scaling; ELB (ALB, NLB, GLB); AWS Lambda (serverless); ECS; EKS; AWS Fargate; Elastic Beanstalk; AWS Batch; AWS Lightsail |
+| 3.4 | AWS database services | Amazon RDS (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server); Amazon Aurora (MySQL/PostgreSQL compatible, up to 5× standard MySQL throughput); Amazon DynamoDB (NoSQL, key-value + document); Amazon ElastiCache (Redis / Memcached); Amazon Redshift (data warehouse); Amazon Neptune (graph); Amazon DocumentDB (MongoDB-compatible) |
+| 3.5 | AWS network services | Amazon VPC; subnets (public/private); Internet Gateway; NAT Gateway; AWS VPN; AWS Direct Connect; Amazon Route 53; Amazon CloudFront; Elastic Load Balancing; AWS PrivateLink; AWS Transit Gateway |
+| 3.6 | AWS storage services | S3 (storage classes: Standard, Intelligent-Tiering, Standard-IA, One Zone-IA, Glacier Instant Retrieval, Glacier Flexible Retrieval, Glacier Deep Archive); Amazon EBS; Amazon EFS; AWS Storage Gateway; AWS Backup; AWS Snow Family |
+| 3.7 | AI/ML and analytics | Amazon SageMaker; Amazon Rekognition; Amazon Polly; Amazon Transcribe; Amazon Translate; Amazon Comprehend; Amazon Lex; Amazon Textract; Amazon Forecast; Amazon Personalize; Amazon Kendra; Amazon Athena; Amazon EMR; Amazon Kinesis; AWS Glue; Amazon QuickSight; Amazon OpenSearch Service |
+| 3.8 | Other in-scope services | Amazon SQS; Amazon SNS; Amazon EventBridge; AWS Step Functions; Amazon MQ; AWS IoT Core; Amazon AppStream 2.0; Amazon WorkSpaces |
+
+**Domain 4 — Billing, Pricing, and Support (12%)**
+
+| Task | Statement | Key topics for blog grounding |
+|---|---|---|
+| 4.1 | AWS pricing models | On-Demand (no commitment, per-second/per-hour); Spot Instances (unused capacity, up to 90% discount, can be reclaimed with 2-min notice); Reserved Instances: Standard (highest discount, least flexibility) and Convertible (change instance type); Savings Plans: Compute and EC2 Instance; Dedicated Hosts; Dedicated Instances; AWS Free Tier (12-month, Always Free, Trials) |
+| 4.2 | Billing, budget, and cost management | AWS Cost Explorer; AWS Budgets; AWS Cost and Usage Report (CUR); AWS Pricing Calculator; consolidated billing via AWS Organizations; cost allocation tags; AWS Cost Anomaly Detection |
+| 4.3 | Technical resources and Support | Support plans: Basic (free), Developer, Business, Enterprise On-Ramp, Enterprise (includes Technical Account Manager); AWS Trusted Advisor (cost, security, performance, fault tolerance, service limits checks); AWS Health Dashboard (formerly Personal Health Dashboard); AWS Knowledge Center; AWS re:Post; AWS IQ (expert marketplace); AWS Professional Services; AWS Partner Network |
+
 ---
 
 ## Test Engine Data Model

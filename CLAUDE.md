@@ -3,10 +3,12 @@
 > **Affiliation disclaimer (required on every page)**
 > This site is an independent exam-preparation resource. It is **not affiliated with,
 > endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates.**
-> The footer must always include the string:
-> _"AWS Certified Cloud Practitioner CLF-C02 Practice — Not affiliated with or endorsed by Amazon Web Services."_
-> This text is driven by `site-config.js → footerDisclaimer` and rendered via
-> `data-cfg="footer-disclaimer"` in `index.html`. Never remove it.
+> Two disclaimer surfaces must always be present on every page:
+> 1. **Disclaimer banner** at the very top of the `<body>`, above the nav — see `## Disclaimer Banner` below.
+> 2. **Footer disclaimer** driven by `site-config.js → footerDisclaimer` and rendered via
+>    `data-cfg="footer-disclaimer"` in `index.html`. The string must be:
+>    _"AWS Certified Cloud Practitioner CLF-C02 Practice — Not affiliated with or endorsed by Amazon Web Services."_
+> Never remove either surface.
 
 ---
 
@@ -157,6 +159,44 @@ for a new certification).
 
 ---
 
+
+## Disclaimer Banner
+
+A full-width affiliation disclaimer sits at the very top of **every page**, above the nav.
+It is **not dismissible** — no close button, no JS toggle — and must always be in the static HTML
+so it is visible with zero JavaScript and crawlable by search engines.
+
+**HTML block** (placed immediately after `<body>`, before `<header id="site-header">`):
+
+```html
+<!-- AWS DISCLAIMER BANNER - see CLAUDE.md -->
+<div class="disclaimer-banner">CloudPractitionerPrep is an independent, third-party study platform and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates. AWS and Cloud Practitioner are trademarks of Amazon.com, Inc. or its affiliates.</div>
+```
+
+**Exact copy (source of truth — never alter the wording without updating all 16 files):**
+
+> CloudPractitionerPrep is an independent, third-party study platform and is not affiliated
+> with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates. AWS and
+> Cloud Practitioner are trademarks of Amazon.com, Inc. or its affiliates.
+
+**CSS:** `.disclaimer-banner` defined in `styles.css` (end of file).
+Uses `--border-light` background, `--text-muted` text color, `--fs-xs` (12 px font),
+`--border-color` bottom border, 7 px top/bottom padding.
+
+**Duplication tradeoff:** Like the nav, this block is **manually duplicated** across all 16 HTML files —
+there is no build step or JS injection. This is the same deliberate tradeoff as the shared nav:
+static duplication wins for crawlability and immediate render (no JS required).
+When changing the banner copy, update every file in this list:
+
+`index.html`, `faq.html`, `exam-guide.html`, `diagnostic.html`, `study-plan.html`,
+`practice-questions.html`, `privacy.html`, `terms.html`, `refund.html`,
+`blog/index.html`, `blog/post-template.html`, `admin.html`,
+`blog/aws-cloud-practitioner-passing-score-explained.html`,
+`blog/aws-well-architected-framework-pillars-explained.html`,
+`blog/capex-vs-opex-aws-cloud-economics.html`,
+`page-template.html` (update this too so new pages inherit the correct copy).
+
+---
 ## Design Tokens
 
 All tokens are CSS custom properties on `:root` in `styles.css`. **Never hardcode
@@ -596,6 +636,7 @@ These rules apply to every change made to this codebase. No exceptions.
 
 ### AWS affiliation
 - Never claim or imply affiliation with, endorsement by, or sponsorship by Amazon Web Services.
+- The **disclaimer banner** (``<div class="disclaimer-banner">``) must appear at the very top of every page's ``<body>``, in static HTML, above the nav. See `## Disclaimer Banner` for exact copy, CSS, and the full file list. Never remove or JS-inject it.
 - The footer disclaimer must appear on every page at all times.
 - Exam-related marketing copy must describe what the product *is*, not imply official status.
 

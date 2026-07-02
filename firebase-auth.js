@@ -285,6 +285,7 @@
       hideAuthModal();
       if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
         if (window.gtag) gtag('event', 'signup_completed', { method: 'google' });
+        showOnboardingModal(result.user.uid);
       }
     } catch (err) {
       if (err.code === 'auth/account-exists-with-different-credential') {
@@ -322,6 +323,7 @@
       await cred.user.updateProfile({ displayName: name });
       hideAuthModal();
       if (window.gtag) gtag('event', 'signup_completed', { method: 'email' });
+      showOnboardingModal(cred.user.uid);
     } catch (err) {
       const msg = err.code === 'auth/email-already-in-use' ? 'This email is already registered. Try logging in.'
         : err.code === 'auth/invalid-email' ? 'Invalid email address.'
@@ -400,6 +402,66 @@
     setTimeout(() => banner.remove(), 8000);
     // Invite buyer to leave a review after the banner has settled
     setTimeout(() => { if (typeof window.showReviewPrompt === 'function') window.showReviewPrompt(); }, 2500);
+  }
+
+  // ── Onboarding Modal ──────────────────────────────────────────────────────
+  function markOnboardingSeen(uid) {
+    if (!uid) return;
+    db.collection('users').doc(uid).set({ onboardingSeen: true }, { merge: true });
+  }
+
+  function showOnboardingModal(uid) {
+    if (document.getElementById('onboarding-modal')) return;
+
+    var overlay = document.createElement('div');
+    overlay.id = 'onboarding-modal';
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-content onboarding-modal">
+        <button class="modal-close" id="onboarding-close" aria-label="Dismiss">&times;</button>
+        <div class="onboarding-icon" aria-hidden="true">&#127881;</div>
+        <h2 class="onboarding-title">Welcome to CLF-C02 Prep</h2>
+        <p class="onboarding-sub">Find your weak spots before exam day — then study what actually matters.</p>
+        <div class="onboarding-actions">
+          <button id="onboarding-diagnostic-btn" class="btn btn-primary btn-lg onboarding-cta-primary">
+            Take the free diagnostic first
+            <span class="onboarding-cta-hint">10 questions · ~5 min · find your weak areas</span>
+          </button>
+          <button id="onboarding-pricing-btn" class="btn btn-secondary onboarding-cta-secondary">
+            See pricing — $49
+          </button>
+        </div>
+        <button class="onboarding-dismiss" id="onboarding-dismiss">No thanks — I'll explore on my own</button>
+      </div>`;
+    document.body.appendChild(overlay);
+    if (window.gtag) gtag('event', 'onboarding_shown');
+
+    function escHandler(e) { if (e.key === 'Escape') dismiss(); }
+
+    function dismiss() {
+      markOnboardingSeen(uid);
+      document.removeEventListener('keydown', escHandler);
+      overlay.remove();
+    }
+
+    document.getElementById('onboarding-close').addEventListener('click', dismiss);
+    document.getElementById('onboarding-dismiss').addEventListener('click', dismiss);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) dismiss(); });
+    document.addEventListener('keydown', escHandler);
+
+    document.getElementById('onboarding-diagnostic-btn').addEventListener('click', function () {
+      if (window.gtag) gtag('event', 'onboarding_diagnostic_clicked');
+      markOnboardingSeen(uid);
+      overlay.remove();
+      window.location.href = '/diagnostic';
+    });
+
+    document.getElementById('onboarding-pricing-btn').addEventListener('click', function () {
+      if (window.gtag) gtag('event', 'onboarding_pricing_clicked');
+      markOnboardingSeen(uid);
+      overlay.remove();
+      if (window.BuyFlow) window.BuyFlow.handlePay();
+    });
   }
 
   // ---- Expose showAuthModal globally ----

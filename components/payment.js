@@ -21,6 +21,7 @@
       var b = document.getElementById(id);
       if (b) { b.disabled = true; b.textContent = 'Redirecting to Stripe…'; }
     });
+    if (window.gtag) gtag('event', 'checkout_started');
     window.location.href = link + '?client_reference_id=' +
       encodeURIComponent(auth.currentUser.uid);
   }

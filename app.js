@@ -150,6 +150,7 @@
 
     state.currentView = viewId;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.gtag) gtag('event', 'page_view', { page_title: viewId, page_path: '/' });
 
     // Close mobile nav
     const headerNav = $('#header-nav');

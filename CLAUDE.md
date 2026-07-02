@@ -612,6 +612,29 @@ These rules apply to every change made to this codebase. No exceptions.
 - The **footer disclaimer** (`components/footer.js` reads `site-config.js → footerDisclaimer`) is the sole trademark disclaimer surface and must appear on every page at all times. Never remove it or shorten the `footerDisclaimer` string.
 - Exam-related marketing copy must describe what the product *is*, not imply official status.
 
+### Brand naming in metadata
+**The site brand is "Cloud Practitioner Prep"** — not "AWS Cloud Practitioner Prep".
+
+Reason: leading the brand identity with a registered AWS trademark ("AWS") is
+inappropriate for an independent third-party site, even though the exam name
+"AWS Certified Cloud Practitioner" and "AWS CLF-C02" may appear freely as
+descriptors (nominative references to the real exam).
+
+Rules that apply to every page's `<head>`:
+- `og:site_name` → `Cloud Practitioner Prep`
+- `meta[name="author"]` → `Cloud Practitioner Prep` (only on pages that include it)
+- `<title>` — "Cloud Practitioner Prep" must be the **leading brand token**:
+  - Format A (most pages): `Cloud Practitioner Prep — [Descriptive Page Topic]`
+  - Format B (blog posts with a natural topic-first title): topic leads, brand
+    appears as a suffix: `[Topic] — Cloud Practitioner Prep`
+  - "AWS" or "CLF-C02" may appear anywhere in the title as a descriptor/qualifier
+    of the exam, but must not be the **first word** of the title acting as a brand.
+- `og:title` and `twitter:title` follow the same convention as `<title>`.
+- Do **not** change body copy, hero headings, or in-content references like
+  "AWS Certified Cloud Practitioner" — those are legitimate nominative uses.
+- The nav logo text `CLF-C02 Prep` is a short in-page label, not a metadata
+  brand claim; it is intentionally kept as-is for UI brevity.
+
 ### Exam facts
 - All CLF-C02 facts (question count, duration, pass score, domain names, domain weights) come from the **official AWS exam guide** only.
 - Do not invent, estimate, or round these figures. If the guide changes, update `site-config.js` and this file together, then regenerate affected content.
@@ -655,6 +678,8 @@ These rules apply to every change made to this codebase. No exceptions.
 1. Copy this repo → new GitHub repo.
 2. Update `site-config.js` — new exam code, cert name, domains, weights, prices, Firebase config.
 3. Update `index.html` `<head>` — title, meta description, canonical URL, OG/Twitter tags.
+   - `og:site_name` and `meta[name="author"]` must use the new site's brand name (not "AWS …")
+   - Follow the brand-naming convention in `## Conventions → Brand naming in metadata`.
 4. Update `CNAME` with the new domain.
 5. Update `sitemap.xml` and `robots.txt`.
 6. Generate new `questions.js` and `training-content.js` from official exam guide.

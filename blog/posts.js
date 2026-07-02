@@ -38,5 +38,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Learn the 6 pillars of the AWS Well-Architected Framework and why they matter for the CLF-C02 Cloud Practitioner exam.',
     category: 'cloud-concepts'
+  },
+  {
+    slug: 'capex-vs-opex-aws-cloud-economics',
+    title: 'CapEx vs OpEx AWS: Cloud Economics for CLF-C02',
+    date: '2026-07-02',
+    readingTime: '7 min read',
+    excerpt: 'Master CapEx vs OpEx for the AWS CLF-C02 exam. Understand why trading upfront capital costs for variable operating expense is a core cloud advantage.',
+    category: 'cloud-concepts'
   }
 ];

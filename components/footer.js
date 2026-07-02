@@ -11,7 +11,7 @@
 
   var cfg        = window.SiteConfig || {};
   var disclaimer = cfg.footerDisclaimer ||
-    'AWS Certified Cloud Practitioner CLF-C02 Practice — Not affiliated with or endorsed by Amazon Web Services.';
+    'CloudPractitionerPrep is an independent, third-party study platform and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates. AWS and Cloud Practitioner are trademarks of Amazon.com, Inc. or its affiliates.';
 
   // Add new content pages here as they are built
   var links = [

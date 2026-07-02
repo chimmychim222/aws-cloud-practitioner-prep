@@ -16,7 +16,7 @@
   --aws-squid-ink: #232F3E;
   --aws-ink-hover: #37475A;
   --aws-ink-dark: #161E2D;
-  --aws-smile: #FF9900;
+
 
   /* Semantic */
   --color-success: #037F0C;
@@ -192,7 +192,7 @@ fieldset { border: none; }
   display: flex; align-items: center; gap: var(--sp-3);
   text-decoration: none; color: #fff;
 }
-.logo-aws { flex-shrink: 0; }
+.logo-cloud { flex-shrink: 0; }
 .logo-text { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.02em; }
 .logo-accent { color: var(--aws-orange); }
 

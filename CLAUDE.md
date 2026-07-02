@@ -21,8 +21,8 @@
 | Firebase (client) | Firebase JS SDK compat v10.12.0 via CDN — Auth + Firestore |
 | Firebase (server) | Firebase Admin SDK v12 (Node.js) in `api/` — **requires a separate serverless host; does NOT run on GitHub Pages** |
 | Payments | Stripe JS SDK v16 (Node.js) in `api/` — **currently non-functional; see Stripe Integration** |
-| Fonts | Inter (Google Fonts CDN); Amazon Ember as secondary fallback |
-| Hosting | **GitHub Pages** — static files only, served from the `gh-pages` branch |
+| Fonts | Inter (Google Fonts CDN) |
+| Hosting | **GitHub Pages** — static files only, GitHub Actions deploy mode |
 | Repo | GitHub — `chimmychim222/aws-cloud-practitioner-prep` |
 
 **No build step.** Files are served as-is. No webpack, Vite, TypeScript, or transpilation.
@@ -57,8 +57,8 @@ sitemap.xml / robots.txt
 
 ## Hosting and Deploy
 
-**Host:** GitHub Pages, served from the `gh-pages` branch of
-`chimmychim222/aws-cloud-practitioner-prep`. Custom domain: `cloudpractitionerprep.com`.
+**Host:** GitHub Pages, GitHub Actions deploy mode (source: GitHub Actions, not a branch).
+Custom domain: `cloudpractitionerprep.com`.
 CDN: Fastly (`185.199.108–111.153`). Cache: `Cache-Control: max-age=600` (10 min, set by GitHub Pages).
 
 ### How a push reaches the live site
@@ -68,13 +68,32 @@ git push origin main
        ↓
 GitHub Actions (.github/workflows/deploy.yml) triggers on push to main
        ↓
-peaceiris/actions-gh-pages@v4 force-pushes all files
-(excluding .github/ and CNAME.example) to the gh-pages branch
+build job:
+  actions/checkout@v4          — check out main
+  actions/configure-pages@v5   — configure Pages environment (adds .nojekyll)
+  rm -rf blog-drafts scripts .github CNAME.example  — strip unpublished content
+  actions/upload-pages-artifact@v3  — package remaining files as Pages artifact
        ↓
-GitHub Pages detects gh-pages branch update → rebuilds (1–2 min)
+deploy job (needs: build):
+  actions/deploy-pages@v4      — publish artifact to GitHub Pages CDN
        ↓
 Fastly CDN serves files at cloudpractitionerprep.com (max-age=600)
 ```
+
+**Concurrency:** `group: "pages", cancel-in-progress: false` — overlapping pushes queue
+cleanly; a slow deploy is never cancelled mid-flight by a newer push.
+
+**No Jekyll.** In GitHub Actions deploy mode Jekyll is never invoked. Files are served
+as-is from the artifact. `actions/configure-pages` adds `.nojekyll` automatically.
+
+**Excluded from the published artifact** (removed in the build job before upload):
+- `blog-drafts/` — unreviewed AI drafts; must never be reachable by direct URL
+- `scripts/` — Node tooling, not site content
+- `.github/` — workflow files; not part of the published site
+- `CNAME.example` — example file, not needed on live site
+
+`CNAME` itself (the live domain record) is **not** excluded and must stay in the artifact
+so GitHub Pages keeps the custom domain binding.
 
 To trigger a deploy manually: GitHub → repo → Actions → "Deploy to GitHub Pages" → Run workflow.
 
@@ -85,10 +104,10 @@ It is kept in the repo as documentation of the intended URL structure (`"cleanUr
 and will be needed if the site is migrated to a platform that does support it (Vercel, Netlify).
 
 Clean URLs (`/faq` instead of `/faq.html`) work via GitHub Pages' own server-side URL
-normalization, not via `vercel.json`. Note: the workflow deploys with a `.nojekyll` file
-(added by `peaceiris/actions-gh-pages` by default), which disables Jekyll. Confirm on the
-live site that `/faq` and `/faq.html` both resolve — GitHub Pages behavior without Jekyll
-can vary. If `/faq` returns 404, internal links must use `/faq.html` or a custom 404 redirect.
+normalization. In GitHub Actions deploy mode, Jekyll is never run, so there is no
+`.nojekyll`-vs-Jekyll ambiguity. Confirm on the live site that `/faq` and `/faq.html`
+both resolve. If `/faq` returns 404, internal links must use `/faq.html` or a custom
+404 redirect.
 
 ### GitHub Pages cannot run server-side code
 

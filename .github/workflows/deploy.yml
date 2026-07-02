@@ -5,23 +5,43 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Remove unpublished directories
+        # blog-drafts: unreviewed AI drafts must never be servable on the live site,
+        # even by direct URL. scripts: Node tooling, not site content.
+        # .github and CNAME.example: internal files, not part of the published site.
+        run: rm -rf blog-drafts scripts .github CNAME.example
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          # blog-drafts: unreviewed AI drafts must never be servable on the
-          # live site, even by direct URL — see blog-drafts/PUBLISHING.md.
-          # scripts: Node tooling, not site content.
-          exclude_assets: '.github,CNAME.example,blog-drafts,scripts'
+          path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

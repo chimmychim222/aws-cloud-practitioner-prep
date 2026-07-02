@@ -1975,3 +1975,15 @@ fieldset { border: none; }
 @media (max-width: 480px) {
   .onboarding-modal { padding: 1.75rem 1.25rem; }
 }
+
+/* ── Disclaimer banner ── */
+.disclaimer-banner {
+  width: 100%;
+  background: var(--border-light);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  text-align: center;
+  padding: 7px var(--sp-6);
+  line-height: 1.5;
+  border-bottom: 1px solid var(--border-color);
+}

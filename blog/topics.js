@@ -53,7 +53,7 @@
       targetKeyword: 'AWS shared responsibility model',
       category: 'security-compliance',
       slug: 'aws-shared-responsibility-model-explained',
-      status: 'queued'
+      status: 'drafted'
     },
     {
       topic: 'AWS IAM Basics: Users, Groups, Roles, and Policies',

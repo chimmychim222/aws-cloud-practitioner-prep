@@ -44,7 +44,7 @@
       targetKeyword: 'CapEx vs OpEx AWS',
       category: 'cloud-concepts',
       slug: 'capex-vs-opex-aws-cloud-economics',
-      status: 'queued'
+      status: 'drafted'
     },
 
     // Domain 2 — Security and Compliance

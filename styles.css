@@ -39,7 +39,7 @@
   --divider: #E9EBED;
 
   /* Typography */
-  --font-main: 'Inter', 'Amazon Ember', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
   --fs-base: 1rem;

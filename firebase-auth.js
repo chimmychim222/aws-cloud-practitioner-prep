@@ -106,6 +106,7 @@
           // paid flipped false→true (client-side grant, or future server-side webhook)
           if (!wasPaid && data.paid === true) {
             showPaymentSuccessBanner();
+            if (window.gtag) gtag('event', 'purchase_completed');
           }
 
           // Check if we got kicked by another session
@@ -198,6 +199,7 @@
         window.AppAuth.userPaid = true;
         updateUI();
         showPaymentSuccessBanner();
+        if (window.gtag) gtag('event', 'purchase_completed');
       });
     });
   }
@@ -279,8 +281,11 @@
   async function handleGoogleSignIn() {
     clearAuthErrors();
     try {
-      await auth.signInWithPopup(googleProvider);
+      var result = await auth.signInWithPopup(googleProvider);
       hideAuthModal();
+      if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
+        if (window.gtag) gtag('event', 'signup_completed', { method: 'google' });
+      }
     } catch (err) {
       if (err.code === 'auth/account-exists-with-different-credential') {
         // Email/password account already exists — prompt to link
@@ -316,6 +321,7 @@
       const cred = await auth.createUserWithEmailAndPassword(email, password);
       await cred.user.updateProfile({ displayName: name });
       hideAuthModal();
+      if (window.gtag) gtag('event', 'signup_completed', { method: 'email' });
     } catch (err) {
       const msg = err.code === 'auth/email-already-in-use' ? 'This email is already registered. Try logging in.'
         : err.code === 'auth/invalid-email' ? 'Invalid email address.'

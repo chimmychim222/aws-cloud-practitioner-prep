@@ -72,7 +72,6 @@
 
   /* Layout */
   --header-h: 56px;
-  --banner-h: 52px;
   --sidebar-w: 300px;
   --max-w: 1200px;
 }
@@ -181,7 +180,7 @@ fieldset { border: none; }
    Header — AWS Dark Nav
    ============================================ */
 #site-header {
-  position: fixed; top: var(--banner-h); left: 0; right: 0; z-index: 1000;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   background: var(--aws-squid-ink); height: var(--header-h);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
@@ -252,7 +251,7 @@ fieldset { border: none; }
 /* ============================================
    HOME: Hero Section
    ============================================ */
-#app-main { padding-top: calc(var(--header-h) + var(--banner-h)); }
+#app-main { padding-top: var(--header-h); }
 
 .hero {
   background: linear-gradient(135deg, var(--aws-squid-ink) 0%, var(--aws-ink-dark) 50%, #0D1117 100%);
@@ -434,8 +433,8 @@ fieldset { border: none; }
 .training-sidebar {
   width: var(--sidebar-w); background: var(--bg-card);
   border-right: 1px solid var(--border-light);
-  position: sticky; top: calc(var(--header-h) + var(--banner-h));
-  height: calc(100vh - var(--header-h) - var(--banner-h));
+  position: sticky; top: var(--header-h);
+  height: calc(100vh - var(--header-h));
   overflow-y: auto; flex-shrink: 0;
 }
 .sidebar-heading {
@@ -547,7 +546,7 @@ fieldset { border: none; }
    PRACTICE TEST VIEW
    ============================================ */
 .test-header-bar {
-  position: sticky; top: calc(var(--header-h) + var(--banner-h)); z-index: 50;
+  position: sticky; top: var(--header-h); z-index: 50;
   background: var(--bg-card); border-bottom: 1px solid var(--border-light);
   box-shadow: var(--shadow-sm);
 }
@@ -588,7 +587,7 @@ fieldset { border: none; }
 
 .test-layout {
   display: flex; max-width: var(--max-w); margin: 0 auto;
-  gap: 0; min-height: calc(100vh - var(--header-h) - var(--banner-h) - 52px);
+  gap: 0; min-height: calc(100vh - var(--header-h) - 52px);
 }
 .test-question-area { flex: 1; padding: var(--sp-6) var(--sp-8); }
 
@@ -681,8 +680,8 @@ fieldset { border: none; }
 .question-navigator {
   width: 260px; background: var(--bg-card);
   border-left: 1px solid var(--border-light);
-  position: sticky; top: calc(var(--header-h) + var(--banner-h) + 52px);
-  height: calc(100vh - var(--header-h) - var(--banner-h) - 52px);
+  position: sticky; top: calc(var(--header-h) + 52px);
+  height: calc(100vh - var(--header-h) - 52px);
   overflow-y: auto; padding: var(--sp-5); flex-shrink: 0;
 }
 .navigator-heading { font-size: var(--fs-sm); font-weight: 700; margin-bottom: var(--sp-3); }
@@ -917,7 +916,7 @@ fieldset { border: none; }
 }
 
 @media (max-width: 768px) {
-  :root { --header-h: 56px; --banner-h: 90px; }
+  :root { --header-h: 56px; }
   .header-nav { display: none; }
   .header-nav.open {
     display: flex; flex-direction: column;
@@ -959,7 +958,6 @@ fieldset { border: none; }
 }
 
 @media (max-width: 480px) {
-  :root { --banner-h: 112px; }
   .hero { padding: var(--sp-10) 0 var(--sp-8); }
   .hero h1 { font-size: var(--fs-2xl); }
   .exam-stats { flex-direction: column; align-items: center; }
@@ -1238,7 +1236,7 @@ fieldset { border: none; }
    Payment Success Banner
    ============================================ */
 .payment-success-banner {
-  position: fixed; top: calc(var(--header-h) + var(--banner-h)); left: 0; right: 0; z-index: 1500;
+  position: fixed; top: var(--header-h, 56px); left: 0; right: 0; z-index: 1500;
   background: linear-gradient(90deg, #037F0C, #2E7D32);
   color: #fff; padding: 12px 24px;
   display: flex; align-items: center; justify-content: center; gap: 12px;
@@ -1978,18 +1976,3 @@ fieldset { border: none; }
   .onboarding-modal { padding: 1.75rem 1.25rem; }
 }
 
-/* ── Disclaimer banner ── */
-.disclaimer-banner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
-  background: #e8eaed;
-  color: #3c4043;
-  font-size: var(--fs-xs);
-  text-align: center;
-  padding: 7px var(--sp-6);
-  line-height: 1.5;
-  border-bottom: 1px solid var(--border-color);
-}

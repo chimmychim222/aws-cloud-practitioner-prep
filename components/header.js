@@ -96,8 +96,5 @@
     }
   });
 
-  // Set --banner-h to the actual rendered banner height so the fixed header
-  // and all sticky offsets stay flush regardless of how many lines wrap.
-  var banner = document.querySelector('.disclaimer-banner');
-  if (banner) document.documentElement.style.setProperty('--banner-h', banner.offsetHeight + 'px');
+
 })();

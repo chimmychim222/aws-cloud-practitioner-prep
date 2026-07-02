@@ -3,12 +3,11 @@
 > **Affiliation disclaimer (required on every page)**
 > This site is an independent exam-preparation resource. It is **not affiliated with,
 > endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates.**
-> Two disclaimer surfaces must always be present on every page:
-> 1. **Disclaimer banner** at the very top of the `<body>`, above the nav — see `## Disclaimer Banner` below.
-> 2. **Footer disclaimer** driven by `site-config.js → footerDisclaimer` and rendered via
->    `data-cfg="footer-disclaimer"` in `index.html`. The string must be:
->    _"AWS Certified Cloud Practitioner CLF-C02 Practice — Not affiliated with or endorsed by Amazon Web Services."_
-> Never remove either surface.
+> The sole disclaimer surface is the **footer disclaimer**, injected by `components/footer.js`
+> using `site-config.js → footerDisclaimer`. It appears on every page at all times and is
+> crawlable (the string lives in a static config file). The exact string must be:
+> _"CloudPractitionerPrep is an independent, third-party study platform and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates. AWS and Cloud Practitioner are trademarks of Amazon.com, Inc. or its affiliates."_
+> Never remove this surface or shorten this copy.
 
 ---
 
@@ -160,41 +159,15 @@ for a new certification).
 ---
 
 
-## Disclaimer Banner
+## Disclaimer Banner (removed July 2026)
 
-A full-width affiliation disclaimer sits at the very top of **every page**, above the nav.
-It is **not dismissible** — no close button, no JS toggle — and must always be in the static HTML
-so it is visible with zero JavaScript and crawlable by search engines.
+The top-of-page `<div class="disclaimer-banner">` banner was removed. The trademark
+disclaimer is now handled exclusively by the **footer** (see `site-config.js → footerDisclaimer`
+and `components/footer.js`).
 
-**HTML block** (placed immediately after `<body>`, before `<header id="site-header">`):
-
-```html
-<!-- AWS DISCLAIMER BANNER - see CLAUDE.md -->
-<div class="disclaimer-banner">CloudPractitionerPrep is an independent, third-party study platform and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates. AWS and Cloud Practitioner are trademarks of Amazon.com, Inc. or its affiliates.</div>
-```
-
-**Exact copy (source of truth — never alter the wording without updating all 16 files):**
-
-> CloudPractitionerPrep is an independent, third-party study platform and is not affiliated
-> with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates. AWS and
-> Cloud Practitioner are trademarks of Amazon.com, Inc. or its affiliates.
-
-**CSS:** `.disclaimer-banner` defined in `styles.css` (end of file).
-Uses `--border-light` background, `--text-muted` text color, `--fs-xs` (12 px font),
-`--border-color` bottom border, 7 px top/bottom padding.
-
-**Duplication tradeoff:** Like the nav, this block is **manually duplicated** across all 16 HTML files —
-there is no build step or JS injection. This is the same deliberate tradeoff as the shared nav:
-static duplication wins for crawlability and immediate render (no JS required).
-When changing the banner copy, update every file in this list:
-
-`index.html`, `faq.html`, `exam-guide.html`, `diagnostic.html`, `study-plan.html`,
-`practice-questions.html`, `privacy.html`, `terms.html`, `refund.html`,
-`blog/index.html`, `blog/post-template.html`, `admin.html`,
-`blog/aws-cloud-practitioner-passing-score-explained.html`,
-`blog/aws-well-architected-framework-pillars-explained.html`,
-`blog/capex-vs-opex-aws-cloud-economics.html`,
-`page-template.html` (update this too so new pages inherit the correct copy).
+**Reason:** The footer appears on every page including interior landings, is single-sourced
+(one edit in `site-config.js` propagates everywhere), carries no top-of-page space cost, and
+avoids the fixed-header-offset complexity the banner required.
 
 ---
 ## Design Tokens
@@ -636,8 +609,7 @@ These rules apply to every change made to this codebase. No exceptions.
 
 ### AWS affiliation
 - Never claim or imply affiliation with, endorsement by, or sponsorship by Amazon Web Services.
-- The **disclaimer banner** (``<div class="disclaimer-banner">``) must appear at the very top of every page's ``<body>``, in static HTML, above the nav. See `## Disclaimer Banner` for exact copy, CSS, and the full file list. Never remove or JS-inject it.
-- The footer disclaimer must appear on every page at all times.
+- The **footer disclaimer** (`components/footer.js` reads `site-config.js → footerDisclaimer`) is the sole trademark disclaimer surface and must appear on every page at all times. Never remove it or shorten the `footerDisclaimer` string.
 - Exam-related marketing copy must describe what the product *is*, not imply official status.
 
 ### Exam facts

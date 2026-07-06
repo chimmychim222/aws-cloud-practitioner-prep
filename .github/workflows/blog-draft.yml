@@ -119,6 +119,8 @@ jobs:
     steps:
       - name: Checkout (post-commit state)
         uses: actions/checkout@v4
+        with:
+          ref: main   # must be explicit: GITHUB_SHA is the dispatch-time SHA, not the post-commit HEAD
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

@@ -7,6 +7,7 @@
 // Actions:
 //   - blog-drafts/[slug].md          → blog-drafts/_held_[slug].md
 //   - blog-drafts/[slug].factcheck.md → blog-drafts/_held_[slug].factcheck.md  (if exists)
+//   - Flips topic status in blog/topics.js: drafted → needs-manual-attention
 //   - Appends a HELD row to blog-drafts/review-queue.md
 
 'use strict';
@@ -14,9 +15,10 @@
 const fs   = require('fs');
 const path = require('path');
 
-const ROOT       = path.join(__dirname, '..');
-const DRAFTS_DIR = path.join(ROOT, 'blog-drafts');
-const QUEUE_PATH = path.join(DRAFTS_DIR, 'review-queue.md');
+const ROOT        = path.join(__dirname, '..');
+const DRAFTS_DIR  = path.join(ROOT, 'blog-drafts');
+const TOPICS_PATH = path.join(ROOT, 'blog', 'topics.js');
+const QUEUE_PATH  = path.join(DRAFTS_DIR, 'review-queue.md');
 
 function initQueueFile() {
   return `# Blog Auto-Publish Review Queue
@@ -55,6 +57,22 @@ function main() {
   if (fs.existsSync(fcFrom)) {
     fs.renameSync(fcFrom, fcTo);
     console.log(`Renamed: blog-drafts/${slug}.factcheck.md → blog-drafts/_held_${slug}.factcheck.md`);
+  }
+
+  // Flip topic status: drafted → needs-manual-attention
+  // generate-blog-draft.js only picks status:'queued', so this topic will
+  // never be auto-retried — a human must change it back to 'queued' manually.
+  if (fs.existsSync(TOPICS_PATH)) {
+    const raw = fs.readFileSync(TOPICS_PATH, 'utf8');
+    const re  = new RegExp(
+      `(slug:\\s*['"]${slug}['"][\\s\\S]*?status:\\s*')drafted(')`
+    );
+    if (re.test(raw)) {
+      fs.writeFileSync(TOPICS_PATH, raw.replace(re, "$1needs-manual-attention$2"));
+      console.log(`Updated: blog/topics.js — ${slug} → needs-manual-attention`);
+    } else {
+      console.warn(`WARNING: could not find ${slug} with status 'drafted' in topics.js — skipping status update`);
+    }
   }
 
   // Append HELD row to review queue

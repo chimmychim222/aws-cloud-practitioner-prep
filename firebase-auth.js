@@ -19,6 +19,11 @@
   // Session ID for single-session enforcement
   const SESSION_ID = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
 
+  // True only when checkPaymentRedirect completes a real Stripe purchase in this page
+  // session. Set before paid=true is written so the onSnapshot listener can tell the
+  // difference between "purchase just happened" and "returning paid user signing in."
+  let purchasedThisSession = false;
+
   // ---- Helpers ----
   const $ = s => document.querySelector(s);
   const $$ = s => document.querySelectorAll(s);
@@ -103,10 +108,13 @@
           window.AppAuth.userPaid = data.paid === true;
           updateUI();
 
-          // paid flipped false→true (client-side grant, or future server-side webhook)
-          if (!wasPaid && data.paid === true) {
+          // Show banner only when the purchase happened in this page session.
+          // purchasedThisSession is set by checkPaymentRedirect (Path A) before it
+          // writes paid=true, so returning paid users signing in never hit this.
+          // purchase_completed fires exclusively in checkPaymentRedirect — not here —
+          // to prevent false GA4/Google Ads conversions on every paid-user sign-in.
+          if (!wasPaid && data.paid === true && purchasedThisSession) {
             showPaymentSuccessBanner();
-            if (window.gtag) gtag('event', 'purchase_completed');
           }
 
           // Check if we got kicked by another session
@@ -196,10 +204,13 @@
       }).then(function() {
         const claimBanner = document.getElementById('claim-purchase-banner');
         if (claimBanner) claimBanner.remove();
+        // Set flag before writing paid=true so the onSnapshot listener (which fires
+        // when Firestore delivers the write) sees purchasedThisSession=true.
+        purchasedThisSession = true;
         window.AppAuth.userPaid = true;
         updateUI();
         showPaymentSuccessBanner();
-        if (window.gtag) gtag('event', 'purchase_completed');
+        if (window.gtag) gtag('event', 'purchase_completed', { value: 49, currency: 'USD' });
       });
     });
   }

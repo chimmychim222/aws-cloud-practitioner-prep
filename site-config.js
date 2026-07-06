@@ -1,7 +1,8 @@
 // ============================================================
-// SITE CONFIGURATION — LOCAL DEV COPY (gitignored)
-// Do NOT commit this file. The deployed version is generated
-// from site-config.template.js by GitHub Actions.
+// SITE CONFIGURATION
+// This file IS committed and served directly by GitHub Pages.
+// There is no template and no build-time generation step.
+// Edit here; the change deploys on the next push to main.
 // ============================================================
 
 window.SiteConfig = {

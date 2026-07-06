@@ -46,5 +46,13 @@ window.BlogPosts = [
     readingTime: '7 min read',
     excerpt: 'Master CapEx vs OpEx for the AWS CLF-C02 exam. Understand why trading upfront capital costs for variable operating expense is a core cloud advantage.',
     category: 'cloud-concepts'
+  },
+  {
+    slug: 'aws-shared-responsibility-model-explained',
+    title: 'AWS Shared Responsibility Model Explained',
+    date: '2026-07-06',
+    readingTime: '8 min read',
+    excerpt: 'Learn exactly who secures what in AWS — a must-know concept for the CLF-C02 exam that appears throughout the Security and Compliance domain.',
+    category: 'security-compliance'
   }
 ];

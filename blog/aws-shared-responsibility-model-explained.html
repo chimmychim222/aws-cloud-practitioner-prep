@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<!--
+  BLOG POST TEMPLATE — copy this file for every new post.
+  Built from /page-template.html — shares header, footer, nav, and design system.
+  Search for every "TODO:" comment and fill it in before publishing.
+  File naming: blog/[slug].html — resolves to the clean URL /blog/[slug]
+  via the same GitHub Pages URL normalization used by every other page.
+  Do NOT modify index.html, app.js, or the SPA views.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: post title (keep under 60 chars) -->
+  <title>AWS Shared Responsibility Model Explained — Cloud Practitioner Prep</title>
+
+  <!-- TODO: unique description for this post (120–155 chars, no outcome claims) -->
+  <meta name="description" content="Learn exactly who secures what in AWS — a must-know concept for the CLF-C02 exam that appears throughout the Security and Compliance domain.">
+
+  <!-- TODO: replace todo-slug with the post's slug (must match the filename) -->
+  <link rel="canonical" href="https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <!-- TODO -->
+  <meta property="og:title"       content="AWS Shared Responsibility Model Explained — Cloud Practitioner Prep">
+  <meta property="og:description" content="Learn exactly who secures what in AWS — a must-know concept for the CLF-C02 exam that appears throughout the Security and Compliance domain.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained">
+  <meta property="og:site_name"   content="Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <!-- TODO -->
+  <meta name="twitter:title"       content="AWS Shared Responsibility Model Explained — Cloud Practitioner Prep">
+  <meta name="twitter:description" content="Learn exactly who secures what in AWS — a must-know concept for the CLF-C02 exam that appears throughout the Security and Compliance domain.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- TODO: Article + BreadcrumbList + FAQPage JSON-LD — fill in headline/description/dates/url/questions.
+       Delete the FAQPage block entirely if this post has no FAQ section. -->
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AWS Shared Responsibility Model Explained",
+    "description": "Learn exactly who secures what in AWS — a must-know concept for the CLF-C02 exam that appears throughout the Security and Compliance domain.",
+    "url": "https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained",
+    "datePublished": "2026-07-06",
+    "dateModified": "2026-07-06",
+    "author": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "url": "https://cloudpractitionerprep.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cloudpractitionerprep.com/og-image.png"
+      }
+    },
+    "image": "https://cloudpractitionerprep.com/og-image.png",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cloudpractitionerprep.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://cloudpractitionerprep.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "AWS Shared Responsibility Model Explained — Cloud Practitioner Prep",
+        "item": "https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the root account AWS's responsibility or mine?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The root account is entirely your responsibility. AWS creates it when you open your account, but securing it — including enabling MFA and avoiding its use for day-to-day tasks — is a customer obligation under the shared responsibility model."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does AWS ever patch my EC2 instances for me?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. AWS patches the underlying hypervisor and physical infrastructure, but the guest operating system on your EC2 instance is your responsibility to keep up to date."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "If I use Amazon RDS, do I still need to patch anything?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AWS handles patching of the RDS database engine itself during maintenance windows. However, you are still responsible for managing database users and credentials, enabling encryption, and configuring security group rules that control network access to your RDS instance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if AWS has a hardware failure that takes down my instance — is that my fault?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Physical infrastructure failures are AWS's responsibility. That said, designing your application to tolerate such failures — for example, by spreading instances across multiple Availability Zones — is your architectural responsibility."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many questions on the CLF-C02 will cover the shared responsibility model?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The exam does not publish exact question counts per topic, but Security and Compliance accounts for 30% of the scored questions. The shared responsibility model is one of the most frequently tested concepts in that domain, so expect it to appear in multiple questions, often embedded in scenario-based questions rather than asked directly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is AWS Shield Standard something I have to turn on?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. AWS Shield Standard is automatically applied to all AWS customers at no additional charge. It provides baseline protection against common DDoS attack vectors. Shield Advanced must be explicitly subscribed to and carries an additional cost."
+        }
+      }
+    ]
+  }
+]
+  </script>
+
+  <!-- Google tag (gtag.js) | G-069J7PEMGM -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-069J7PEMGM"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-069J7PEMGM');</script>
+  <link rel="stylesheet" href="/styles.css?v=7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%234A90D9'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'>C</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .blog-bc { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-bc a { color: var(--text-muted); text-decoration: none; }
+    .blog-bc a:hover { color: var(--aws-orange); }
+    .blog-bc .sep { margin: 0 var(--sp-2); }
+
+    /* ── Post header ── */
+    .blog-header { max-width: 760px; margin: 0 auto; padding: var(--sp-8) 0 var(--sp-6); }
+    .blog-header h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; margin-bottom: var(--sp-3); }
+    .blog-meta { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-meta .dot { opacity: .5; }
+
+    /* ── Table of contents ── */
+    .blog-toc { max-width: 760px; margin: 0 auto var(--sp-8); background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5) var(--sp-6); box-shadow: var(--shadow-sm); }
+    .blog-toc-title { font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: var(--sp-3); }
+    .blog-toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+    .blog-toc li.toc-h3 { margin-left: var(--sp-5); }
+    .blog-toc a { color: var(--color-info); font-size: var(--fs-sm); text-decoration: none; }
+    .blog-toc a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+
+    /* ── Article body ── */
+    .blog-body { max-width: 760px; margin: 0 auto; padding-bottom: var(--sp-10); }
+    .blog-body h2 { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -.02em; margin: var(--sp-10) 0 var(--sp-4); scroll-margin-top: 80px; }
+    .blog-body h3 { font-size: var(--fs-lg); font-weight: 700; margin: var(--sp-6) 0 var(--sp-3); scroll-margin-top: 80px; }
+    .blog-body p { color: var(--text-secondary); line-height: 1.85; margin-bottom: var(--sp-4); font-size: var(--fs-base); }
+    .blog-body ul, .blog-body ol { color: var(--text-secondary); padding-left: var(--sp-6); line-height: 1.9; margin-bottom: var(--sp-4); }
+    .blog-body li { list-style: disc; margin-bottom: var(--sp-1); }
+    .blog-body ol li { list-style: decimal; }
+    .blog-body strong { color: var(--text-primary); }
+    .blog-body a { color: var(--color-info); }
+    .blog-body a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+    .blog-body table { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-5); font-size: var(--fs-sm); }
+    .blog-body th, .blog-body td { padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border-light); text-align: left; }
+    .blog-body th { background: var(--bg-page); font-weight: 700; }
+
+    /* ── Inline diagnostic CTA ── */
+    .blog-cta { background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark)); border-radius: var(--r-xl); padding: var(--sp-7); margin: var(--sp-8) 0; text-align: center; }
+    .blog-cta h3 { color: #fff; font-size: var(--fs-lg); font-weight: 800; margin-bottom: var(--sp-2); }
+    .blog-cta p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: var(--sp-5); }
+
+    /* ── Author / disclaimer line ── */
+    .blog-author { max-width: 760px; margin: 0 auto var(--sp-10); padding-top: var(--sp-5); border-top: 1px solid var(--border-light); font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.7; }
+
+    /* ── Related resources ── */
+    .blog-related { max-width: 760px; margin: 0 auto var(--sp-12); }
+    .blog-related h2 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-5); }
+    .blog-related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+    .blog-related-card { display: block; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5); text-decoration: none; transition: box-shadow var(--t-fast), transform var(--t-fast); }
+    .blog-related-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
+    .blog-related-card .rc-title { font-weight: 700; color: var(--text-primary); font-size: var(--fs-base); margin-bottom: var(--sp-1); }
+    .blog-related-card .rc-desc { font-size: var(--fs-sm); color: var(--text-secondary); }
+
+    @media (max-width: 640px) {
+      .blog-header h1 { font-size: var(--fs-2xl); }
+      .blog-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ========== SITE HEADER — static nav for crawlability. header.js only
+       ADDS BEHAVIOR (active-state highlighting, Resources dropdown toggle,
+       mobile hamburger menu) — it does NOT build this markup. To change a
+       nav link, edit this block and propagate the identical block to every
+       other page (see CLAUDE.md "Shared Header" section). ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+
+      <a href="/" class="header-logo" aria-label="CLF-C02 Prep — Home">
+        <svg class="logo-cloud" width="32" height="20" viewBox="0 0 32 20" fill="rgba(255,255,255,0.9)" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="16" cy="9" r="7"/><circle cx="23" cy="14" r="5"/><rect x="4" y="14" width="24" height="5" rx="1"/></svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+
+      <nav class="header-nav" id="header-nav" aria-label="Main navigation">
+        <a href="/" class="nav-link" id="nav-home-btn" data-view="home"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>Home</a>
+        <a href="/" class="nav-link" id="nav-training-btn" data-view="training"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>Training</a>
+        <a href="/" class="nav-link" id="nav-test-btn" data-view="test"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>Practice Test</a>
+
+        <div class="nav-dropdown" id="nav-resources-dropdown">
+          <button type="button" class="nav-link nav-dropdown-trigger" id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>Resources<svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>
+          </button>
+          <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">
+            <a href="/exam-guide" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>Exam Guide</a>
+            <a href="/study-plan" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>Study Plan</a>
+            <a href="/diagnostic" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>Diagnostic</a>
+            <a href="/practice-questions" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>Practice Qs</a>
+            <a href="/blog" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>Blog</a>
+            <a href="/faq" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>FAQ</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="auth-header-wrap">
+        <button class="auth-header-btn" id="auth-header-btn" aria-label="Sign in or view account">Sign In</button>
+        <div class="user-menu hidden" id="user-menu" role="menu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="user-menu-name"></div>
+            <div class="user-menu-email" id="user-menu-email"></div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" id="user-menu-logout" role="menuitem">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </header>
+
+  <noscript>
+    <style>
+      /* No-JS fallback: abandon collapsible/hover interactions and force
+         the full nav, including Resources sub-items, permanently visible. */
+      .mobile-menu-btn { display: none !important; }
+      .header-nav { display: flex !important; position: static !important; flex-wrap: wrap; box-shadow: none !important; }
+      .nav-dropdown-panel { display: flex !important; position: static !important; box-shadow: none !important; border: none !important; background: transparent !important; padding-left: 0 !important; }
+      .nav-caret { display: none !important; }
+    </style>
+  </noscript>
+
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="blog-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span>
+        <a href="/blog">Blog</a><span class="sep" aria-hidden="true">›</span>
+        <span>AWS Shared Responsibility Model Explained</span>
+      </nav>
+
+      <!-- Post header -->
+      <header class="blog-header">
+        <h1>AWS Shared Responsibility Model Explained</h1>
+        <div class="blog-meta">
+          <span>Published 6 July 2026</span>
+          <span class="dot">&middot;</span>
+          <span>8 min read</span>
+        </div>
+      </header>
+
+      <!-- Table of contents — TODO: one <li><a href="#anchor-id"> per H2/H3 below -->
+      <nav class="blog-toc" aria-label="Table of contents">
+        <div class="blog-toc-title">In this article</div>
+        <ol>
+          <li><a href="#what-is-the-shared-responsibility-model">What Is the Shared Responsibility Model?</a></li>
+          <li><a href="#awss-responsibilities-security-of-the-cloud">AWS's Responsibilities: Security *of* the Cloud</a></li>
+          <li class="toc-h3"><a href="#physical-infrastructure">Physical Infrastructure</a></li>
+          <li class="toc-h3"><a href="#global-network-and-hardware">Global Network and Hardware</a></li>
+          <li class="toc-h3"><a href="#virtualisation-layer-hypervisor">Virtualisation Layer (Hypervisor)</a></li>
+          <li class="toc-h3"><a href="#managed-service-internals">Managed Service Internals</a></li>
+          <li><a href="#customer-responsibilities-security-in-the-cloud">Customer Responsibilities: Security *in* the Cloud</a></li>
+          <li class="toc-h3"><a href="#operating-system-patches-and-updates">Operating System Patches and Updates</a></li>
+          <li class="toc-h3"><a href="#application-configuration-and-code">Application Configuration and Code</a></li>
+          <li class="toc-h3"><a href="#identity-and-access-management-iam">Identity and Access Management (IAM)</a></li>
+          <li class="toc-h3"><a href="#data-encryption">Data Encryption</a></li>
+          <li class="toc-h3"><a href="#security-groups-and-firewall-rules">Security Groups and Firewall Rules</a></li>
+          <li class="toc-h3"><a href="#network-configuration">Network Configuration</a></li>
+          <li><a href="#the-it-depends-zone-shared-services">The &quot;It Depends&quot; Zone: Shared Services</a></li>
+          <li class="toc-h3"><a href="#infrastructure-services-eg-ec2">Infrastructure Services (e.g., EC2)</a></li>
+          <li class="toc-h3"><a href="#container-and-platform-services-eg-amazon-rds">Container and Platform Services (e.g., Amazon RDS)</a></li>
+          <li class="toc-h3"><a href="#abstracted-serverless-services-eg-aws-lambda-amazon-dynamodb">Abstracted / Serverless Services (e.g., AWS Lambda, Amazon DynamoDB)</a></li>
+          <li><a href="#key-security-services-that-support-customer-responsibilities">Key Security Services That Support Customer Responsibilities</a></li>
+          <li><a href="#why-this-model-matters-for-the-exam">Why This Model Matters for the Exam</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#bringing-it-together">Bringing It Together</a></li>
+        </ol>
+      </nav>
+
+      <!-- Article body — TODO: replace with real content. Each H2/H3 needs a
+           matching id="" that the ToC links to. Insert the diagnostic CTA
+           block partway through (example below). -->
+      <article class="blog-body">
+        <p>If there is one security concept you must nail before sitting the AWS Certified Cloud Practitioner (CLF-C02) exam, it is the <strong>shared responsibility model</strong>. Security and Compliance is the second-largest exam domain at <strong>30% of your score</strong>, so a shaky understanding here can cost you real points. More importantly, the model reflects how security actually works in practice whenever an organisation moves workloads to AWS.</p>
+        <p>This guide breaks the model down clearly, walks through common examples, and highlights the edge cases that trip up exam candidates most often.</p>
+        <hr>
+
+        <h2 id="what-is-the-shared-responsibility-model">What Is the Shared Responsibility Model?</h2>
+        <p>The core idea is straightforward: AWS and you (the customer) each own a distinct slice of the security picture. Neither party is solely responsible, and neither can ignore the other's domain.</p>
+        <p>AWS summarises this as:</p>
+        <ul>
+          <li>*<em>AWS is responsible for security </em>of<em> the cloud.</em>*</li>
+          <li>*<em>Customers are responsible for security </em>in<em> the cloud.</em>*</li>
+        </ul>
+        <p>That single sentence is worth memorising word for word — it shows up in exam questions almost verbatim.</p>
+        <hr>
+
+        <h2 id="awss-responsibilities-security-of-the-cloud">AWS's Responsibilities: Security <em>of</em> the Cloud</h2>
+        <p>AWS owns everything that makes up the underlying infrastructure. You cannot see it, touch it, or configure it — and you do not need to, because AWS is contractually and operationally accountable for it.</p>
+        <h3 id="physical-infrastructure">Physical Infrastructure</h3>
+        <p>AWS designs, builds, and operates its own data centres. Physical access controls, environmental protections (fire suppression, cooling, power redundancy), and hardware security are entirely AWS's concern. As a customer, you never rack a server, replace a failed drive, or worry about a flood taking out a facility.</p>
+        <h3 id="global-network-and-hardware">Global Network and Hardware</h3>
+        <p>The fibre backbone connecting AWS Regions, the hardware routers and switches, and the dedicated network links between Availability Zones are all managed by AWS. Each <strong>AWS Region</strong> is geographically isolated and contains two or more <strong>Availability Zones</strong> — discrete data centres with redundant power and connectivity. Keeping that physical fabric secure is AWS's job.</p>
+        <h3 id="virtualisation-layer-hypervisor">Virtualisation Layer (Hypervisor)</h3>
+        <p>When you launch an EC2 instance, a hypervisor allocates compute resources from underlying hardware and isolates your instance from every other tenant. AWS is responsible for the security of that hypervisor — you never patch it, configure it, or even know which physical host your instance is running on.</p>
+        <h3 id="managed-service-internals">Managed Service Internals</h3>
+        <p>For fully managed services — think Amazon DynamoDB, Amazon S3, AWS Lambda — AWS also takes on the security of the service's own infrastructure and underlying software. You do not patch the database engine powering DynamoDB; AWS does.</p>
+        <hr>
+
+        <div class="blog-cta">
+          <h3>Not sure where you stand?</h3>
+          <p>Take the free 10-question CLF-C02 diagnostic and get an instant score, your weakest domain, and a study plan.</p>
+          <a href="/diagnostic" class="btn btn-primary btn-lg" data-cta="primary">Take the free diagnostic</a>
+        </div>
+
+        <h2 id="customer-responsibilities-security-in-the-cloud">Customer Responsibilities: Security <em>in</em> the Cloud</h2>
+        <p>Once AWS hands you the keys to the resources you provision, the security decisions are yours. This is where many organisations are caught off guard after migrating from on-premises environments.</p>
+        <h3 id="operating-system-patches-and-updates">Operating System Patches and Updates</h3>
+        <p>If you launch an EC2 instance, AWS gives you a virtual server. Patching the guest operating system — whether it runs Amazon Linux, Ubuntu, or Windows Server — is your responsibility. AWS will never push OS updates to your instances without your involvement.</p>
+        <h3 id="application-configuration-and-code">Application Configuration and Code</h3>
+        <p>Your applications, their dependencies, their configurations, and their vulnerabilities are your problem to manage. A misconfigured web server or an unpatched application library sitting on an EC2 instance is squarely in the customer's lane.</p>
+        <h3 id="identity-and-access-management-iam">Identity and Access Management (IAM)</h3>
+        <p>Creating IAM users, groups, and roles; assigning policies; enforcing the <strong>principle of least privilege</strong>; and enabling multi-factor authentication (MFA) — especially on the root account — are all customer responsibilities. AWS provides the IAM service, but it cannot know who should have access to your resources.</p>
+        <h3 id="data-encryption">Data Encryption</h3>
+        <p>You decide whether data at rest is encrypted and whether data in transit uses TLS. AWS offers the tools — AWS Key Management Service (KMS), server-side encryption options in S3, enforced HTTPS on API Gateway — but enabling them is your call.</p>
+        <h3 id="security-groups-and-firewall-rules">Security Groups and Firewall Rules</h3>
+        <p>Security groups act as virtual firewalls for your EC2 instances. A security group that allows unrestricted inbound access (0.0.0.0/0) on a sensitive port is a customer configuration error, not an AWS failure.</p>
+        <h3 id="network-configuration">Network Configuration</h3>
+        <p>VPC design, subnet layout, route tables, and network ACLs are all customer-controlled. If you accidentally expose a private subnet to the public internet, that is on you.</p>
+        <hr>
+
+        <h2 id="the-it-depends-zone-shared-services">The "It Depends" Zone: Shared Services</h2>
+        <p>Some services blur the line, and this is where CLF-C02 questions get interesting.</p>
+        <h3 id="infrastructure-services-eg-ec2">Infrastructure Services (e.g., EC2)</h3>
+        <p>The split is cleanest here. AWS secures the hardware and hypervisor; you secure everything from the operating system upward.</p>
+        <h3 id="container-and-platform-services-eg-amazon-rds">Container and Platform Services (e.g., Amazon RDS)</h3>
+        <p>With Amazon RDS, AWS manages the underlying EC2 instance, the database engine installation, and automated patching of the database engine itself. Your responsibilities shift to: the data you put in the database, the security groups controlling access to RDS, the IAM policies governing who can call RDS APIs, and whether encryption at rest is enabled. You are responsible for <em>less</em> than with a self-managed database on EC2, but you still own meaningful decisions.</p>
+        <h3 id="abstracted-serverless-services-eg-aws-lambda-amazon-dynamodb">Abstracted / Serverless Services (e.g., AWS Lambda, Amazon DynamoDB)</h3>
+        <p>Here, AWS manages almost everything beneath the surface. With Lambda, you do not manage servers or operating systems at all — AWS's responsibility extends further up the stack. Your lane narrows to: the function code you upload, the IAM execution role you attach to the function, and the data your function processes.</p>
+        <hr>
+
+        <h2 id="key-security-services-that-support-customer-responsibilities">Key Security Services That Support Customer Responsibilities</h2>
+        <p>Understanding the shared responsibility model also means knowing which AWS tools help you meet <em>your</em> side of the bargain.</p>
+        <ul>
+          <li><strong>AWS CloudTrail</strong> records API calls across your account — who made a request, when, from where, and what they did. It is an audit and governance tool, not a performance monitor.</li>
+          <li><strong>Amazon GuardDuty</strong> uses machine learning, anomaly detection, and threat intelligence feeds to detect malicious or unauthorised behaviour in your account.</li>
+          <li><strong>Amazon Inspector</strong> performs automated vulnerability scanning for EC2 instances, container images, and Lambda functions — helping you find OS and software vulnerabilities that are your responsibility to patch.</li>
+          <li><strong>AWS Shield</strong> protects against DDoS attacks. Shield Standard is free and automatically applied to all AWS customers; Shield Advanced is a paid tier that adds enhanced detection and access to a DDoS Response Team.</li>
+        </ul>
+        <p>Knowing which tool does what is fair game on the exam. Check out the <a href="/exam-guide">exam guide</a> for a full breakdown of which services appear in each domain.</p>
+        <hr>
+
+        <h2 id="why-this-model-matters-for-the-exam">Why This Model Matters for the Exam</h2>
+        <p>Security and Compliance carries the second-highest domain weighting on the CLF-C02 — <strong>30%</strong>. Questions in this domain frequently present a scenario and ask you to identify whether a described security task belongs to AWS or the customer. The trick is that incorrect answer choices are often plausible-sounding confusions between the two sides.</p>
+        <p><strong>A reliable mental test:</strong> Ask yourself — <em>could the customer choose to do this differently?</em> If yes, it is almost always a customer responsibility. Picking which OS to run on EC2, whether to enable encryption, which ports to open — all choices the customer makes. The hardware underneath your EC2 instance? Not a choice you get to make, and therefore not your responsibility to secure.</p>
+        <p>If you want to test yourself on scenario-based questions right now, head to the <a href="/practice-questions">practice questions</a> section for drills specifically targeting Domain 2.</p>
+        <p>Not sure where you stand overall? Take our <a href="/diagnostic">diagnostic</a> quiz to identify your weakest domains before you invest study time.</p>
+        <hr>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Is the root account AWS's responsibility or mine?</h3>
+        <p>The root account is entirely your responsibility. AWS creates it when you open your account, but securing it — including enabling MFA and avoiding its use for day-to-day tasks — is a customer obligation under the shared responsibility model.</p>
+        <h3>Does AWS ever patch my EC2 instances for me?</h3>
+        <p>No. AWS patches the underlying hypervisor and physical infrastructure, but the guest operating system on your EC2 instance is your responsibility to keep up to date.</p>
+        <h3>If I use Amazon RDS, do I still need to patch anything?</h3>
+        <p>AWS handles patching of the RDS database engine itself during maintenance windows. However, you are still responsible for managing database users and credentials, enabling encryption, and configuring security group rules that control network access to your RDS instance.</p>
+        <h3>What happens if AWS has a hardware failure that takes down my instance — is that my fault?</h3>
+        <p>No. Physical infrastructure failures are AWS's responsibility. That said, designing your application to tolerate such failures — for example, by spreading instances across multiple Availability Zones — is your architectural responsibility.</p>
+        <h3>How many questions on the CLF-C02 will cover the shared responsibility model?</h3>
+        <p>The exam does not publish exact question counts per topic, but Security and Compliance accounts for 30% of the scored questions. The shared responsibility model is one of the most frequently tested concepts in that domain, so expect it to appear in multiple questions, often embedded in scenario-based questions rather than asked directly.</p>
+        <h3>Is AWS Shield Standard something I have to turn on?</h3>
+        <p>No. AWS Shield Standard is automatically applied to all AWS customers at no additional charge. It provides baseline protection against common DDoS attack vectors. Shield Advanced must be explicitly subscribed to and carries an additional cost.</p>
+        <hr>
+
+        <h2 id="bringing-it-together">Bringing It Together</h2>
+        <p>The shared responsibility model is not bureaucratic fine print — it is the mental map that tells you exactly what you must protect when you run workloads in AWS. AWS locks down the physical data centres, the global network, and the hypervisor. You lock down the OS, the application, the identities, the data, and the network configuration you control.</p>
+        <p>Get this model internalised and you will find that a significant portion of CLF-C02 security questions become pattern-matching exercises rather than guesswork. Combined with a solid understanding of AWS's security tooling — CloudTrail, GuardDuty, Inspector, Shield, and IAM — you will be well-positioned to score strongly in Domain 2.</p>
+        <blockquote><p><em>cloudpractitionerprep.com is an independent exam-preparation resource and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates. AWS and Amazon Web Services are trademarks of Amazon.com, Inc.</em></p></blockquote>
+
+      </article>
+
+      <!-- Author / disclaimer line -->
+      <div class="blog-author">
+        Written for CloudPractitionerPrep. Independent resource, not affiliated with or endorsed by Amazon Web Services. Verify exam details against official AWS documentation before relying on them.
+      </div>
+
+      <!-- Related resources — TODO: replace with real related posts once more exist -->
+      <section class="blog-related">
+        <h2>Related resources</h2>
+        <div class="blog-related-grid">
+          <a href="/exam-guide" class="blog-related-card">
+            <div class="rc-title">CLF-C02 Exam Guide</div>
+            <div class="rc-desc">All four domains, scoring, and registration steps.</div>
+          </a>
+          <a href="/diagnostic" class="blog-related-card">
+            <div class="rc-title">Free Readiness Diagnostic</div>
+            <div class="rc-desc">10 questions, instant score, weakest domain.</div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
+  <script src="/firebase-auth.js"></script>
+  <script>CTA.initSticky({ text: 'Test your CLF-C02 readiness', threshold: 600 });</script>
+
+</body>
+</html>

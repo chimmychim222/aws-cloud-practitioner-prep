@@ -1,81 +1,92 @@
-name: Generate Blog Draft
+name: Blog Auto-Publish
 
-# Runs Monday and Thursday mornings (08:00 UTC), generates ONE draft from
-# the next queued topic in blog/topics.js, and opens a PR with the new
-# files in /blog-drafts/. NEVER auto-merges, NEVER publishes.
+# Runs every Wednesday at 09:00 UTC.
+# If no existing draft is waiting, generates one from the next queued topic in
+# blog/topics.js. Runs 6 smoke-test checks. On pass, publishes directly to
+# main (no PR, no manual step). On fail, renames the draft to _held_[slug].md
+# so the next run can generate a fresh draft instead of retrying the broken one.
 #
-# /blog-drafts/ is excluded from the GitHub Pages deploy (see
-# .github/workflows/deploy.yml exclude_assets) — drafts cannot go live
-# even if this PR is merged. Taking a draft live requires the separate,
-# manual steps in blog-drafts/PUBLISHING.md.
+# Weekly review: check blog-drafts/review-queue.md (excluded from the Pages
+# deploy — it lives only in the repo, not on the live site). Mark auto-published
+# posts reviewed (⬜ → ✅) and investigate any HELD entries.
 #
 # Requires a repo secret: ANTHROPIC_API_KEY
+# Permissions: contents: write (direct push to main for the publish commit)
 
 on:
   schedule:
-    - cron: '0 8 * * 1,4'   # Monday and Thursday, 08:00 UTC
-  workflow_dispatch: {}      # allow manual triggering for testing
+    - cron: '0 9 * * 3'   # Wednesday 09:00 UTC
+  workflow_dispatch: {}    # allow manual triggering
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
-  generate-draft:
+  auto-publish:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Generate draft from next queued topic
+      # Generate a new draft only when no publishable candidate already exists.
+      # A "publishable candidate" is any .md in blog-drafts/ that does NOT start
+      # with '_' (held drafts) and is not a meta file (PUBLISHING.md etc.).
+      # If a candidate exists, we skip generation and let the smoke test run on it.
+      - name: Generate draft if none exists
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: node scripts/generate-blog-draft.js
-
-      - name: Check for changes
-        id: check
         run: |
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+          CANDIDATE=$(find blog-drafts -maxdepth 1 -name '*.md' \
+            ! -name '_*' \
+            ! -name 'PUBLISHING.md' \
+            ! -name 'review-queue.md' \
+            ! -name '*.factcheck.md' \
+            2>/dev/null | sort | head -1)
+          if [ -z "$CANDIDATE" ]; then
+            echo "No existing draft — generating from topic queue..."
+            node scripts/generate-blog-draft.js
           else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Existing draft found: $CANDIDATE — skipping generation"
           fi
 
-      - name: Open draft PR for human review
-        if: steps.check.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: blog-draft/run-${{ github.run_number }}
-          commit-message: 'Blog draft: automated generation from topic queue'
-          title: '[DRAFT — needs fact-check] New blog draft from topic queue'
-          labels: blog-draft, needs-fact-check
-          body: |
-            Automated draft generated from the next queued topic in
-            `blog/topics.js`.
+      - name: Smoke-test draft
+        id: smoke
+        run: node scripts/smoke-test-draft.js
 
-            **This is a DRAFT ONLY — nothing here is live or will become
-            live by merging this PR.**
+      - name: Publish (smoke test passed)
+        if: steps.smoke.outputs.result == 'pass'
+        env:
+          SMOKE_SLUG: ${{ steps.smoke.outputs.slug }}
+        run: node scripts/publish-draft.js
 
-            - Files added live in `/blog-drafts/`, which is excluded from
-              the GitHub Pages deploy — they cannot be served on the live
-              site even after merge.
-            - `blog/posts.js` (the manifest the blog index reads) is
-              **not** modified.
-            - `sitemap.xml` is **not** modified.
-            - No `/blog/*.html` page is created.
+      - name: Hold (smoke test failed)
+        if: steps.smoke.outputs.result == 'fail'
+        env:
+          SMOKE_SLUG: ${{ steps.smoke.outputs.slug }}
+          SMOKE_REASONS: ${{ steps.smoke.outputs.reasons }}
+        run: node scripts/hold-draft.js
 
-            Before this content can go live, a human must:
-            1. Read the draft and verify every item in the companion
-               `.factcheck.md` checklist against official AWS docs.
-            2. Follow the full publish checklist in
-               `blog-drafts/PUBLISHING.md`.
-
-            Merging this PR only commits the draft + fact-check files and
-            the topic's queue status (`queued` → `drafted`) — it does
-            **not** publish anything.
+      - name: Commit and push changes to main
+        if: steps.smoke.outputs.result != 'noop'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          if [ "${{ steps.smoke.outputs.result }}" = "pass" ]; then
+            git commit -m "blog: auto-publish ${{ steps.smoke.outputs.slug }}"
+          else
+            git commit -m "blog: hold draft ${{ steps.smoke.outputs.slug }} (smoke-test failed)"
+          fi
+          git push

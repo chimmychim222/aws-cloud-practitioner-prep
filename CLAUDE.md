@@ -622,6 +622,104 @@ service cloud.firestore {
 
 ---
 
+## Blog Pipeline
+
+### Overview
+
+One post per week, auto-published. Wednesday 09:00 UTC via
+`.github/workflows/blog-draft.yml` (also triggerable via `workflow_dispatch`).
+
+**Flow per run:**
+
+1. **Check** — look for any `.md` in `blog-drafts/` that does not start with
+   `_` and is not a meta file (PUBLISHING.md, review-queue.md, .factcheck.md).
+2. **Generate** (if no candidate) — `scripts/generate-blog-draft.js` calls the
+   Anthropic API (model from `ANTHROPIC_MODEL` env, default `claude-sonnet-4-6`).
+   Writes `blog-drafts/[slug].md` + `blog-drafts/[slug].factcheck.md`.
+   Marks topic `queued` → `drafted` in `blog/topics.js`.
+3. **Smoke test** — `scripts/smoke-test-draft.js` runs 6 checks (see below).
+   Outputs `result=pass|fail|noop` and `slug=` to `$GITHUB_OUTPUT`.
+4. **Publish (pass)** — `scripts/publish-draft.js` converts markdown → HTML,
+   fills `blog/post-template.html`, writes `blog/[slug].html`, appends to
+   `blog/posts.js`, inserts into `sitemap.xml`, marks topic `published`,
+   deletes draft files, appends to `review-queue.md`. Commits and pushes to main.
+5. **Hold (fail)** — `scripts/hold-draft.js` renames draft to
+   `_held_[slug].md` (and `.factcheck.md`), appends HELD row to
+   `review-queue.md`. Commits and pushes. Next run generates fresh draft.
+6. **Noop** — nothing to do (no candidate, no queued topics); no commit.
+
+### Smoke-test checks
+
+Checks run by `scripts/smoke-test-draft.js` before any publish:
+
+| | Check | Detail |
+|-|-------|--------|
+| a | Frontmatter completeness | title, slug, excerpt, category, date, readingTime all present and non-empty |
+| b | Factcheck integrity | companion `.factcheck.md` exists, length ≥ 100 chars, no `HARD ERROR:` markers |
+| c | Internal links | no `[/path]` bracket-only links; all `/path` markdown links target known routes |
+| d | No placeholders | no `TODO`, `(placeholder`, or `[PLACEHOLDER]` in body |
+| e | Word count | body word count ≥ 900 |
+| f | No duplicate slug | slug not already in `blog/posts.js` or as `blog/[slug].html` |
+
+All 6 checks must pass. Any failure → hold. The script always exits 0;
+failures are signalled via `result=fail` output, not a non-zero exit code.
+
+### Held-draft retry mechanism
+
+When a smoke test fails, `hold-draft.js` renames the draft:
+- `blog-drafts/[slug].md` → `blog-drafts/_held_[slug].md`
+- `blog-drafts/[slug].factcheck.md` → `blog-drafts/_held_[slug].factcheck.md`
+
+The candidate-finder in both the workflow and `smoke-test-draft.js` skips files
+starting with `_`, so the held draft is never retried automatically. The next
+run generates a fresh draft from the topic queue instead.
+
+To manually retry a held draft: rename `_held_[slug].md` → `[slug].md` (and
+the `.factcheck.md` correspondingly), then trigger the workflow via
+`workflow_dispatch` or wait for the next Wednesday.
+
+### Review queue
+
+`blog-drafts/review-queue.md` is appended to by both `publish-draft.js` (on
+publish) and `hold-draft.js` (on hold). It is excluded from the GitHub Pages
+deploy — it lives only in the repo.
+
+Weekly review task: open the file after each Wednesday run, visit live URLs for
+auto-published posts, spot-check accuracy against official AWS docs, and change
+⬜ to ✅. Investigate HELD entries and fix or re-queue them.
+
+### Topic queue
+
+`blog/topics.js` — a `window.BlogTopics` array. Status values:
+- `queued` — not yet drafted
+- `drafted` — draft exists in `blog-drafts/` (or was held)
+- `published` — live on the site
+
+The generate script picks the first `queued` topic. Add new topics to the
+array in `queued` status when the queue runs low.
+
+### Required secret
+
+`ANTHROPIC_API_KEY` — set as a GitHub Actions repo secret. Used only by
+`generate-blog-draft.js` via the Anthropic API. Never commit this secret.
+
+### Key files
+
+| File | Role |
+|------|------|
+| `scripts/generate-blog-draft.js` | Calls Anthropic API, writes draft + factcheck |
+| `scripts/smoke-test-draft.js` | Runs 6 checks, outputs result/slug/reasons |
+| `scripts/publish-draft.js` | Markdown → HTML, fills template, updates manifests |
+| `scripts/hold-draft.js` | Renames failed draft, appends to review queue |
+| `.github/workflows/blog-draft.yml` | Wednesday cron, orchestrates all steps |
+| `blog/topics.js` | Topic queue (queued → drafted → published) |
+| `blog/posts.js` | Live post manifest read by blog index |
+| `blog/post-template.html` | HTML template with TODO markers |
+| `blog-drafts/review-queue.md` | Human review log (excluded from deploy) |
+| `blog-drafts/PUBLISHING.md` | Reference doc for manual publishes |
+
+---
+
 ## Conventions
 
 These rules apply to every change made to this codebase. No exceptions.

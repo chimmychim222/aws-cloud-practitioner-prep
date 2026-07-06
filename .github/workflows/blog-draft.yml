@@ -3,27 +3,35 @@ name: Blog Auto-Publish
 # Runs every Wednesday at 09:00 UTC.
 # If no existing draft is waiting, generates one from the next queued topic in
 # blog/topics.js. Runs 6 smoke-test checks. On pass, publishes directly to
-# main (no PR, no manual step). On fail, renames the draft to _held_[slug].md
-# so the next run can generate a fresh draft instead of retrying the broken one.
+# main and immediately deploys to GitHub Pages in a second job (no cross-workflow
+# trigger needed). On fail, renames the draft to _held_[slug].md so the next
+# run generates a fresh draft.
 #
-# Weekly review: check blog-drafts/review-queue.md (excluded from the Pages
-# deploy — it lives only in the repo, not on the live site). Mark auto-published
-# posts reviewed (⬜ → ✅) and investigate any HELD entries.
+# Why the deploy job is here and not triggered by the push:
+# A workflow using the default GITHUB_TOKEN cannot trigger other workflows via
+# push. The deploy-after-publish job runs in the same workflow run, after the
+# commit lands, so it is guaranteed to see the published post. It shares the
+# same concurrency group ("pages") as deploy.yml to prevent conflicts.
 #
-# Requires a repo secret: ANTHROPIC_API_KEY
-# Permissions: contents: write (direct push to main for the publish commit)
+# Weekly review: check blog-drafts/review-queue.md in the repo (excluded from
+# the Pages deploy). Mark auto-published posts reviewed (⬜ → ✅) and
+# investigate any HELD entries.
+#
+# Required repo secret: ANTHROPIC_API_KEY
 
 on:
   schedule:
     - cron: '0 9 * * 3'   # Wednesday 09:00 UTC
   workflow_dispatch: {}    # allow manual triggering
 
-permissions:
-  contents: write
-
 jobs:
   auto-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      result: ${{ steps.smoke.outputs.result }}
+      slug:   ${{ steps.smoke.outputs.slug }}
 
     steps:
       - name: Checkout
@@ -39,7 +47,6 @@ jobs:
       # Generate a new draft only when no publishable candidate already exists.
       # A "publishable candidate" is any .md in blog-drafts/ that does NOT start
       # with '_' (held drafts) and is not a meta file (PUBLISHING.md etc.).
-      # If a candidate exists, we skip generation and let the smoke test run on it.
       - name: Generate draft if none exists
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -90,3 +97,40 @@ jobs:
             git commit -m "blog: hold draft ${{ steps.smoke.outputs.slug }} (smoke-test failed)"
           fi
           git push
+
+  # Deploy to GitHub Pages only when a new post was actually published.
+  # Runs the same build/upload/deploy steps as deploy.yml, in the same
+  # concurrency group, so it queues safely if a push-triggered deploy is
+  # already in flight.
+  deploy-after-publish:
+    needs: auto-publish
+    if: needs.auto-publish.outputs.result == 'pass'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout (post-commit state)
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Remove unpublished directories
+        run: rm -rf blog-drafts scripts .github CNAME.example
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -65,10 +65,14 @@ function done(result, slug, reasons) {
 // ── Frontmatter parser ────────────────────────────────────────────────────────
 
 function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return { _hasFm: false };
+  // Drafts start with an HTML comment block before ---, so we search for the
+  // first --- occurrence rather than anchoring at the start of the file.
+  const fmStart = content.indexOf('---\n');
+  if (fmStart === -1) return { _hasFm: false };
+  const fmEnd = content.indexOf('\n---\n', fmStart + 4);
+  if (fmEnd === -1) return { _hasFm: false };
   const fm = { _hasFm: true };
-  match[1].split('\n').forEach(line => {
+  content.slice(fmStart + 4, fmEnd).split('\n').forEach(line => {
     const m = line.match(/^([a-zA-Z]+):\s*(.+)$/);
     if (m) fm[m[1].trim()] = m[2].trim();
   });
@@ -76,8 +80,11 @@ function parseFrontmatter(content) {
 }
 
 function getBody(content) {
-  const match = content.match(/^---\n[\s\S]*?\n---\n([\s\S]*)$/);
-  return match ? match[1] : content;
+  const fmStart = content.indexOf('---\n');
+  if (fmStart === -1) return content;
+  const fmEnd = content.indexOf('\n---\n', fmStart + 4);
+  if (fmEnd === -1) return content;
+  return content.slice(fmEnd + 5);
 }
 
 // ── Candidate discovery ───────────────────────────────────────────────────────

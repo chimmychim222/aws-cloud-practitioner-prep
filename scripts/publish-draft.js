@@ -449,7 +449,7 @@ function updateSitemap(fm, date) {
 function updateTopics(slug) {
   const raw = fs.readFileSync(TOPICS_PATH, 'utf8');
   const re  = new RegExp(
-    `(slug:\\s*['"]${slug}['"][\\s\\S]*?status:\\s*')(?:queued|drafted)(')`
+    `(slug:\\s*['"]${slug}['"][\\s\\S]*?status:\\s*')(?:queued|drafted|needs-manual-attention)(')`
   );
   if (!re.test(raw)) {
     console.warn(`WARNING: could not find "${slug}" in topics.js to mark published — skipping`);

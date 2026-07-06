@@ -7,3 +7,4 @@ Posts auto-published by the pipeline. Review weekly after each Wednesday run.
 
 | Title | Date | Live URL | Status |
 |-------|------|----------|--------|
+| HELD: aws-shared-responsibility-model-explained | 2026-07-06 | `blog-drafts/_held_aws-shared-responsibility-model-explained.md` | ⚠️ Smoke-test failed: No frontmatter block found (expected --- delimiters) ; Body contains "(placeholder" text |

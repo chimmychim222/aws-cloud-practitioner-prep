@@ -560,6 +560,22 @@ fieldset { border: none; }
   padding: var(--sp-3) var(--sp-6);
   display: flex; align-items: center; gap: var(--sp-6);
 }
+.quit-test-btn {
+  color: var(--text-muted); font-size: var(--fs-xs); opacity: 0.7; flex-shrink: 0;
+}
+.quit-test-btn:hover { color: var(--color-error); opacity: 1; background: rgba(217,21,21,0.06); }
+.quit-modal-content {
+  text-align: center; max-width: 400px; padding: var(--sp-10) var(--sp-8);
+}
+.quit-modal-title {
+  font-size: var(--fs-2xl); font-weight: 700; margin-bottom: var(--sp-3); color: var(--text-primary);
+}
+.quit-modal-body {
+  color: var(--text-secondary); font-size: var(--fs-base); margin-bottom: var(--sp-8); line-height: 1.6;
+}
+.quit-modal-actions {
+  display: flex; gap: var(--sp-3); justify-content: center; flex-wrap: wrap;
+}
 .test-timer-group {
   display: flex; align-items: center; gap: var(--sp-2); color: var(--aws-squid-ink);
 }

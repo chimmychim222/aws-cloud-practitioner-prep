@@ -785,6 +785,39 @@
     })(start);
   }
 
+  function showQuitModal() {
+    const modal = $('#quit-confirm-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('modal-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function hideQuitModal() {
+    const modal = $('#quit-confirm-modal');
+    if (!modal) return;
+    modal.classList.add('closing');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.classList.remove('modal-open', 'closing');
+      document.body.style.overflow = '';
+    }, 250);
+  }
+
+  function quitTest() {
+    clearInterval(state.timerInterval);
+    state.timerInterval = null;
+    state.testQuestions = [];
+    state.testAnswers = {};
+    state.flaggedQuestions = new Set();
+    state.currentQuestionIndex = 0;
+    state.timeRemaining = 90 * 60;
+    state.testSubmitted = false;
+    state.reviewFilter = 'all';
+    if (window.gtag) gtag('event', 'test_quit');
+    showView('home');
+  }
+
   function initTestEvents() {
     $('#prev-question-btn').addEventListener('click', () => {
       if (state.currentQuestionIndex > 0) { state.currentQuestionIndex--; renderTestQuestion(); }
@@ -803,6 +836,17 @@
       renderTestQuestion();
     });
     $('#submit-test-btn').addEventListener('click', confirmSubmit);
+    $('#quit-test-btn').addEventListener('click', showQuitModal);
+
+    const quitModal = $('#quit-confirm-modal');
+    if (quitModal) {
+      $('#quit-cancel-btn').addEventListener('click', hideQuitModal);
+      $('#quit-confirm-btn').addEventListener('click', () => { hideQuitModal(); quitTest(); });
+      quitModal.addEventListener('click', e => { if (e.target === quitModal) hideQuitModal(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !quitModal.classList.contains('hidden')) hideQuitModal();
+      });
+    }
 
     // Review filters
     $$('.review-filter-btn').forEach(btn => {

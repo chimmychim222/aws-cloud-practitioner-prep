@@ -349,6 +349,7 @@
       <!-- Test Header Bar -->
       <div class="test-header-bar">
         <div class="test-header-inner">
+          <button class="btn btn-ghost btn-sm quit-test-btn" id="quit-test-btn">Quit test</button>
           <div class="test-user-badge" id="test-user-badge">
             <span class="test-user-name" id="test-user-name"></span>
           </div>
@@ -628,6 +629,18 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <!-- Quit Test Confirmation Modal -->
+    <div class="modal-overlay hidden" id="quit-confirm-modal">
+      <div class="modal-content quit-modal-content">
+        <h2 class="quit-modal-title">Quit test?</h2>
+        <p class="quit-modal-body">Your answers and progress will be discarded. This can&#8217;t be undone.</p>
+        <div class="quit-modal-actions">
+          <button class="btn btn-ghost" id="quit-cancel-btn">Keep going</button>
+          <button class="btn btn-danger" id="quit-confirm-btn">Quit test</button>
+        </div>
+      </div>
+    </div>
+
   <script src="questions.js"></script>
   <script src="training-content.js"></script>
   <script src="/components/payment.js"></script>

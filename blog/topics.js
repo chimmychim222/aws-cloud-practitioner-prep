@@ -55,6 +55,36 @@
       slug: 'aws-shared-responsibility-model-explained',
       status: 'published'
     },
+    // Exam Prep — high-priority informational queries (added 2026-07-07)
+    {
+      topic: 'How to Pass the AWS Cloud Practitioner Exam on Your First Try',
+      targetKeyword: 'how to pass AWS Cloud Practitioner',
+      category: 'exam-prep-tips',
+      slug: 'how-to-pass-aws-cloud-practitioner-exam',
+      status: 'queued'
+    },
+    {
+      topic: "What's on the CLF-C02 Exam: Domains, Format, and Question Types",
+      targetKeyword: 'CLF-C02 exam format',
+      category: 'exam-prep-tips',
+      slug: 'clf-c02-exam-domains-format-question-types',
+      status: 'queued'
+    },
+    {
+      topic: 'How Long Does It Take to Study for the AWS Cloud Practitioner?',
+      targetKeyword: 'how long to study for AWS Cloud Practitioner',
+      category: 'exam-prep-tips',
+      slug: 'how-long-to-study-for-aws-cloud-practitioner',
+      status: 'queued'
+    },
+    {
+      topic: 'Is the AWS Cloud Practitioner Worth It?',
+      targetKeyword: 'is AWS Cloud Practitioner worth it',
+      category: 'career-salary',
+      slug: 'is-aws-cloud-practitioner-worth-it',
+      status: 'queued'
+    },
+
     {
       topic: 'AWS IAM Basics: Users, Groups, Roles, and Policies',
       targetKeyword: 'AWS IAM basics',

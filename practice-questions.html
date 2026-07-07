@@ -247,6 +247,12 @@
       .pq-bank-grid { grid-template-columns: 1fr; }
       .pq-bank-count { gap: var(--sp-4); }
     }
+    .pq-topic-list { list-style: none; padding: 0; margin: 0; }
+    .pq-topic-list li { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; padding: 2px 0 2px var(--sp-4); position: relative; }
+    .pq-topic-list li::before { content: '—'; position: absolute; left: 0; color: var(--aws-orange); }
+    .pq-format-note { font-size: var(--fs-sm); color: var(--text-secondary); background: var(--bg-page); border-left: 3px solid var(--aws-orange); padding: var(--sp-3) var(--sp-5); border-radius: 0 var(--r-sm) var(--r-sm) 0; margin-top: var(--sp-6); line-height: 1.7; }
+    .pq-section-header a { color: var(--aws-orange); }
+    .pq-section-header a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -451,6 +457,59 @@
           </article>
 
         </div>
+      </section>
+
+      <!-- What the practice exam covers -->
+      <section class="pq-section">
+        <div class="pq-section-header">
+          <h2>What the CLF-C02 Practice Questions Cover</h2>
+          <p>All 400 questions are written to the <a href="/exam-guide">official CLF-C02 exam guide</a> task statements, covering all four scored domains in proportion to the real exam.</p>
+        </div>
+        <div class="pq-how-grid">
+          <div class="pq-how-card">
+            <div class="pq-how-icon">&#9729;</div>
+            <h3>Cloud Concepts — 24%</h3>
+            <ul class="pq-topic-list">
+              <li>Six advantages of cloud computing</li>
+              <li>AWS Well-Architected Framework — six pillars</li>
+              <li>Migration strategies: the 6 Rs and AWS CAF</li>
+              <li>Cloud economics: TCO, rightsizing, managed services</li>
+            </ul>
+          </div>
+          <div class="pq-how-card">
+            <div class="pq-how-icon">&#128274;</div>
+            <h3>Security and Compliance — 30%</h3>
+            <ul class="pq-topic-list">
+              <li>AWS Shared Responsibility Model</li>
+              <li>IAM: users, groups, roles, policies, MFA</li>
+              <li>GuardDuty, Inspector, Macie, Security Hub</li>
+              <li>Shield, WAF, VPC security groups and NACLs</li>
+              <li>CloudTrail, KMS, Artifact, Audit Manager</li>
+            </ul>
+          </div>
+          <div class="pq-how-card">
+            <div class="pq-how-icon">&#9881;</div>
+            <h3>Cloud Technology and Services — 34%</h3>
+            <ul class="pq-topic-list">
+              <li>Compute: EC2, Lambda, ECS, Fargate, Elastic Beanstalk</li>
+              <li>Storage: S3 and all storage classes, EBS, EFS, Glacier</li>
+              <li>Databases: RDS, Aurora, DynamoDB, Redshift, ElastiCache</li>
+              <li>Networking: VPC, CloudFront, Route 53, Direct Connect</li>
+              <li>AI/ML and analytics: SageMaker, Rekognition, Athena</li>
+            </ul>
+          </div>
+          <div class="pq-how-card">
+            <div class="pq-how-icon">&#128179;</div>
+            <h3>Billing, Pricing, and Support — 12%</h3>
+            <ul class="pq-topic-list">
+              <li>Pricing models: On-Demand, Reserved Instances, Spot, Savings Plans</li>
+              <li>Cost Explorer, AWS Budgets, Pricing Calculator</li>
+              <li>AWS Organizations and consolidated billing</li>
+              <li>Support plans: Basic, Developer, Business, Enterprise</li>
+            </ul>
+          </div>
+        </div>
+        <p class="pq-format-note"><strong>Question formats:</strong> The bank includes both <strong>multiple-choice</strong> (select one correct answer) and <strong>multiple-response</strong> (select two correct answers) questions — the same two formats used on the real CLF-C02 exam. Every question includes a complete explanation: why the correct answer is right and why each of the other options is wrong.</p>
       </section>
 
       <!-- Locked bank -->

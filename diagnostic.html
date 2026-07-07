@@ -337,15 +337,15 @@
 
         <!-- Conversion CTA -->
         <div class="dx-conversion">
-          <h2>Built for what you just saw</h2>
-          <p class="dx-conversion-sub">The diagnostic gives you a snapshot. The full product gives you everything you need to pass.</p>
+          <h2 id="dx-conv-title">Built for what you just saw</h2>
+          <p class="dx-conversion-sub" id="dx-conv-sub">The diagnostic gives you a snapshot. The full product gives you everything you need to pass.</p>
           <ul class="dx-benefits">
             <li>400 questions across all 4 domains at real CLF-C02 weightings</li>
             <li>Timed exam mode (90 min, 65 questions) and untimed practice</li>
             <li>Detailed explanations for every question</li>
             <li>Lifetime access &middot; 10-day money-back guarantee &middot; one-time payment</li>
           </ul>
-          <div class="dx-cta-grid">
+          <div class="dx-cta-grid" id="dx-conv-cta-grid">
             <button id="dx-pay-btn" class="btn btn-primary btn-lg">Unlock full access &mdash; $49</button>
             <a href="/study-plan" class="btn btn-secondary btn-lg" id="dx-study-plan-link">Build your free study plan</a>
           </div>
@@ -696,7 +696,20 @@
           '&score=' + Math.round(r.raw / 10 * 100);
       }
 
-      // Wire pay button once
+      // Personalize conversion CTA with actual score and weakest domain
+      var convTitle = document.getElementById('dx-conv-title');
+      var convSub   = document.getElementById('dx-conv-sub');
+      var convGrid  = document.getElementById('dx-conv-cta-grid');
+      if (convTitle) convTitle.textContent = 'You scored ' + pct + '% — ' + DOMAIN_NAMES[r.weakest] + ' is your focus area';
+      if (convSub)   convSub.textContent   = 'Our 400 practice questions target exactly these gaps, with detailed explanations for every answer.';
+      var auth   = window.AppAuth;
+      var isPaid = auth && auth.ready && auth.hasPaid();
+      if (isPaid && convGrid) {
+        convGrid.innerHTML = '<a href="/" class="btn btn-primary btn-lg">Go to practice tests →</a>';
+      }
+      window.dxResultsShown = true;
+
+      // Wire pay button once (skipped gracefully if already replaced above for paid users)
       if (!payWired) {
         payWired = true;
         var payBtn = document.getElementById('dx-pay-btn');
@@ -706,6 +719,17 @@
         }
       }
     }
+
+    // Re-check paid state once auth resolves (handles case where auth fires after quiz completes)
+    document.addEventListener('auth-ready', function () {
+      if (!window.dxResultsShown) return;
+      var auth = window.AppAuth;
+      if (!auth || !auth.hasPaid()) return;
+      var convGrid = document.getElementById('dx-conv-cta-grid');
+      if (convGrid && document.getElementById('dx-pay-btn')) {
+        convGrid.innerHTML = '<a href="/" class="btn btn-primary btn-lg">Go to practice tests →</a>';
+      }
+    });
 
     // ── Optional email capture ─────────────────────────────────────────────
     document.getElementById('dx-email-form').addEventListener('submit', function (e) {

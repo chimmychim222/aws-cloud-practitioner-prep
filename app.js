@@ -180,27 +180,61 @@
   // ============================================================
   // HOME VIEW
   // ============================================================
+  function updateHeroCta() {
+    const auth = window.AppAuth;
+    if (!auth || !auth.isLoggedIn()) return; // visitor default already shown
+
+    const block = document.getElementById('hero-cta-block');
+    const subEl = document.getElementById('hero-cta-sub');
+    if (!block) return;
+
+    if (auth.hasPaid()) {
+      const name = auth.getDisplayName ? auth.getDisplayName() : '';
+      block.style.transition = 'opacity 0.15s ease';
+      block.style.opacity = '0';
+      setTimeout(() => {
+        block.innerHTML =
+          '<button class="btn btn-primary btn-lg" id="hero-go-tests">Go to Practice Tests →</button>';
+        block.style.opacity = '1';
+        const goBtn = document.getElementById('hero-go-tests');
+        if (goBtn) goBtn.addEventListener('click', () => {
+          const section = document.getElementById('test-selection');
+          if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }, 150);
+      if (subEl) subEl.textContent = 'Welcome back' + (name ? ', ' + name : '') + '. Your practice tests are ready.';
+    } else {
+      if (subEl) subEl.textContent = 'Start with the free diagnostic to find your weakest CLF-C02 domain before you study.';
+    }
+  }
+
   function initHome() {
-    // Training buttons
-    ['#hero-start-training', '#start-training-btn'].forEach(sel => {
-      const btn = $(sel);
-      if (btn) btn.addEventListener('click', () => { initTraining(); showView('training'); });
+    // Training button (feature card — hero now links to /diagnostic)
+    const startTrainingBtn = $('#start-training-btn');
+    if (startTrainingBtn) startTrainingBtn.addEventListener('click', () => { initTraining(); showView('training'); });
+
+    // Test button (feature card)
+    const startTestBtn = $('#start-test-btn');
+    if (startTestBtn) startTestBtn.addEventListener('click', () => {
+      const section = document.getElementById('test-selection');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (hasPaid()) {
+        startPracticeTest();
+      } else {
+        showPaymentModal();
+      }
     });
 
-    // Test buttons — scroll to test selection section
-    ['#hero-start-test', '#start-test-btn'].forEach(sel => {
-      const btn = $(sel);
-      if (btn) btn.addEventListener('click', () => {
-        const section = document.getElementById('test-selection');
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (hasPaid()) {
-          startPracticeTest();
-        } else {
-          showPaymentModal();
-        }
-      });
-    });
+    // Hero buy button — BuyFlow handles auth-gate + Stripe redirect
+    const heroBuyBtn = document.getElementById('hero-buy-btn');
+    if (heroBuyBtn && window.BuyFlow) {
+      window.BuyFlow.registerBtn('hero-buy-btn', 'Get full access — $49');
+      heroBuyBtn.addEventListener('click', window.BuyFlow.handlePay);
+    }
+
+    // Swap hero CTA for logged-in users once auth resolves
+    document.addEventListener('auth-ready', updateHeroCta);
 
     // Test option cards — require login, free tests bypass payment, others gated
     $$('.test-start-btn').forEach(btn => {

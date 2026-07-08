@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<!--
+  BLOG POST TEMPLATE — copy this file for every new post.
+  Built from /page-template.html — shares header, footer, nav, and design system.
+  Search for every "TODO:" comment and fill it in before publishing.
+  File naming: blog/[slug].html — resolves to the clean URL /blog/[slug]
+  via the same GitHub Pages URL normalization used by every other page.
+  Do NOT modify index.html, app.js, or the SPA views.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: post title (keep under 60 chars) -->
+  <title>How to Pass the AWS Cloud Practitioner Exam — Cloud Practitioner Prep</title>
+
+  <!-- TODO: unique description for this post (120–155 chars, no outcome claims) -->
+  <meta name="description" content="A practical, domain-by-domain guide to passing the AWS CLF-C02 exam on your first attempt—covering study strategy, key concepts, and exam-day tips.">
+
+  <!-- TODO: replace todo-slug with the post's slug (must match the filename) -->
+  <link rel="canonical" href="https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <!-- TODO -->
+  <meta property="og:title"       content="How to Pass the AWS Cloud Practitioner Exam — Cloud Practitioner Prep">
+  <meta property="og:description" content="A practical, domain-by-domain guide to passing the AWS CLF-C02 exam on your first attempt—covering study strategy, key concepts, and exam-day tips.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam">
+  <meta property="og:site_name"   content="Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <!-- TODO -->
+  <meta name="twitter:title"       content="How to Pass the AWS Cloud Practitioner Exam — Cloud Practitioner Prep">
+  <meta name="twitter:description" content="A practical, domain-by-domain guide to passing the AWS CLF-C02 exam on your first attempt—covering study strategy, key concepts, and exam-day tips.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- TODO: Article + BreadcrumbList + FAQPage JSON-LD — fill in headline/description/dates/url/questions.
+       Delete the FAQPage block entirely if this post has no FAQ section. -->
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Pass the AWS Cloud Practitioner Exam",
+    "description": "A practical, domain-by-domain guide to passing the AWS CLF-C02 exam on your first attempt—covering study strategy, key concepts, and exam-day tips.",
+    "url": "https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam",
+    "datePublished": "2026-07-08",
+    "dateModified": "2026-07-08",
+    "author": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "url": "https://cloudpractitionerprep.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cloudpractitionerprep.com/og-image.png"
+      }
+    },
+    "image": "https://cloudpractitionerprep.com/og-image.png",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cloudpractitionerprep.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://cloudpractitionerprep.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "How to Pass the AWS Cloud Practitioner Exam — Cloud Practitioner Prep",
+        "item": "https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How long should I study for the CLF-C02 exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most candidates with little or no prior cloud experience need four to eight weeks of consistent study (roughly one to two hours per day). If you already work in IT or have hands-on AWS experience, two to four weeks may be sufficient. The most important factor isn't total hours — it's whether you can answer practice questions consistently and correctly before you sit."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the passing score for the AWS Cloud Practitioner exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The passing score is 700 on a scaled score range of 100 to 1000. This is not a raw percentage, so you don't need to answer exactly 70% of questions correctly. AWS uses psychometric scaling across versions of the exam."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I take the CLF-C02 exam from home?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The exam is available as an online proctored test through Pearson VUE, allowing you to test from home or a quiet private space, subject to technical and environmental requirements. It is also available at authorised testing centres."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between multiple-choice and multiple-response questions?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Multiple-choice questions have one correct answer out of four options. Multiple-response questions instruct you to select exactly two correct answers from five options — there is no partial credit, so you must get both right."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are there prerequisites for the CLF-C02 exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "There are no formal prerequisites. AWS recommends a basic familiarity with IT concepts and at least six months of exposure to the AWS Cloud in any capacity, but this is guidance, not a requirement. Anyone can register and sit the exam."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does the AWS Cloud Practitioner exam cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The standard registration fee is $100 USD at the time of writing, though this is subject to change. AWS periodically offers exam vouchers through training programs, events, and partner promotions, which can reduce or eliminate this cost."
+        }
+      }
+    ]
+  }
+]
+  </script>
+
+  <!-- Google tag (gtag.js) | G-069J7PEMGM -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-069J7PEMGM"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-069J7PEMGM');</script>
+  <link rel="stylesheet" href="/styles.css?v=7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%234A90D9'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'>C</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .blog-bc { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-bc a { color: var(--text-muted); text-decoration: none; }
+    .blog-bc a:hover { color: var(--aws-orange); }
+    .blog-bc .sep { margin: 0 var(--sp-2); }
+
+    /* ── Post header ── */
+    .blog-header { max-width: 760px; margin: 0 auto; padding: var(--sp-8) 0 var(--sp-6); }
+    .blog-header h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; margin-bottom: var(--sp-3); }
+    .blog-meta { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-meta .dot { opacity: .5; }
+
+    /* ── Table of contents ── */
+    .blog-toc { max-width: 760px; margin: 0 auto var(--sp-8); background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5) var(--sp-6); box-shadow: var(--shadow-sm); }
+    .blog-toc-title { font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: var(--sp-3); }
+    .blog-toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+    .blog-toc li.toc-h3 { margin-left: var(--sp-5); }
+    .blog-toc a { color: var(--color-info); font-size: var(--fs-sm); text-decoration: none; }
+    .blog-toc a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+
+    /* ── Article body ── */
+    .blog-body { max-width: 760px; margin: 0 auto; padding-bottom: var(--sp-10); }
+    .blog-body h2 { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -.02em; margin: var(--sp-10) 0 var(--sp-4); scroll-margin-top: 80px; }
+    .blog-body h3 { font-size: var(--fs-lg); font-weight: 700; margin: var(--sp-6) 0 var(--sp-3); scroll-margin-top: 80px; }
+    .blog-body p { color: var(--text-secondary); line-height: 1.85; margin-bottom: var(--sp-4); font-size: var(--fs-base); }
+    .blog-body ul, .blog-body ol { color: var(--text-secondary); padding-left: var(--sp-6); line-height: 1.9; margin-bottom: var(--sp-4); }
+    .blog-body li { list-style: disc; margin-bottom: var(--sp-1); }
+    .blog-body ol li { list-style: decimal; }
+    .blog-body strong { color: var(--text-primary); }
+    .blog-body a { color: var(--color-info); }
+    .blog-body a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+    .blog-body table { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-5); font-size: var(--fs-sm); }
+    .blog-body th, .blog-body td { padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border-light); text-align: left; }
+    .blog-body th { background: var(--bg-page); font-weight: 700; }
+
+    /* ── Inline diagnostic CTA ── */
+    .blog-cta { background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark)); border-radius: var(--r-xl); padding: var(--sp-7); margin: var(--sp-8) 0; text-align: center; }
+    .blog-cta h3 { color: #fff; font-size: var(--fs-lg); font-weight: 800; margin-bottom: var(--sp-2); }
+    .blog-cta p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: var(--sp-5); }
+
+    /* ── Author / disclaimer line ── */
+    .blog-author { max-width: 760px; margin: 0 auto var(--sp-10); padding-top: var(--sp-5); border-top: 1px solid var(--border-light); font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.7; }
+
+    /* ── Related resources ── */
+    .blog-related { max-width: 760px; margin: 0 auto var(--sp-12); }
+    .blog-related h2 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-5); }
+    .blog-related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+    .blog-related-card { display: block; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5); text-decoration: none; transition: box-shadow var(--t-fast), transform var(--t-fast); }
+    .blog-related-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
+    .blog-related-card .rc-title { font-weight: 700; color: var(--text-primary); font-size: var(--fs-base); margin-bottom: var(--sp-1); }
+    .blog-related-card .rc-desc { font-size: var(--fs-sm); color: var(--text-secondary); }
+
+    @media (max-width: 640px) {
+      .blog-header h1 { font-size: var(--fs-2xl); }
+      .blog-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ========== SITE HEADER — static nav for crawlability. header.js only
+       ADDS BEHAVIOR (active-state highlighting, Resources dropdown toggle,
+       mobile hamburger menu) — it does NOT build this markup. To change a
+       nav link, edit this block and propagate the identical block to every
+       other page (see CLAUDE.md "Shared Header" section). ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+
+      <a href="/" class="header-logo" aria-label="CLF-C02 Prep — Home">
+        <svg class="logo-cloud" width="32" height="20" viewBox="0 0 32 20" fill="rgba(255,255,255,0.9)" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="16" cy="9" r="7"/><circle cx="23" cy="14" r="5"/><rect x="4" y="14" width="24" height="5" rx="1"/></svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+
+      <nav class="header-nav" id="header-nav" aria-label="Main navigation">
+        <a href="/" class="nav-link" id="nav-home-btn" data-view="home"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>Home</a>
+        <a href="/" class="nav-link" id="nav-training-btn" data-view="training"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>Training</a>
+        <a href="/" class="nav-link" id="nav-test-btn" data-view="test"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>Practice Test</a>
+
+        <div class="nav-dropdown" id="nav-resources-dropdown">
+          <button type="button" class="nav-link nav-dropdown-trigger" id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>Resources<svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>
+          </button>
+          <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">
+            <a href="/exam-guide" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>Exam Guide</a>
+            <a href="/study-plan" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>Study Plan</a>
+            <a href="/diagnostic" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>Diagnostic</a>
+            <a href="/practice-questions" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>Practice Qs</a>
+            <a href="/blog" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>Blog</a>
+            <a href="/faq" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>FAQ</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="auth-header-wrap">
+        <button class="auth-header-btn" id="auth-header-btn" aria-label="Sign in or view account">Sign In</button>
+        <div class="user-menu hidden" id="user-menu" role="menu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="user-menu-name"></div>
+            <div class="user-menu-email" id="user-menu-email"></div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" id="user-menu-logout" role="menuitem">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </header>
+
+  <noscript>
+    <style>
+      /* No-JS fallback: abandon collapsible/hover interactions and force
+         the full nav, including Resources sub-items, permanently visible. */
+      .mobile-menu-btn { display: none !important; }
+      .header-nav { display: flex !important; position: static !important; flex-wrap: wrap; box-shadow: none !important; }
+      .nav-dropdown-panel { display: flex !important; position: static !important; box-shadow: none !important; border: none !important; background: transparent !important; padding-left: 0 !important; }
+      .nav-caret { display: none !important; }
+    </style>
+  </noscript>
+
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="blog-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span>
+        <a href="/blog">Blog</a><span class="sep" aria-hidden="true">›</span>
+        <span>How to Pass the AWS Cloud Practitioner Exam</span>
+      </nav>
+
+      <!-- Post header -->
+      <header class="blog-header">
+        <h1>How to Pass the AWS Cloud Practitioner Exam</h1>
+        <div class="blog-meta">
+          <span>Published 8 July 2026</span>
+          <span class="dot">&middot;</span>
+          <span>8 min read</span>
+        </div>
+      </header>
+
+      <!-- Table of contents — TODO: one <li><a href="#anchor-id"> per H2/H3 below -->
+      <nav class="blog-toc" aria-label="Table of contents">
+        <div class="blog-toc-title">In this article</div>
+        <ol>
+          <li><a href="#understand-the-exam-before-you-open-a-textbook">Understand the Exam Before You Open a Textbook</a></li>
+          <li><a href="#know-the-domain-weightings-and-study-accordingly">Know the Domain Weightings — and Study Accordingly</a></li>
+          <li><a href="#domain-by-domain-study-guide">Domain-by-Domain Study Guide</a></li>
+          <li class="toc-h3"><a href="#domain-1-cloud-concepts-24">Domain 1: Cloud Concepts (24%)</a></li>
+          <li class="toc-h3"><a href="#domain-2-security-and-compliance-30">Domain 2: Security and Compliance (30%)</a></li>
+          <li class="toc-h3"><a href="#domain-3-cloud-technology-and-services-34">Domain 3: Cloud Technology and Services (34%)</a></li>
+          <li class="toc-h3"><a href="#domain-4-billing-pricing-and-support-12">Domain 4: Billing, Pricing, and Support (12%)</a></li>
+          <li><a href="#build-a-study-plan-that-actually-works">Build a Study Plan That Actually Works</a></li>
+          <li><a href="#exam-day-strategy">Exam-Day Strategy</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+
+      <!-- Article body — TODO: replace with real content. Each H2/H3 needs a
+           matching id="" that the ToC links to. Insert the diagnostic CTA
+           block partway through (example below). -->
+      <article class="blog-body">
+        <p>The AWS Certified Cloud Practitioner (CLF-C02) is the entry point into AWS certifications, but "entry-level" doesn't mean effortless. Plenty of people sit the exam underprepared and walk away disappointed. This guide gives you a clear, honest roadmap for passing on your first attempt—covering how the exam works, where to focus your study time, and what to do in the exam room.</p>
+        <blockquote><p><strong>Disclaimer:</strong> This site is an independent exam-prep resource and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates.</p></blockquote>
+        <hr>
+
+        <h2 id="understand-the-exam-before-you-open-a-textbook">Understand the Exam Before You Open a Textbook</h2>
+        <p>Before studying a single service, get the mechanics straight. Surprises on exam day cost points.</p>
+        <ul>
+          <li><strong>Exam code:</strong> CLF-C02</li>
+          <li><strong>Total questions:</strong> 65 (50 scored + 15 unscored; you cannot tell which is which)</li>
+          <li><strong>Time limit:</strong> 90 minutes</li>
+          <li><strong>Passing score:</strong> 700 out of 1000 (scaled score — not 70%)</li>
+          <li><strong>Registration fee:</strong> $100 USD (subject to change)</li>
+          <li><strong>Question types:</strong> Multiple-choice (one correct answer) and multiple-response (exactly two correct answers — no partial credit)</li>
+        </ul>
+        <p>The scaled scoring model is important: 700/1000 does <em>not</em> mean you need to answer exactly 70% of questions correctly. AWS uses psychometric scaling, so the raw cut can shift slightly. Aim well above 700 to give yourself a cushion.</p>
+        <p>Download the <a href="/exam-guide">official CLF-C02 exam guide</a> early. It lists every domain and objective in precise language — that language is what the questions are built from.</p>
+        <hr>
+
+        <h2 id="know-the-domain-weightings-and-study-accordingly">Know the Domain Weightings — and Study Accordingly</h2>
+        <p>The exam is divided into four domains. Ignoring the weights is one of the most common study mistakes:</p>
+        <table>
+        <thead><tr><th>Domain</th><th>Topic</th><th>Weight</th></tr></thead>
+        <tbody>
+        <tr><td>1</td><td>Cloud Concepts</td><td>24%</td></tr>
+        <tr><td>2</td><td>Security and Compliance</td><td>30%</td></tr>
+        <tr><td>3</td><td>Cloud Technology and Services</td><td>34%</td></tr>
+        <tr><td>4</td><td>Billing, Pricing, and Support</td><td>12%</td></tr>
+        </tbody>
+      </table>
+        <p><strong>Domain 3 (34%) and Domain 2 (30%) together account for nearly two-thirds of your score.</strong> That doesn't mean ignoring Cloud Concepts or Billing — it means ruthlessly prioritising when time is short.</p>
+        <hr>
+
+        <div class="blog-cta">
+          <h3>Not sure where you stand?</h3>
+          <p>Take the free 10-question CLF-C02 diagnostic and get an instant score, your weakest domain, and a study plan.</p>
+          <a href="/diagnostic" class="btn btn-primary btn-lg" data-cta="primary">Take the free diagnostic</a>
+        </div>
+
+        <h2 id="domain-by-domain-study-guide">Domain-by-Domain Study Guide</h2>
+        <h3 id="domain-1-cloud-concepts-24">Domain 1: Cloud Concepts (24%)</h3>
+        <p>Start here because everything else builds on it. You need to genuinely understand <em>why</em> cloud computing exists, not just recite bullet points.</p>
+        <ul>
+          <li><strong>Six advantages of cloud computing:</strong> trading capital expense for variable expense, benefiting from economies of scale, eliminating capacity guessing, increasing speed and agility, stopping spending on data centre operations, and going global in minutes.</li>
+          <li><strong>AWS Well-Architected Framework:</strong> exactly <strong>six</strong> pillars — Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and Sustainability. A common trick is questions that list five or seven; know the correct count.</li>
+          <li><strong>AWS Cloud Adoption Framework (CAF):</strong> six perspectives — Business, People, Governance, Platform, Security, and Operations.</li>
+          <li><strong>Migration strategies (the 6 Rs):</strong> Rehost, Replatform, Repurchase, Refactor/Re-architect, Retire, and Retain. Some AWS documentation mentions a 7th (Relocate), but the exam focus is the core six.</li>
+        </ul>
+        <h3 id="domain-2-security-and-compliance-30">Domain 2: Security and Compliance (30%)</h3>
+        <p>This is the highest-weighted domain after Cloud Technology and the one most candidates underestimate. Memorising service names is not enough — you need to understand <em>what each service does and why</em>.</p>
+        <p><strong>The Shared Responsibility Model is non-negotiable.</strong> AWS is responsible for security <em>of</em> the cloud (physical hardware, Availability Zones, the hypervisor, the global network). You are responsible for security <em>in</em> the cloud (OS patches, application configuration, IAM permissions, data encryption, security group rules).</p>
+        <p>Key services to understand deeply:</p>
+        <ul>
+          <li><strong>IAM:</strong> Users, groups, roles, and policies. Always apply the principle of least privilege. Enable MFA — especially on the root account.</li>
+          <li><strong>CloudTrail:</strong> Records API calls for auditing (who did what, when, and from where). It is <em>not</em> a performance or metrics tool.</li>
+          <li><strong>GuardDuty:</strong> Intelligent threat detection using machine learning, anomaly detection, and threat intelligence feeds.</li>
+          <li><strong>Inspector:</strong> Automated vulnerability scanning for EC2 instances, container images, and Lambda functions.</li>
+          <li><strong>AWS Shield:</strong> Standard (free and automatic for all customers) guards against common DDoS attacks. Advanced (paid) adds enhanced detection and access to the DDoS Response Team.</li>
+        </ul>
+        <h3 id="domain-3-cloud-technology-and-services-34">Domain 3: Cloud Technology and Services (34%)</h3>
+        <p>This is the largest domain, and it tests breadth. You don't need deep expertise in any service, but you do need to know <em>what each service is for</em> and, critically, what it is <em>not</em> for.</p>
+        <p><strong>Global infrastructure:</strong> - <strong>Regions</strong> are geographically isolated and each contains two or more Availability Zones. - <strong>Availability Zones (AZs)</strong> are one or more discrete data centres within a Region, with redundant power, networking, and connectivity. - <strong>Edge Locations</strong> serve CloudFront (CDN) and Route 53 — they are not the same as AZs or Regions.</p>
+        <p><strong>Databases — know the distinctions:</strong> - <strong>RDS</strong> supports relational engines (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server) — it does not natively support NoSQL. - <strong>Aurora</strong> is MySQL- and PostgreSQL-compatible, cloud-native, and designed for high throughput. - <strong>DynamoDB</strong> is fully managed, serverless NoSQL (key-value and document) — not a relational database. - <strong>Redshift</strong> is a managed data warehouse for SQL analytics at petabyte scale — not a transactional database.</p>
+        <p><strong>Compute:</strong> - <strong>Lambda</strong> is serverless and event-driven — you don't manage servers or operating systems. - <strong>EC2</strong> instance families cover General Purpose, Compute Optimized, Memory Optimized, Storage Optimized, and Accelerated Computing — understand the use cases, not the individual instance types.</p>
+        <p><strong>Storage:</strong> Know the S3 storage classes in order of decreasing access frequency and cost: Standard → Intelligent-Tiering → Standard-IA → One Zone-IA → Glacier Instant Retrieval → Glacier Flexible Retrieval → Glacier Deep Archive.</p>
+        <h3 id="domain-4-billing-pricing-and-support-12">Domain 4: Billing, Pricing, and Support (12%)</h3>
+        <p>Smaller weight, but the questions are very gettable if you know the material — don't leave easy points on the table.</p>
+        <p><strong>EC2 pricing models:</strong> - <strong>On-Demand:</strong> pay per second or hour, no commitment - <strong>Spot Instances:</strong> unused capacity, up to ~90% discount, but AWS can reclaim them with a 2-minute notice - <strong>Reserved Instances:</strong> Standard (highest discount, least flexible) or Convertible (moderate discount, can change attributes) - <strong>Savings Plans:</strong> Compute (most flexible — covers EC2, Lambda, and Fargate) or EC2 Instance (specific family) - <strong>Dedicated Hosts:</strong> physical servers for compliance or licensing requirements</p>
+        <p><strong>Support plans</strong> (in order): Basic (free) → Developer → Business → Enterprise On-Ramp → Enterprise. Enterprise includes a dedicated Technical Account Manager (TAM). Business and Enterprise On-Ramp and Enterprise provide 24/7 phone and chat support.</p>
+        <p><strong>Trusted Advisor</strong> checks five categories: Cost Optimization, Security, Fault Tolerance, Performance, and Service Limits. Core checks are available on all plans; full checks require Business support or higher.</p>
+        <hr>
+
+        <h2 id="build-a-study-plan-that-actually-works">Build a Study Plan That Actually Works</h2>
+        <p><strong>Step 1 — Baseline yourself.</strong> Take a short <a href="/diagnostic">diagnostic quiz</a> before you study. Knowing where you're weakest lets you allocate time where it counts most, not where you're already comfortable.</p>
+        <p><strong>Step 2 — Study domain by domain, in weight order.</strong> Start with Domain 3, then 2, then 1, then 4 — allocate proportionally.</p>
+        <p><strong>Step 3 — Practice questions daily, not just at the end.</strong> Retrieval practice beats passive re-reading by a significant margin. Work through <a href="/practice-questions">practice questions</a> as you finish each domain, not just once you've covered everything.</p>
+        <p><strong>Step 4 — Review your wrong answers, not just your right ones.</strong> Every incorrect answer is a window into a misconception. Read the explanation, trace it back to the source concept, and make sure you understand <em>why</em> the right answer is right and why the distractors are wrong.</p>
+        <p><strong>Step 5 — Simulate exam conditions.</strong> In the final week, do at least one full 65-question timed session. Ninety minutes sounds generous until you're mentally fatigued at question 50.</p>
+        <hr>
+
+        <h2 id="exam-day-strategy">Exam-Day Strategy</h2>
+        <ul>
+          <li><strong>Flag and move on.</strong> If a question stumps you, flag it, answer your best guess, and keep going. Time management is everything.</li>
+          <li><strong>Read every answer choice.</strong> CLF-C02 questions often hinge on one word — "always," "never," "automatically," or a service name that's close but wrong.</li>
+          <li><strong>Multiple-response questions:</strong> the prompt will explicitly tell you to choose two answers. Don't second-guess this — select exactly two.</li>
+          <li><strong>Eliminate first.</strong> For most questions, two options are clearly wrong. Getting to a 50/50 choice dramatically improves your odds.</li>
+          <li><strong>Don't change answers without reason.</strong> Your first instinct is usually correct. Only revise if you read something that genuinely changes your understanding.</li>
+        </ul>
+        <hr>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>How long should I study for the CLF-C02 exam?</h3>
+        <p>Most candidates with little or no prior cloud experience need four to eight weeks of consistent study (roughly one to two hours per day). If you already work in IT or have hands-on AWS experience, two to four weeks may be sufficient. The most important factor isn't total hours — it's whether you can answer practice questions consistently and correctly before you sit.</p>
+        <h3>What is the passing score for the AWS Cloud Practitioner exam?</h3>
+        <p>The passing score is 700 on a scaled score range of 100 to 1000. This is not a raw percentage, so you don't need to answer exactly 70% of questions correctly. AWS uses psychometric scaling across versions of the exam.</p>
+        <h3>Can I take the CLF-C02 exam from home?</h3>
+        <p>Yes. The exam is available as an online proctored test through Pearson VUE, allowing you to test from home or a quiet private space, subject to technical and environmental requirements. It is also available at authorised testing centres.</p>
+        <h3>What's the difference between multiple-choice and multiple-response questions?</h3>
+        <p>Multiple-choice questions have one correct answer out of four options. Multiple-response questions instruct you to select exactly two correct answers from five options — there is no partial credit, so you must get both right.</p>
+        <h3>Are there prerequisites for the CLF-C02 exam?</h3>
+        <p>There are no formal prerequisites. AWS recommends a basic familiarity with IT concepts and at least six months of exposure to the AWS Cloud in any capacity, but this is guidance, not a requirement. Anyone can register and sit the exam.</p>
+        <h3>How much does the AWS Cloud Practitioner exam cost?</h3>
+        <p>The standard registration fee is $100 USD at the time of writing, though this is subject to change. AWS periodically offers exam vouchers through training programs, events, and partner promotions, which can reduce or eliminate this cost.</p>
+
+      </article>
+
+      <!-- Author / disclaimer line -->
+      <div class="blog-author">
+        Written for CloudPractitionerPrep. Independent resource, not affiliated with or endorsed by Amazon Web Services. Verify exam details against official AWS documentation before relying on them.
+      </div>
+
+      <!-- Related resources — TODO: replace with real related posts once more exist -->
+      <section class="blog-related">
+        <h2>Related resources</h2>
+        <div class="blog-related-grid">
+          <a href="/exam-guide" class="blog-related-card">
+            <div class="rc-title">CLF-C02 Exam Guide</div>
+            <div class="rc-desc">All four domains, scoring, and registration steps.</div>
+          </a>
+          <a href="/diagnostic" class="blog-related-card">
+            <div class="rc-title">Free Readiness Diagnostic</div>
+            <div class="rc-desc">10 questions, instant score, weakest domain.</div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
+  <script src="/firebase-auth.js"></script>
+  <script>CTA.initSticky({ text: 'Test your CLF-C02 readiness', threshold: 600 });</script>
+
+</body>
+</html>

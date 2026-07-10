@@ -8,3 +8,4 @@ Posts auto-published by the pipeline. Review weekly after each Wednesday run.
 | Title | Date | Live URL | Status |
 |-------|------|----------|--------|
 | AWS Shared Responsibility Model Explained | 2026-07-06 | [https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained](https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained) | ✅ Reviewed — held draft files deleted, fact-checked and accurate |
+| How to Pass the AWS Cloud Practitioner Exam | 2026-07-08 | [https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam](https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam) | ⬜ Not yet reviewed |

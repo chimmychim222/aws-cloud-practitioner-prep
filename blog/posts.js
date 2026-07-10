@@ -54,5 +54,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Learn exactly who secures what in AWS — a must-know concept for the CLF-C02 exam that appears throughout the Security and Compliance domain.',
     category: 'security-compliance'
+  },
+  {
+    slug: 'how-to-pass-aws-cloud-practitioner-exam',
+    title: 'How to Pass the AWS Cloud Practitioner Exam',
+    date: '2026-07-08',
+    readingTime: '8 min read',
+    excerpt: 'A practical, domain-by-domain guide to passing the AWS CLF-C02 exam on your first attempt—covering study strategy, key concepts, and exam-day tips.',
+    category: 'exam-prep-tips'
   }
 ];

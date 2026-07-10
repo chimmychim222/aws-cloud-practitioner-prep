@@ -61,7 +61,7 @@
       targetKeyword: 'how to pass AWS Cloud Practitioner',
       category: 'exam-prep-tips',
       slug: 'how-to-pass-aws-cloud-practitioner-exam',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: "What's on the CLF-C02 Exam: Domains, Format, and Question Types",

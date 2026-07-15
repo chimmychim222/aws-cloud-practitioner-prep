@@ -9,3 +9,4 @@ Posts auto-published by the pipeline. Review weekly after each Wednesday run.
 |-------|------|----------|--------|
 | AWS Shared Responsibility Model Explained | 2026-07-06 | [https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained](https://cloudpractitionerprep.com/blog/aws-shared-responsibility-model-explained) | ✅ Reviewed — held draft files deleted, fact-checked and accurate |
 | How to Pass the AWS Cloud Practitioner Exam | 2026-07-08 | [https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam](https://cloudpractitionerprep.com/blog/how-to-pass-aws-cloud-practitioner-exam) | ✅ Reviewed — support plans section corrected for 2026 AWS restructuring |
+| CLF-C02 Exam Format: Domains, Questions & Tips | 2026-07-15 | [https://cloudpractitionerprep.com/blog/clf-c02-exam-domains-format-question-types](https://cloudpractitionerprep.com/blog/clf-c02-exam-domains-format-question-types) | ⬜ Not yet reviewed |

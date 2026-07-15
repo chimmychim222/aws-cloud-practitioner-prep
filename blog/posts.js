@@ -62,5 +62,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'A practical, domain-by-domain guide to passing the AWS CLF-C02 exam on your first attempt—covering study strategy, key concepts, and exam-day tips.',
     category: 'exam-prep-tips'
+  },
+  {
+    slug: 'clf-c02-exam-domains-format-question-types',
+    title: 'CLF-C02 Exam Format: Domains, Questions & Tips',
+    date: '2026-07-15',
+    readingTime: '8 min read',
+    excerpt: 'A clear breakdown of the CLF-C02 exam format, domain weightings, question types, and what to expect on test day.',
+    category: 'exam-prep-tips'
   }
 ];

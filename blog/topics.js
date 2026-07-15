@@ -68,7 +68,7 @@
       targetKeyword: 'CLF-C02 exam format',
       category: 'exam-prep-tips',
       slug: 'clf-c02-exam-domains-format-question-types',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: 'How Long Does It Take to Study for the AWS Cloud Practitioner?',

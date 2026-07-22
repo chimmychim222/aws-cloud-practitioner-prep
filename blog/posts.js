@@ -70,5 +70,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'A clear breakdown of the CLF-C02 exam format, domain weightings, question types, and what to expect on test day.',
     category: 'exam-prep-tips'
+  },
+  {
+    slug: 'how-long-to-study-for-aws-cloud-practitioner',
+    title: 'How Long to Study for AWS Cloud Practitioner',
+    date: '2026-07-22',
+    readingTime: '7 min read',
+    excerpt: 'Find out how many study hours you realistically need for the CLF-C02 exam and how to build a schedule that fits your background.',
+    category: 'exam-prep-tips'
   }
 ];

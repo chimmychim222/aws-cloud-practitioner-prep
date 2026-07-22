@@ -75,7 +75,7 @@
       targetKeyword: 'how long to study for AWS Cloud Practitioner',
       category: 'exam-prep-tips',
       slug: 'how-long-to-study-for-aws-cloud-practitioner',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: 'Is the AWS Cloud Practitioner Worth It?',

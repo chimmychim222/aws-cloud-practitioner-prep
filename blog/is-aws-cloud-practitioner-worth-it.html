@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<!--
+  BLOG POST TEMPLATE — copy this file for every new post.
+  Built from /page-template.html — shares header, footer, nav, and design system.
+  Search for every "TODO:" comment and fill it in before publishing.
+  File naming: blog/[slug].html — resolves to the clean URL /blog/[slug]
+  via the same GitHub Pages URL normalization used by every other page.
+  Do NOT modify index.html, app.js, or the SPA views.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: post title (keep under 60 chars) -->
+  <title>Is AWS Cloud Practitioner Worth It? — Cloud Practitioner Prep</title>
+
+  <!-- TODO: unique description for this post (120–155 chars, no outcome claims) -->
+  <meta name="description" content="Wondering if the AWS Cloud Practitioner cert is worth your time and money? Here's an honest look at who benefits most and what to expect.">
+
+  <!-- TODO: replace todo-slug with the post's slug (must match the filename) -->
+  <link rel="canonical" href="https://cloudpractitionerprep.com/blog/is-aws-cloud-practitioner-worth-it">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <!-- TODO -->
+  <meta property="og:title"       content="Is AWS Cloud Practitioner Worth It? — Cloud Practitioner Prep">
+  <meta property="og:description" content="Wondering if the AWS Cloud Practitioner cert is worth your time and money? Here's an honest look at who benefits most and what to expect.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/blog/is-aws-cloud-practitioner-worth-it">
+  <meta property="og:site_name"   content="Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <!-- TODO -->
+  <meta name="twitter:title"       content="Is AWS Cloud Practitioner Worth It? — Cloud Practitioner Prep">
+  <meta name="twitter:description" content="Wondering if the AWS Cloud Practitioner cert is worth your time and money? Here's an honest look at who benefits most and what to expect.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- TODO: Article + BreadcrumbList + FAQPage JSON-LD — fill in headline/description/dates/url/questions.
+       Delete the FAQPage block entirely if this post has no FAQ section. -->
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Is AWS Cloud Practitioner Worth It?",
+    "description": "Wondering if the AWS Cloud Practitioner cert is worth your time and money? Here's an honest look at who benefits most and what to expect.",
+    "url": "https://cloudpractitionerprep.com/blog/is-aws-cloud-practitioner-worth-it",
+    "datePublished": "2026-07-29",
+    "dateModified": "2026-07-29",
+    "author": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "url": "https://cloudpractitionerprep.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cloudpractitionerprep.com/og-image.png"
+      }
+    },
+    "image": "https://cloudpractitionerprep.com/og-image.png",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://cloudpractitionerprep.com/blog/is-aws-cloud-practitioner-worth-it"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cloudpractitionerprep.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://cloudpractitionerprep.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Is AWS Cloud Practitioner Worth It? — Cloud Practitioner Prep",
+        "item": "https://cloudpractitionerprep.com/blog/is-aws-cloud-practitioner-worth-it"
+      }
+    ]
+  }
+]
+  </script>
+
+  <!-- Google tag (gtag.js) | G-069J7PEMGM -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-069J7PEMGM"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-069J7PEMGM');</script>
+  <link rel="stylesheet" href="/styles.css?v=7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%234A90D9'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'>C</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .blog-bc { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-bc a { color: var(--text-muted); text-decoration: none; }
+    .blog-bc a:hover { color: var(--aws-orange); }
+    .blog-bc .sep { margin: 0 var(--sp-2); }
+
+    /* ── Post header ── */
+    .blog-header { max-width: 760px; margin: 0 auto; padding: var(--sp-8) 0 var(--sp-6); }
+    .blog-header h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; margin-bottom: var(--sp-3); }
+    .blog-meta { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-meta .dot { opacity: .5; }
+
+    /* ── Table of contents ── */
+    .blog-toc { max-width: 760px; margin: 0 auto var(--sp-8); background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5) var(--sp-6); box-shadow: var(--shadow-sm); }
+    .blog-toc-title { font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: var(--sp-3); }
+    .blog-toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+    .blog-toc li.toc-h3 { margin-left: var(--sp-5); }
+    .blog-toc a { color: var(--color-info); font-size: var(--fs-sm); text-decoration: none; }
+    .blog-toc a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+
+    /* ── Article body ── */
+    .blog-body { max-width: 760px; margin: 0 auto; padding-bottom: var(--sp-10); }
+    .blog-body h2 { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -.02em; margin: var(--sp-10) 0 var(--sp-4); scroll-margin-top: 80px; }
+    .blog-body h3 { font-size: var(--fs-lg); font-weight: 700; margin: var(--sp-6) 0 var(--sp-3); scroll-margin-top: 80px; }
+    .blog-body p { color: var(--text-secondary); line-height: 1.85; margin-bottom: var(--sp-4); font-size: var(--fs-base); }
+    .blog-body ul, .blog-body ol { color: var(--text-secondary); padding-left: var(--sp-6); line-height: 1.9; margin-bottom: var(--sp-4); }
+    .blog-body li { list-style: disc; margin-bottom: var(--sp-1); }
+    .blog-body ol li { list-style: decimal; }
+    .blog-body strong { color: var(--text-primary); }
+    .blog-body a { color: var(--color-info); }
+    .blog-body a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+    .blog-body table { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-5); font-size: var(--fs-sm); }
+    .blog-body th, .blog-body td { padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border-light); text-align: left; }
+    .blog-body th { background: var(--bg-page); font-weight: 700; }
+
+    /* ── Inline diagnostic CTA ── */
+    .blog-cta { background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark)); border-radius: var(--r-xl); padding: var(--sp-7); margin: var(--sp-8) 0; text-align: center; }
+    .blog-cta h3 { color: #fff; font-size: var(--fs-lg); font-weight: 800; margin-bottom: var(--sp-2); }
+    .blog-cta p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: var(--sp-5); }
+
+    /* ── Author / disclaimer line ── */
+    .blog-author { max-width: 760px; margin: 0 auto var(--sp-10); padding-top: var(--sp-5); border-top: 1px solid var(--border-light); font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.7; }
+
+    /* ── Related resources ── */
+    .blog-related { max-width: 760px; margin: 0 auto var(--sp-12); }
+    .blog-related h2 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-5); }
+    .blog-related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+    .blog-related-card { display: block; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5); text-decoration: none; transition: box-shadow var(--t-fast), transform var(--t-fast); }
+    .blog-related-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
+    .blog-related-card .rc-title { font-weight: 700; color: var(--text-primary); font-size: var(--fs-base); margin-bottom: var(--sp-1); }
+    .blog-related-card .rc-desc { font-size: var(--fs-sm); color: var(--text-secondary); }
+
+    @media (max-width: 640px) {
+      .blog-header h1 { font-size: var(--fs-2xl); }
+      .blog-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ========== SITE HEADER — static nav for crawlability. header.js only
+       ADDS BEHAVIOR (active-state highlighting, Resources dropdown toggle,
+       mobile hamburger menu) — it does NOT build this markup. To change a
+       nav link, edit this block and propagate the identical block to every
+       other page (see CLAUDE.md "Shared Header" section). ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+
+      <a href="/" class="header-logo" aria-label="CLF-C02 Prep — Home">
+        <svg class="logo-cloud" width="32" height="20" viewBox="0 0 32 20" fill="rgba(255,255,255,0.9)" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="16" cy="9" r="7"/><circle cx="23" cy="14" r="5"/><rect x="4" y="14" width="24" height="5" rx="1"/></svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+
+      <nav class="header-nav" id="header-nav" aria-label="Main navigation">
+        <a href="/" class="nav-link" id="nav-home-btn" data-view="home"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>Home</a>
+        <a href="/" class="nav-link" id="nav-training-btn" data-view="training"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>Training</a>
+        <a href="/" class="nav-link" id="nav-test-btn" data-view="test"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>Practice Test</a>
+
+        <div class="nav-dropdown" id="nav-resources-dropdown">
+          <button type="button" class="nav-link nav-dropdown-trigger" id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>Resources<svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>
+          </button>
+          <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">
+            <a href="/exam-guide" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>Exam Guide</a>
+            <a href="/study-plan" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>Study Plan</a>
+            <a href="/diagnostic" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>Diagnostic</a>
+            <a href="/practice-questions" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>Practice Qs</a>
+            <a href="/blog" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>Blog</a>
+            <a href="/faq" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>FAQ</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="auth-header-wrap">
+        <button class="auth-header-btn" id="auth-header-btn" aria-label="Sign in or view account">Sign In</button>
+        <div class="user-menu hidden" id="user-menu" role="menu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="user-menu-name"></div>
+            <div class="user-menu-email" id="user-menu-email"></div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" id="user-menu-logout" role="menuitem">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </header>
+
+  <noscript>
+    <style>
+      /* No-JS fallback: abandon collapsible/hover interactions and force
+         the full nav, including Resources sub-items, permanently visible. */
+      .mobile-menu-btn { display: none !important; }
+      .header-nav { display: flex !important; position: static !important; flex-wrap: wrap; box-shadow: none !important; }
+      .nav-dropdown-panel { display: flex !important; position: static !important; box-shadow: none !important; border: none !important; background: transparent !important; padding-left: 0 !important; }
+      .nav-caret { display: none !important; }
+    </style>
+  </noscript>
+
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="blog-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span>
+        <a href="/blog">Blog</a><span class="sep" aria-hidden="true">›</span>
+        <span>Is AWS Cloud Practitioner Worth It?</span>
+      </nav>
+
+      <!-- Post header -->
+      <header class="blog-header">
+        <h1>Is AWS Cloud Practitioner Worth It?</h1>
+        <div class="blog-meta">
+          <span>Published 29 July 2026</span>
+          <span class="dot">&middot;</span>
+          <span>8 min read</span>
+        </div>
+      </header>
+
+      <!-- Table of contents — TODO: one <li><a href="#anchor-id"> per H2/H3 below -->
+      <nav class="blog-toc" aria-label="Table of contents">
+        <div class="blog-toc-title">In this article</div>
+        <ol>
+          <li><a href="#what-is-the-aws-cloud-practitioner-certification">What Is the AWS Cloud Practitioner Certification?</a></li>
+          <li><a href="#who-is-this-certification-actually-for">Who Is This Certification Actually For?</a></li>
+          <li class="toc-h3"><a href="#career-changers-and-beginners">Career Changers and Beginners</a></li>
+          <li class="toc-h3"><a href="#non-technical-professionals-in-tech-adjacent-roles">Non-Technical Professionals in Tech-Adjacent Roles</a></li>
+          <li class="toc-h3"><a href="#students-building-a-foundation">Students Building a Foundation</a></li>
+          <li class="toc-h3"><a href="#technical-professionals-formalizing-their-knowledge">Technical Professionals Formalizing Their Knowledge</a></li>
+          <li><a href="#what-you-actually-learn">What You Actually Learn</a></li>
+          <li class="toc-h3"><a href="#cloud-fundamentals">Cloud Fundamentals</a></li>
+          <li class="toc-h3"><a href="#security-and-compliance-basics">Security and Compliance Basics</a></li>
+          <li class="toc-h3"><a href="#core-services">Core Services</a></li>
+          <li class="toc-h3"><a href="#pricing-and-cost-management">Pricing and Cost Management</a></li>
+          <li><a href="#the-career-and-salary-angle">The Career and Salary Angle</a></li>
+          <li><a href="#the-honest-case-against-it">The Honest Case Against It</a></li>
+          <li><a href="#how-to-decide">How to Decide</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+
+      <!-- Article body — TODO: replace with real content. Each H2/H3 needs a
+           matching id="" that the ToC links to. Insert the diagnostic CTA
+           block partway through (example below). -->
+      <article class="blog-body">
+        <p>If you've spent any time researching cloud certifications, you've probably run into the AWS Certified Cloud Practitioner (CLF-C02) and wondered whether it's actually worth the effort. The honest answer: it depends on where you're starting and where you want to go. This article breaks down who gets the most value from this certification, what you actually learn, and how to decide if it deserves a spot on your study plan.</p>
+        <blockquote><p><strong>Disclosure:</strong> cloudpractitionerprep.com is an independent exam-prep resource and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates.</p></blockquote>
+        <hr>
+
+        <h2 id="what-is-the-aws-cloud-practitioner-certification">What Is the AWS Cloud Practitioner Certification?</h2>
+        <p>The AWS Certified Cloud Practitioner (exam code CLF-C02) is a foundational-level certification. It's designed to validate a broad, conceptual understanding of AWS Cloud services, pricing models, security basics, and the shared responsibility model — not deep technical expertise.</p>
+        <p>The exam consists of 65 questions (50 scored, 15 unscored — you can't tell which is which during the exam), answered within 90 minutes. The passing score is 700 out of a 1,000-point scaled range. Questions are either multiple-choice (one correct answer) or multiple-response (exactly two correct answers, no partial credit). The standard registration fee is $100 USD, though AWS pricing is subject to change.</p>
+        <p>Four domains are covered: - <strong>Cloud Concepts</strong> (24%) — the six advantages of cloud computing, the Well-Architected Framework, cloud adoption strategies - <strong>Security and Compliance</strong> (30%) — the shared responsibility model, IAM, threat detection tools - <strong>Cloud Technology and Services</strong> (34%) — core AWS services like EC2, S3, Lambda, RDS, and the global infrastructure - <strong>Billing, Pricing, and Support</strong> (12%) — EC2 pricing models, Support plan tiers, Trusted Advisor</p>
+        <p>If you want a full breakdown of what each domain covers and how to study it, check out our <a href="/exam-guide">exam guide</a>.</p>
+        <hr>
+
+        <h2 id="who-is-this-certification-actually-for">Who Is This Certification Actually For?</h2>
+        <p>This is the most important question to answer before you register. The Cloud Practitioner is not a technical deep-dive — and that's by design. It's best suited for:</p>
+        <h3 id="career-changers-and-beginners">Career Changers and Beginners</h3>
+        <h3 id="non-technical-professionals-in-tech-adjacent-roles">Non-Technical Professionals in Tech-Adjacent Roles</h3>
+        <h3 id="students-building-a-foundation">Students Building a Foundation</h3>
+        <h3 id="technical-professionals-formalizing-their-knowledge">Technical Professionals Formalizing Their Knowledge</h3>
+        <hr>
+
+        <div class="blog-cta">
+          <h3>Not sure where you stand?</h3>
+          <p>Take the free 10-question CLF-C02 diagnostic and get an instant score, your weakest domain, and a study plan.</p>
+          <a href="/diagnostic" class="btn btn-primary btn-lg" data-cta="primary">Take the free diagnostic</a>
+        </div>
+
+        <h2 id="what-you-actually-learn">What You Actually Learn</h2>
+        <p>Passing the CLF-C02 isn't just about memorizing facts. The process of studying for it gives you a structured mental model for how AWS operates.</p>
+        <h3 id="cloud-fundamentals">Cloud Fundamentals</h3>
+        <h3 id="security-and-compliance-basics">Security and Compliance Basics</h3>
+        <p>You'll also learn the purpose of services like AWS CloudTrail (API call auditing), Amazon GuardDuty (ML-based threat detection), Amazon Inspector (vulnerability scanning), and AWS Shield (DDoS protection).</p>
+        <h3 id="core-services">Core Services</h3>
+        <h3 id="pricing-and-cost-management">Pricing and Cost Management</h3>
+        <hr>
+
+        <h2 id="the-career-and-salary-angle">The Career and Salary Angle</h2>
+        <p>Let's be direct: the Cloud Practitioner alone is unlikely to dramatically change your salary if you're already a mid-level or senior technical professional. It's a foundational credential, and employers know it.</p>
+        <p>That said, research from multiple job-market aggregators consistently shows that AWS-certified professionals — even at the foundational level — tend to earn more than their non-certified peers in similar roles. The effect is most pronounced when the certification signals a genuine career transition rather than simply being added to an already strong résumé.</p>
+        <p>Where the Cloud Practitioner genuinely moves the needle:</p>
+        <ul>
+          <li><strong>Entry-level and career-transition roles:</strong> Having any AWS certification can help a résumé clear automated filters and demonstrate initiative during a career change.</li>
+          <li><strong>Non-technical roles at cloud-focused companies:</strong> A Cloud Practitioner badge communicates that you understand the business's core technology, which can set you apart in sales, account management, or operations roles.</li>
+          <li><strong>As a stepping stone:</strong> Employers and hiring managers treat it as evidence that you can follow through on a technical goal — and as a foundation for the associate-level certifications that carry more weight in compensation conversations.</li>
+        </ul>
+        <p>If salary growth is your primary goal, plan your path beyond CLF-C02. The Solutions Architect Associate, Developer Associate, and specialty certifications are where compensation impact tends to be more significant.</p>
+        <hr>
+
+        <h2 id="the-honest-case-against-it">The Honest Case Against It</h2>
+        <p>No article about whether a certification is "worth it" should skip the counterarguments.</p>
+        <ul>
+          <li><strong>If you're already technical,</strong> you may find the CLF-C02 too conceptual to be engaging, and the time could be better spent on an associate-level exam.</li>
+          <li><strong>If your job has no cloud component,</strong> the credential may sit unused. A certification is most valuable when you're actively applying the knowledge.</li>
+          <li><strong>It doesn't make you a cloud practitioner</strong> in the practical sense. Hands-on experience with AWS still matters enormously for technical roles, and no exam replaces it.</li>
+          <li><strong>The $100 registration fee and study time are real costs.</strong> If you're not sure you'll use the knowledge, it's worth pausing before committing.</li>
+        </ul>
+        <hr>
+
+        <h2 id="how-to-decide">How to Decide</h2>
+        <p>Ask yourself three questions:</p>
+        <ol>
+          <li><strong>Do I want to work with AWS, or do I already and want to formalize that knowledge?</strong> If yes, this exam is a sensible starting point.</li>
+          <li><strong>Am I in or moving toward a role where cloud literacy is expected?</strong> If yes, the credential adds credibility.</li>
+          <li><strong>Am I prepared to study seriously rather than skim?</strong> The exam is approachable but not trivial. You'll need to understand concepts, not just recognize logos.</li>
+        </ol>
+        <p>If you answered yes to two or more of these, the Cloud Practitioner is probably worth it for you.</p>
+        <p>To gauge your current knowledge before committing to a full study plan, try our free <a href="/diagnostic">diagnostic quiz</a>. If you're ready to start studying, our <a href="/practice-questions">practice questions</a> are built around the CLF-C02 domain weightings and question formats.</p>
+        <hr>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Is the AWS Cloud Practitioner a hard exam?</h3>
+        <h3>How long does it take to prepare for the CLF-C02?</h3>
+        <h3>Does the AWS Cloud Practitioner expire?</h3>
+        <h3>Can I pass the exam without hands-on AWS experience?</h3>
+        <h3>What's the difference between Cloud Practitioner and Solutions Architect Associate?</h3>
+        <h3>Is $100 the only cost to take the exam?</h3>
+
+      </article>
+
+      <!-- Author / disclaimer line -->
+      <div class="blog-author">
+        Written for CloudPractitionerPrep. Independent resource, not affiliated with or endorsed by Amazon Web Services. Verify exam details against official AWS documentation before relying on them.
+      </div>
+
+      <!-- Related resources — TODO: replace with real related posts once more exist -->
+      <section class="blog-related">
+        <h2>Related resources</h2>
+        <div class="blog-related-grid">
+          <a href="/exam-guide" class="blog-related-card">
+            <div class="rc-title">CLF-C02 Exam Guide</div>
+            <div class="rc-desc">All four domains, scoring, and registration steps.</div>
+          </a>
+          <a href="/diagnostic" class="blog-related-card">
+            <div class="rc-title">Free Readiness Diagnostic</div>
+            <div class="rc-desc">10 questions, instant score, weakest domain.</div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
+  <script src="/firebase-auth.js"></script>
+  <script>CTA.initSticky({ text: 'Test your CLF-C02 readiness', threshold: 600 });</script>
+
+</body>
+</html>

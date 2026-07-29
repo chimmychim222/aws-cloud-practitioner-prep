@@ -104,6 +104,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+
+  <url>
+    <loc>https://cloudpractitionerprep.com/blog/is-aws-cloud-practitioner-worth-it</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <!-- Legal -->
   <url>
     <loc>https://cloudpractitionerprep.com/privacy</loc>

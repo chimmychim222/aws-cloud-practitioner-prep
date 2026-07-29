@@ -82,7 +82,7 @@
       targetKeyword: 'is AWS Cloud Practitioner worth it',
       category: 'career-salary',
       slug: 'is-aws-cloud-practitioner-worth-it',
-      status: 'queued'
+      status: 'published'
     },
 
     {

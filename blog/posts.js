@@ -78,5 +78,13 @@ window.BlogPosts = [
     readingTime: '7 min read',
     excerpt: 'Find out how many study hours you realistically need for the CLF-C02 exam and how to build a schedule that fits your background.',
     category: 'exam-prep-tips'
+  },
+  {
+    slug: 'is-aws-cloud-practitioner-worth-it',
+    title: 'Is AWS Cloud Practitioner Worth It?',
+    date: '2026-07-29',
+    readingTime: '8 min read',
+    excerpt: 'Wondering if the AWS Cloud Practitioner cert is worth your time and money? Here\'s an honest look at who benefits most and what to expect.',
+    category: 'career-salary'
   }
 ];

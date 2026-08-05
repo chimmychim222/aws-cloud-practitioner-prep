@@ -90,7 +90,7 @@
       targetKeyword: 'AWS IAM basics',
       category: 'security-compliance',
       slug: 'aws-iam-basics-users-groups-roles-policies',
-      status: 'queued'
+      status: 'published'
     },
 
     // Domain 3 — Cloud Technology and Services

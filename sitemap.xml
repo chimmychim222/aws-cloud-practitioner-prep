@@ -111,6 +111,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+
+  <url>
+    <loc>https://cloudpractitionerprep.com/blog/aws-iam-basics-users-groups-roles-policies</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <!-- Legal -->
   <url>
     <loc>https://cloudpractitionerprep.com/privacy</loc>

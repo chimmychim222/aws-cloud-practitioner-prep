@@ -86,5 +86,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Wondering if the AWS Cloud Practitioner cert is worth your time and money? Here\'s an honest look at who benefits most and what to expect.',
     category: 'career-salary'
+  },
+  {
+    slug: 'aws-iam-basics-users-groups-roles-policies',
+    title: 'AWS IAM Basics: Users, Groups, Roles & Policies',
+    date: '2026-08-05',
+    readingTime: '8 min read',
+    excerpt: 'Master AWS IAM basics—users, groups, roles, and policies—and understand why they make up 30% of the CLF-C02 Security domain.',
+    category: 'security-compliance'
   }
 ];

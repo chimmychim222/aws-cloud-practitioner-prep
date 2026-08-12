@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<!--
+  BLOG POST TEMPLATE — copy this file for every new post.
+  Built from /page-template.html — shares header, footer, nav, and design system.
+  Search for every "TODO:" comment and fill it in before publishing.
+  File naming: blog/[slug].html — resolves to the clean URL /blog/[slug]
+  via the same GitHub Pages URL normalization used by every other page.
+  Do NOT modify index.html, app.js, or the SPA views.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: post title (keep under 60 chars) -->
+  <title>EC2 Instance Types Explained for CLF-C02 — Cloud Practitioner Prep</title>
+
+  <!-- TODO: unique description for this post (120–155 chars, no outcome claims) -->
+  <meta name="description" content="Learn the five EC2 instance families tested on the CLF-C02 exam and how to match each one to the right workload scenario.">
+
+  <!-- TODO: replace todo-slug with the post's slug (must match the filename) -->
+  <link rel="canonical" href="https://cloudpractitionerprep.com/blog/ec2-instance-types-explained-clf-c02">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <!-- TODO -->
+  <meta property="og:title"       content="EC2 Instance Types Explained for CLF-C02 — Cloud Practitioner Prep">
+  <meta property="og:description" content="Learn the five EC2 instance families tested on the CLF-C02 exam and how to match each one to the right workload scenario.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/blog/ec2-instance-types-explained-clf-c02">
+  <meta property="og:site_name"   content="Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <!-- TODO -->
+  <meta name="twitter:title"       content="EC2 Instance Types Explained for CLF-C02 — Cloud Practitioner Prep">
+  <meta name="twitter:description" content="Learn the five EC2 instance families tested on the CLF-C02 exam and how to match each one to the right workload scenario.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- TODO: Article + BreadcrumbList + FAQPage JSON-LD — fill in headline/description/dates/url/questions.
+       Delete the FAQPage block entirely if this post has no FAQ section. -->
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "EC2 Instance Types Explained for CLF-C02",
+    "description": "Learn the five EC2 instance families tested on the CLF-C02 exam and how to match each one to the right workload scenario.",
+    "url": "https://cloudpractitionerprep.com/blog/ec2-instance-types-explained-clf-c02",
+    "datePublished": "2026-08-12",
+    "dateModified": "2026-08-12",
+    "author": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "url": "https://cloudpractitionerprep.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cloudpractitionerprep.com/og-image.png"
+      }
+    },
+    "image": "https://cloudpractitionerprep.com/og-image.png",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://cloudpractitionerprep.com/blog/ec2-instance-types-explained-clf-c02"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cloudpractitionerprep.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://cloudpractitionerprep.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "EC2 Instance Types Explained for CLF-C02 — Cloud Practitioner Prep",
+        "item": "https://cloudpractitionerprep.com/blog/ec2-instance-types-explained-clf-c02"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do I need to memorise specific instance names like m5.xlarge for the CLF-C02?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The CLF-C02 tests your understanding of instance *families* and which workloads they suit, not individual instance names or sizes. Focus on recognising the five families and matching them to scenario descriptions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between Storage Optimized and Memory Optimized instances?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Memory Optimized instances are built for workloads that need a very large amount of RAM — the data lives in memory. Storage Optimized instances are built for workloads that need extremely fast reads and writes to *local disk* storage, measured in IOPS. If a question mentions RAM or in-memory processing, think Memory Optimized. If it mentions I/O, IOPS, or local disk throughput, think Storage Optimized."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use Spot Instances with any EC2 instance family?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Spot pricing is a billing model and is available across all instance families, not limited to a specific family. The key constraint is that AWS can reclaim Spot Instances with two minutes' notice, so they are only appropriate for interruptible workloads."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much of the CLF-C02 exam covers EC2?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The exam does not publish a per-service breakdown. EC2 falls under Domain 3 (Cloud Technology and Services), which is the largest domain at 34% of the exam. EC2 — including instance types, pricing models, and related concepts — is one of the most tested services within that domain."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What instance family would you use for machine learning training?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Accelerated Computing. ML training — especially deep learning — benefits enormously from GPU acceleration. The exam will often pair \"machine learning training\" or \"deep learning\" with Accelerated Computing as the correct answer."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is General Purpose always the wrong answer for specialised workloads?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not necessarily, but it is rarely the *best* answer when a scenario describes a clear bottleneck. If a question says \"a company needs to run a web application with no unusual performance requirements,\" General Purpose is correct. If any specific resource constraint is mentioned, a specialised family will almost always be a better fit."
+        }
+      }
+    ]
+  }
+]
+  </script>
+
+  <!-- Google tag (gtag.js) | G-069J7PEMGM -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-069J7PEMGM"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-069J7PEMGM');</script>
+  <link rel="stylesheet" href="/styles.css?v=7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%234A90D9'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'>C</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .blog-bc { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-bc a { color: var(--text-muted); text-decoration: none; }
+    .blog-bc a:hover { color: var(--aws-orange); }
+    .blog-bc .sep { margin: 0 var(--sp-2); }
+
+    /* ── Post header ── */
+    .blog-header { max-width: 760px; margin: 0 auto; padding: var(--sp-8) 0 var(--sp-6); }
+    .blog-header h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; margin-bottom: var(--sp-3); }
+    .blog-meta { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-meta .dot { opacity: .5; }
+
+    /* ── Table of contents ── */
+    .blog-toc { max-width: 760px; margin: 0 auto var(--sp-8); background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5) var(--sp-6); box-shadow: var(--shadow-sm); }
+    .blog-toc-title { font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: var(--sp-3); }
+    .blog-toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+    .blog-toc li.toc-h3 { margin-left: var(--sp-5); }
+    .blog-toc a { color: var(--color-info); font-size: var(--fs-sm); text-decoration: none; }
+    .blog-toc a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+
+    /* ── Article body ── */
+    .blog-body { max-width: 760px; margin: 0 auto; padding-bottom: var(--sp-10); }
+    .blog-body h2 { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -.02em; margin: var(--sp-10) 0 var(--sp-4); scroll-margin-top: 80px; }
+    .blog-body h3 { font-size: var(--fs-lg); font-weight: 700; margin: var(--sp-6) 0 var(--sp-3); scroll-margin-top: 80px; }
+    .blog-body p { color: var(--text-secondary); line-height: 1.85; margin-bottom: var(--sp-4); font-size: var(--fs-base); }
+    .blog-body ul, .blog-body ol { color: var(--text-secondary); padding-left: var(--sp-6); line-height: 1.9; margin-bottom: var(--sp-4); }
+    .blog-body li { list-style: disc; margin-bottom: var(--sp-1); }
+    .blog-body ol li { list-style: decimal; }
+    .blog-body strong { color: var(--text-primary); }
+    .blog-body a { color: var(--color-info); }
+    .blog-body a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+    .blog-body table { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-5); font-size: var(--fs-sm); }
+    .blog-body th, .blog-body td { padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border-light); text-align: left; }
+    .blog-body th { background: var(--bg-page); font-weight: 700; }
+
+    /* ── Inline diagnostic CTA ── */
+    .blog-cta { background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark)); border-radius: var(--r-xl); padding: var(--sp-7); margin: var(--sp-8) 0; text-align: center; }
+    .blog-cta h3 { color: #fff; font-size: var(--fs-lg); font-weight: 800; margin-bottom: var(--sp-2); }
+    .blog-cta p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: var(--sp-5); }
+
+    /* ── Author / disclaimer line ── */
+    .blog-author { max-width: 760px; margin: 0 auto var(--sp-10); padding-top: var(--sp-5); border-top: 1px solid var(--border-light); font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.7; }
+
+    /* ── Related resources ── */
+    .blog-related { max-width: 760px; margin: 0 auto var(--sp-12); }
+    .blog-related h2 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-5); }
+    .blog-related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+    .blog-related-card { display: block; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5); text-decoration: none; transition: box-shadow var(--t-fast), transform var(--t-fast); }
+    .blog-related-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
+    .blog-related-card .rc-title { font-weight: 700; color: var(--text-primary); font-size: var(--fs-base); margin-bottom: var(--sp-1); }
+    .blog-related-card .rc-desc { font-size: var(--fs-sm); color: var(--text-secondary); }
+
+    @media (max-width: 640px) {
+      .blog-header h1 { font-size: var(--fs-2xl); }
+      .blog-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ========== SITE HEADER — static nav for crawlability. header.js only
+       ADDS BEHAVIOR (active-state highlighting, Resources dropdown toggle,
+       mobile hamburger menu) — it does NOT build this markup. To change a
+       nav link, edit this block and propagate the identical block to every
+       other page (see CLAUDE.md "Shared Header" section). ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+
+      <a href="/" class="header-logo" aria-label="CLF-C02 Prep — Home">
+        <svg class="logo-cloud" width="32" height="20" viewBox="0 0 32 20" fill="rgba(255,255,255,0.9)" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="16" cy="9" r="7"/><circle cx="23" cy="14" r="5"/><rect x="4" y="14" width="24" height="5" rx="1"/></svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+
+      <nav class="header-nav" id="header-nav" aria-label="Main navigation">
+        <a href="/" class="nav-link" id="nav-home-btn" data-view="home"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>Home</a>
+        <a href="/" class="nav-link" id="nav-training-btn" data-view="training"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>Training</a>
+        <a href="/" class="nav-link" id="nav-test-btn" data-view="test"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>Practice Test</a>
+
+        <div class="nav-dropdown" id="nav-resources-dropdown">
+          <button type="button" class="nav-link nav-dropdown-trigger" id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>Resources<svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>
+          </button>
+          <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">
+            <a href="/exam-guide" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>Exam Guide</a>
+            <a href="/study-plan" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>Study Plan</a>
+            <a href="/diagnostic" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>Diagnostic</a>
+            <a href="/practice-questions" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>Practice Qs</a>
+            <a href="/blog" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>Blog</a>
+            <a href="/faq" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>FAQ</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="auth-header-wrap">
+        <button class="auth-header-btn" id="auth-header-btn" aria-label="Sign in or view account">Sign In</button>
+        <div class="user-menu hidden" id="user-menu" role="menu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="user-menu-name"></div>
+            <div class="user-menu-email" id="user-menu-email"></div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" id="user-menu-logout" role="menuitem">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </header>
+
+  <noscript>
+    <style>
+      /* No-JS fallback: abandon collapsible/hover interactions and force
+         the full nav, including Resources sub-items, permanently visible. */
+      .mobile-menu-btn { display: none !important; }
+      .header-nav { display: flex !important; position: static !important; flex-wrap: wrap; box-shadow: none !important; }
+      .nav-dropdown-panel { display: flex !important; position: static !important; box-shadow: none !important; border: none !important; background: transparent !important; padding-left: 0 !important; }
+      .nav-caret { display: none !important; }
+    </style>
+  </noscript>
+
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="blog-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span>
+        <a href="/blog">Blog</a><span class="sep" aria-hidden="true">›</span>
+        <span>EC2 Instance Types Explained for CLF-C02</span>
+      </nav>
+
+      <!-- Post header -->
+      <header class="blog-header">
+        <h1>EC2 Instance Types Explained for CLF-C02</h1>
+        <div class="blog-meta">
+          <span>Published 12 August 2026</span>
+          <span class="dot">&middot;</span>
+          <span>7 min read</span>
+        </div>
+      </header>
+
+      <!-- Table of contents — TODO: one <li><a href="#anchor-id"> per H2/H3 below -->
+      <nav class="blog-toc" aria-label="Table of contents">
+        <div class="blog-toc-title">In this article</div>
+        <ol>
+          <li><a href="#why-instance-families-exist">Why Instance Families Exist</a></li>
+          <li><a href="#the-five-ec2-instance-families">The Five EC2 Instance Families</a></li>
+          <li class="toc-h3"><a href="#1-general-purpose">1. General Purpose</a></li>
+          <li class="toc-h3"><a href="#2-compute-optimized">2. Compute Optimized</a></li>
+          <li class="toc-h3"><a href="#3-memory-optimized">3. Memory Optimized</a></li>
+          <li class="toc-h3"><a href="#4-storage-optimized">4. Storage Optimized</a></li>
+          <li class="toc-h3"><a href="#5-accelerated-computing">5. Accelerated Computing</a></li>
+          <li><a href="#how-to-think-about-instance-selection-on-the-exam">How to Think About Instance Selection on the Exam</a></li>
+          <li><a href="#ec2-instance-types-and-the-pricing-models">EC2 Instance Types and the Pricing Models</a></li>
+          <li><a href="#where-ec2-instance-types-fit-in-the-clf-c02-domains">Where EC2 Instance Types Fit in the CLF-C02 Domains</a></li>
+          <li><a href="#quick-reference-summary">Quick-Reference Summary</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+
+      <!-- Article body — TODO: replace with real content. Each H2/H3 needs a
+           matching id="" that the ToC links to. Insert the diagnostic CTA
+           block partway through (example below). -->
+      <article class="blog-body">
+        <p>Amazon EC2 (Elastic Compute Cloud) is one of the most frequently tested services on the AWS Certified Cloud Practitioner exam. While the CLF-C02 does not ask you to memorise specific instance names like <code>m5.xlarge</code> or <code>c6g.2xlarge</code>, it absolutely expects you to understand the <em>families</em> of EC2 instances, what workloads each family is optimised for, and — crucially — how to choose the right one for a given scenario.</p>
+        <p>This guide walks through every instance family you need to know, explains the thinking behind them, and ties it all together with exam-style reasoning you can apply on test day.</p>
+        <hr>
+
+        <h2 id="why-instance-families-exist">Why Instance Families Exist</h2>
+        <p>When AWS designed EC2, it faced a fundamental challenge: different applications have radically different appetites for CPU, memory, network throughput, and storage. A video-transcoding job needs raw processing power; a large in-memory database needs enormous RAM; a machine-learning training job needs specialised GPU hardware.</p>
+        <p>Rather than building one-size-fits-all servers (which would be expensive and inefficient for most use cases), AWS created instance <em>families</em> — groups of instances tuned for specific performance profiles. Understanding this design philosophy is the key to answering scenario questions correctly, because the exam almost never asks "what is an M-series instance?" — it asks "which instance type is best suited for a web application with balanced CPU and memory needs?"</p>
+        <hr>
+
+        <h2 id="the-five-ec2-instance-families">The Five EC2 Instance Families</h2>
+        <p>The CLF-C02 <a href="/exam-guide">exam guide</a> groups EC2 instance types into five families. Here is each one in plain language.</p>
+        <h3 id="1-general-purpose">1. General Purpose</h3>
+        <p><strong>Use when:</strong> You need a balanced mix of compute, memory, and networking and do not have a dominant bottleneck.</p>
+        <p>General Purpose instances are the workhorses of EC2. They are designed for applications where no single resource (CPU, memory, or network) is the obvious constraint. Think of them as the "default" choice.</p>
+        <p><strong>Typical workloads:</strong> - Web servers and small-to-medium web applications - Application servers - Development and test environments - Code repositories</p>
+        <p><strong>Exam tip:</strong> If a scenario describes a workload as "general web application," "development environment," or "balanced," General Purpose is almost certainly the right answer.</p>
+        <h3 id="2-compute-optimized">2. Compute Optimized</h3>
+        <p><strong>Use when:</strong> Your application is CPU-heavy — it needs more processing power relative to memory.</p>
+        <p>Compute Optimized instances provide a higher ratio of CPU to memory. They are purpose-built for workloads that spend most of their time doing computation.</p>
+        <p><strong>Typical workloads:</strong> - Batch processing and high-performance computing (HPC) - Scientific modelling - Dedicated gaming servers - Video encoding - CPU-based machine learning inference</p>
+        <p><strong>Exam tip:</strong> The word "compute" in the name is your clue. If a scenario mentions "high-performance computing," "batch processing," or "CPU-intensive," think Compute Optimized.</p>
+        <h3 id="3-memory-optimized">3. Memory Optimized</h3>
+        <p><strong>Use when:</strong> Your application needs to work with very large datasets entirely in RAM, because accessing memory is dramatically faster than accessing disk or even a fast SSD.</p>
+        <p>Memory Optimized instances offer much higher RAM-to-CPU ratios than General Purpose. They are designed for workloads where having more memory directly translates to better performance.</p>
+        <p><strong>Typical workloads:</strong> - In-memory databases (e.g., Redis, Memcached) - Real-time processing of large unstructured data - High-performance relational databases with large working sets - SAP HANA and other enterprise in-memory applications</p>
+        <p><strong>Exam tip:</strong> Keywords to watch for: "in-memory," "large database," "real-time big data processing," or any mention of keeping a huge dataset in RAM.</p>
+        <h3 id="4-storage-optimized">4. Storage Optimized</h3>
+        <p><strong>Use when:</strong> Your workload requires very high, sequential read/write access to large datasets on local storage — specifically when you need high IOPS (input/output operations per second).</p>
+        <p>Storage Optimized instances are equipped with high-speed NVMe SSDs and are tuned for I/O-heavy workloads. They are not about <em>how much</em> storage you can attach — they are about <em>how fast</em> you can read and write.</p>
+        <p><strong>Typical workloads:</strong> - Data warehousing - Distributed file systems (e.g., Hadoop) - High-frequency transaction processing databases - Online transaction processing (OLTP) systems requiring high I/O - Elasticsearch / OpenSearch clusters</p>
+        <p><strong>Exam tip:</strong> Look for phrases like "high I/O," "high IOPS," "sequential read/write," or "distributed file system." Storage Optimized is the answer when throughput to local disk is the bottleneck.</p>
+        <h3 id="5-accelerated-computing">5. Accelerated Computing</h3>
+        <p><strong>Use when:</strong> Your workload can benefit from hardware accelerators — GPU or FPGA — rather than relying solely on general-purpose CPUs.</p>
+        <p>Accelerated Computing instances attach specialised processors that are orders of magnitude faster than CPUs for specific tasks like floating-point calculations, graphics processing, or data pattern matching.</p>
+        <p><strong>Typical workloads:</strong> - Machine learning training (especially deep learning) - High-performance graphics and game streaming - Genomics research - Financial modelling and simulations - Video transcoding at scale</p>
+        <p><strong>Exam tip:</strong> "GPU," "machine learning training," "deep learning," "graphics rendering," and "floating-point operations" all point to Accelerated Computing.</p>
+        <hr>
+
+        <div class="blog-cta">
+          <h3>Not sure where you stand?</h3>
+          <p>Take the free 10-question CLF-C02 diagnostic and get an instant score, your weakest domain, and a study plan.</p>
+          <a href="/diagnostic" class="btn btn-primary btn-lg" data-cta="primary">Take the free diagnostic</a>
+        </div>
+
+        <h2 id="how-to-think-about-instance-selection-on-the-exam">How to Think About Instance Selection on the Exam</h2>
+        <p>The CLF-C02 is a scenario-based exam. Rather than testing definitions, it presents a situation and asks which instance family fits best. Here is a simple decision framework:</p>
+        <ol>
+          <li><strong>Is there a hardware accelerator mentioned (GPU, FPGA)?</strong> → Accelerated Computing</li>
+          <li><strong>Is the bottleneck memory / RAM?</strong> → Memory Optimized</li>
+          <li><strong>Is the bottleneck disk I/O / IOPS?</strong> → Storage Optimized</li>
+          <li><strong>Is the bottleneck raw CPU?</strong> → Compute Optimized</li>
+          <li><strong>No clear bottleneck — balanced workload?</strong> → General Purpose</li>
+        </ol>
+        <p>Practice applying this framework with exam-style questions. Our <a href="/practice-questions">practice questions</a> include scenario-based EC2 questions that help you build this instinct quickly.</p>
+        <hr>
+
+        <h2 id="ec2-instance-types-and-the-pricing-models">EC2 Instance Types and the Pricing Models</h2>
+        <p>Understanding instance families is only half the picture. The CLF-C02 also tests how you <em>pay</em> for EC2. The pricing model you choose is independent of the instance family — you can run a Memory Optimized instance on On-Demand pricing, a Spot Instance, or a Reserved Instance.</p>
+        <p>Here is a quick recap of pricing models (covered in Domain 4):</p>
+        <ul>
+          <li><strong>On-Demand:</strong> Pay by the second or hour, no upfront commitment. Best for unpredictable workloads.</li>
+          <li><strong>Spot Instances:</strong> Bid on unused EC2 capacity at significant discounts — up to around 90% off On-Demand pricing. AWS can reclaim the instance with a two-minute warning, so these suit fault-tolerant, interruptible workloads like batch jobs.</li>
+          <li><strong>Reserved Instances (Standard):</strong> Commit to a 1- or 3-year term for the highest discounts. Best for steady, predictable workloads.</li>
+          <li><strong>Reserved Instances (Convertible):</strong> Similar commitment, but you can change instance attributes. Slightly lower discount in exchange for flexibility.</li>
+          <li><strong>Savings Plans:</strong> Flexible commitment-based discounts that apply across instance families (Compute Savings Plans also cover Lambda and Fargate).</li>
+          <li><strong>Dedicated Hosts:</strong> A physical server dedicated to your use — typically chosen for compliance or bring-your-own-licence (BYOL) requirements.</li>
+        </ul>
+        <p>A common exam question pairs an instance family with the <em>right pricing model</em> for a scenario. For example: "A data science team needs GPU instances to train models overnight on weekends only. Which pricing model minimises cost?" The answer would point toward Spot Instances, since training jobs are often interruptible and the workload is not continuous.</p>
+        <hr>
+
+        <h2 id="where-ec2-instance-types-fit-in-the-clf-c02-domains">Where EC2 Instance Types Fit in the CLF-C02 Domains</h2>
+        <p>EC2 falls squarely in <strong>Domain 3: Cloud Technology and Services</strong>, which carries the heaviest weighting on the exam at <strong>34%</strong>. EC2 instance families, along with concepts like serverless compute (Lambda), managed databases (RDS, DynamoDB), and storage (S3), make up a significant slice of Domain 3 content.</p>
+        <p>If you are not sure how well you understand Domain 3 relative to your other weak spots, our free <a href="/diagnostic">diagnostic</a> can help you identify exactly where to focus your study time.</p>
+        <hr>
+
+        <h2 id="quick-reference-summary">Quick-Reference Summary</h2>
+        <table>
+        <thead><tr><th>Family</th><th>Optimised For</th><th>Typical Exam Keywords</th></tr></thead>
+        <tbody>
+        <tr><td>General Purpose</td><td>Balanced CPU/memory/network</td><td>Web server, app server, dev/test</td></tr>
+        <tr><td>Compute Optimized</td><td>High CPU-to-memory ratio</td><td>HPC, batch processing, gaming server</td></tr>
+        <tr><td>Memory Optimized</td><td>High RAM-to-CPU ratio</td><td>In-memory DB, real-time big data</td></tr>
+        <tr><td>Storage Optimized</td><td>High local disk I/O / IOPS</td><td>Data warehouse, OLTP, distributed FS</td></tr>
+        <tr><td>Accelerated Computing</td><td>GPU / FPGA hardware</td><td>ML training, graphics, deep learning</td></tr>
+        </tbody>
+      </table>
+        <hr>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Do I need to memorise specific instance names like m5.xlarge for the CLF-C02?</h3>
+        <p>No. The CLF-C02 tests your understanding of instance <em>families</em> and which workloads they suit, not individual instance names or sizes. Focus on recognising the five families and matching them to scenario descriptions.</p>
+        <h3>What is the difference between Storage Optimized and Memory Optimized instances?</h3>
+        <p>Memory Optimized instances are built for workloads that need a very large amount of RAM — the data lives in memory. Storage Optimized instances are built for workloads that need extremely fast reads and writes to <em>local disk</em> storage, measured in IOPS. If a question mentions RAM or in-memory processing, think Memory Optimized. If it mentions I/O, IOPS, or local disk throughput, think Storage Optimized.</p>
+        <h3>Can I use Spot Instances with any EC2 instance family?</h3>
+        <p>Yes. Spot pricing is a billing model and is available across all instance families, not limited to a specific family. The key constraint is that AWS can reclaim Spot Instances with two minutes' notice, so they are only appropriate for interruptible workloads.</p>
+        <h3>How much of the CLF-C02 exam covers EC2?</h3>
+        <p>The exam does not publish a per-service breakdown. EC2 falls under Domain 3 (Cloud Technology and Services), which is the largest domain at 34% of the exam. EC2 — including instance types, pricing models, and related concepts — is one of the most tested services within that domain.</p>
+        <h3>What instance family would you use for machine learning training?</h3>
+        <p>Accelerated Computing. ML training — especially deep learning — benefits enormously from GPU acceleration. The exam will often pair "machine learning training" or "deep learning" with Accelerated Computing as the correct answer.</p>
+        <h3>Is General Purpose always the wrong answer for specialised workloads?</h3>
+        <p>Not necessarily, but it is rarely the <em>best</em> answer when a scenario describes a clear bottleneck. If a question says "a company needs to run a web application with no unusual performance requirements," General Purpose is correct. If any specific resource constraint is mentioned, a specialised family will almost always be a better fit.</p>
+
+      </article>
+
+      <!-- Author / disclaimer line -->
+      <div class="blog-author">
+        Written for CloudPractitionerPrep. Independent resource, not affiliated with or endorsed by Amazon Web Services. Verify exam details against official AWS documentation before relying on them.
+      </div>
+
+      <!-- Related resources — TODO: replace with real related posts once more exist -->
+      <section class="blog-related">
+        <h2>Related resources</h2>
+        <div class="blog-related-grid">
+          <a href="/exam-guide" class="blog-related-card">
+            <div class="rc-title">CLF-C02 Exam Guide</div>
+            <div class="rc-desc">All four domains, scoring, and registration steps.</div>
+          </a>
+          <a href="/diagnostic" class="blog-related-card">
+            <div class="rc-title">Free Readiness Diagnostic</div>
+            <div class="rc-desc">10 questions, instant score, weakest domain.</div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
+  <script src="/firebase-auth.js"></script>
+  <script>CTA.initSticky({ text: 'Test your CLF-C02 readiness', threshold: 600 });</script>
+
+</body>
+</html>

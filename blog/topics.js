@@ -99,7 +99,7 @@
       targetKeyword: 'EC2 instance types explained',
       category: 'cloud-technology',
       slug: 'ec2-instance-types-explained-clf-c02',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: 'AWS Storage Services Compared: S3 vs EBS vs EFS',

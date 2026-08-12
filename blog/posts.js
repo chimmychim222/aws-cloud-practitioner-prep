@@ -94,5 +94,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Master AWS IAM basics—users, groups, roles, and policies—and understand why they make up 30% of the CLF-C02 Security domain.',
     category: 'security-compliance'
+  },
+  {
+    slug: 'ec2-instance-types-explained-clf-c02',
+    title: 'EC2 Instance Types Explained for CLF-C02',
+    date: '2026-08-12',
+    readingTime: '7 min read',
+    excerpt: 'Learn the five EC2 instance families tested on the CLF-C02 exam and how to match each one to the right workload scenario.',
+    category: 'cloud-technology'
   }
 ];

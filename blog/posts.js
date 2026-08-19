@@ -102,5 +102,13 @@ window.BlogPosts = [
     readingTime: '7 min read',
     excerpt: 'Learn the five EC2 instance families tested on the CLF-C02 exam and how to match each one to the right workload scenario.',
     category: 'cloud-technology'
+  },
+  {
+    slug: 'aws-storage-services-compared-s3-ebs-efs',
+    title: 'AWS Storage Services Compared: S3 vs EBS vs EFS',
+    date: '2026-08-19',
+    readingTime: '8 min read',
+    excerpt: 'Confused by AWS storage options? Learn how S3, EBS, and EFS differ and which one to choose for any scenario on the CLF-C02 exam.',
+    category: 'cloud-technology'
   }
 ];

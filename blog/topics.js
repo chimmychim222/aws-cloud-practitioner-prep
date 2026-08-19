@@ -106,7 +106,7 @@
       targetKeyword: 'S3 vs EBS vs EFS',
       category: 'cloud-technology',
       slug: 'aws-storage-services-compared-s3-ebs-efs',
-      status: 'queued'
+      status: 'published'
     },
 
     // Domain 4 — Billing, Pricing, and Support

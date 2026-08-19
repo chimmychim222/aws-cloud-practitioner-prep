@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<!--
+  BLOG POST TEMPLATE — copy this file for every new post.
+  Built from /page-template.html — shares header, footer, nav, and design system.
+  Search for every "TODO:" comment and fill it in before publishing.
+  File naming: blog/[slug].html — resolves to the clean URL /blog/[slug]
+  via the same GitHub Pages URL normalization used by every other page.
+  Do NOT modify index.html, app.js, or the SPA views.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: post title (keep under 60 chars) -->
+  <title>AWS Storage Services Compared: S3 vs EBS vs EFS — Cloud Practitioner Prep</title>
+
+  <!-- TODO: unique description for this post (120–155 chars, no outcome claims) -->
+  <meta name="description" content="Confused by AWS storage options? Learn how S3, EBS, and EFS differ and which one to choose for any scenario on the CLF-C02 exam.">
+
+  <!-- TODO: replace todo-slug with the post's slug (must match the filename) -->
+  <link rel="canonical" href="https://cloudpractitionerprep.com/blog/aws-storage-services-compared-s3-ebs-efs">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <!-- TODO -->
+  <meta property="og:title"       content="AWS Storage Services Compared: S3 vs EBS vs EFS — Cloud Practitioner Prep">
+  <meta property="og:description" content="Confused by AWS storage options? Learn how S3, EBS, and EFS differ and which one to choose for any scenario on the CLF-C02 exam.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/blog/aws-storage-services-compared-s3-ebs-efs">
+  <meta property="og:site_name"   content="Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <!-- TODO -->
+  <meta name="twitter:title"       content="AWS Storage Services Compared: S3 vs EBS vs EFS — Cloud Practitioner Prep">
+  <meta name="twitter:description" content="Confused by AWS storage options? Learn how S3, EBS, and EFS differ and which one to choose for any scenario on the CLF-C02 exam.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- TODO: Article + BreadcrumbList + FAQPage JSON-LD — fill in headline/description/dates/url/questions.
+       Delete the FAQPage block entirely if this post has no FAQ section. -->
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AWS Storage Services Compared: S3 vs EBS vs EFS",
+    "description": "Confused by AWS storage options? Learn how S3, EBS, and EFS differ and which one to choose for any scenario on the CLF-C02 exam.",
+    "url": "https://cloudpractitionerprep.com/blog/aws-storage-services-compared-s3-ebs-efs",
+    "datePublished": "2026-08-19",
+    "dateModified": "2026-08-19",
+    "author": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "url": "https://cloudpractitionerprep.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cloudpractitionerprep.com/og-image.png"
+      }
+    },
+    "image": "https://cloudpractitionerprep.com/og-image.png",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://cloudpractitionerprep.com/blog/aws-storage-services-compared-s3-ebs-efs"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cloudpractitionerprep.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://cloudpractitionerprep.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "AWS Storage Services Compared: S3 vs EBS vs EFS — Cloud Practitioner Prep",
+        "item": "https://cloudpractitionerprep.com/blog/aws-storage-services-compared-s3-ebs-efs"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the main difference between S3 and EBS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "S3 is object storage accessed via an API or URL — it's not mounted as a drive. EBS is block storage that attaches directly to a single EC2 instance and behaves like a physical hard disk. Use S3 for storing files, backups, and media at scale; use EBS when an EC2 instance needs a disk to run its operating system or database."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can multiple EC2 instances use the same EBS volume at the same time?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Generally, no. Standard EBS volumes are attached to one EC2 instance at a time. EFS is the correct choice when you need shared, concurrent access across multiple instances."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is S3 cheaper than EBS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "S3 storage generally costs less per GB than EBS, but the right choice is always based on the use case rather than price alone. EBS is necessary for block-level workloads (like running a database), where S3 simply isn't a substitute. For archiving or large-scale object storage, S3's various storage classes (especially Glacier) make it very cost-effective."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to choose an S3 capacity size in advance, like I do with EBS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. S3 scales automatically — you just upload objects and pay for what you use. With EBS, you provision a specific volume size (like 100 GB) when you create it, though you can modify the size later."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does EFS differ from EBS for Linux workloads?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Both can be mounted on Linux EC2 instances, but EBS attaches to one instance at a time and lives in a single Availability Zone, while EFS is a shared network file system that can be mounted by many instances across multiple Availability Zones simultaneously."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which storage service questions are most likely to appear on the CLF-C02 exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The exam focuses on scenario-based questions — matching a business requirement to the right service. You're most likely to see questions contrasting S3 (object, scalable, shared access via URL) with EBS (block, single instance, provisioned) and EFS (file, shared among many instances). Review the [exam guide](/exam-guide) to see exactly how storage fits into the Domain 3 objectives."
+        }
+      }
+    ]
+  }
+]
+  </script>
+
+  <!-- Google tag (gtag.js) | G-069J7PEMGM -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-069J7PEMGM"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-069J7PEMGM');</script>
+  <link rel="stylesheet" href="/styles.css?v=7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%234A90D9'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'>C</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .blog-bc { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-bc a { color: var(--text-muted); text-decoration: none; }
+    .blog-bc a:hover { color: var(--aws-orange); }
+    .blog-bc .sep { margin: 0 var(--sp-2); }
+
+    /* ── Post header ── */
+    .blog-header { max-width: 760px; margin: 0 auto; padding: var(--sp-8) 0 var(--sp-6); }
+    .blog-header h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; margin-bottom: var(--sp-3); }
+    .blog-meta { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-meta .dot { opacity: .5; }
+
+    /* ── Table of contents ── */
+    .blog-toc { max-width: 760px; margin: 0 auto var(--sp-8); background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5) var(--sp-6); box-shadow: var(--shadow-sm); }
+    .blog-toc-title { font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: var(--sp-3); }
+    .blog-toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+    .blog-toc li.toc-h3 { margin-left: var(--sp-5); }
+    .blog-toc a { color: var(--color-info); font-size: var(--fs-sm); text-decoration: none; }
+    .blog-toc a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+
+    /* ── Article body ── */
+    .blog-body { max-width: 760px; margin: 0 auto; padding-bottom: var(--sp-10); }
+    .blog-body h2 { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -.02em; margin: var(--sp-10) 0 var(--sp-4); scroll-margin-top: 80px; }
+    .blog-body h3 { font-size: var(--fs-lg); font-weight: 700; margin: var(--sp-6) 0 var(--sp-3); scroll-margin-top: 80px; }
+    .blog-body p { color: var(--text-secondary); line-height: 1.85; margin-bottom: var(--sp-4); font-size: var(--fs-base); }
+    .blog-body ul, .blog-body ol { color: var(--text-secondary); padding-left: var(--sp-6); line-height: 1.9; margin-bottom: var(--sp-4); }
+    .blog-body li { list-style: disc; margin-bottom: var(--sp-1); }
+    .blog-body ol li { list-style: decimal; }
+    .blog-body strong { color: var(--text-primary); }
+    .blog-body a { color: var(--color-info); }
+    .blog-body a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+    .blog-body table { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-5); font-size: var(--fs-sm); }
+    .blog-body th, .blog-body td { padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border-light); text-align: left; }
+    .blog-body th { background: var(--bg-page); font-weight: 700; }
+
+    /* ── Inline diagnostic CTA ── */
+    .blog-cta { background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark)); border-radius: var(--r-xl); padding: var(--sp-7); margin: var(--sp-8) 0; text-align: center; }
+    .blog-cta h3 { color: #fff; font-size: var(--fs-lg); font-weight: 800; margin-bottom: var(--sp-2); }
+    .blog-cta p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: var(--sp-5); }
+
+    /* ── Author / disclaimer line ── */
+    .blog-author { max-width: 760px; margin: 0 auto var(--sp-10); padding-top: var(--sp-5); border-top: 1px solid var(--border-light); font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.7; }
+
+    /* ── Related resources ── */
+    .blog-related { max-width: 760px; margin: 0 auto var(--sp-12); }
+    .blog-related h2 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-5); }
+    .blog-related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+    .blog-related-card { display: block; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5); text-decoration: none; transition: box-shadow var(--t-fast), transform var(--t-fast); }
+    .blog-related-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
+    .blog-related-card .rc-title { font-weight: 700; color: var(--text-primary); font-size: var(--fs-base); margin-bottom: var(--sp-1); }
+    .blog-related-card .rc-desc { font-size: var(--fs-sm); color: var(--text-secondary); }
+
+    @media (max-width: 640px) {
+      .blog-header h1 { font-size: var(--fs-2xl); }
+      .blog-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ========== SITE HEADER — static nav for crawlability. header.js only
+       ADDS BEHAVIOR (active-state highlighting, Resources dropdown toggle,
+       mobile hamburger menu) — it does NOT build this markup. To change a
+       nav link, edit this block and propagate the identical block to every
+       other page (see CLAUDE.md "Shared Header" section). ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+
+      <a href="/" class="header-logo" aria-label="CLF-C02 Prep — Home">
+        <svg class="logo-cloud" width="32" height="20" viewBox="0 0 32 20" fill="rgba(255,255,255,0.9)" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="16" cy="9" r="7"/><circle cx="23" cy="14" r="5"/><rect x="4" y="14" width="24" height="5" rx="1"/></svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+
+      <nav class="header-nav" id="header-nav" aria-label="Main navigation">
+        <a href="/" class="nav-link" id="nav-home-btn" data-view="home"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>Home</a>
+        <a href="/" class="nav-link" id="nav-training-btn" data-view="training"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>Training</a>
+        <a href="/" class="nav-link" id="nav-test-btn" data-view="test"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>Practice Test</a>
+
+        <div class="nav-dropdown" id="nav-resources-dropdown">
+          <button type="button" class="nav-link nav-dropdown-trigger" id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>Resources<svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>
+          </button>
+          <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">
+            <a href="/exam-guide" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>Exam Guide</a>
+            <a href="/study-plan" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>Study Plan</a>
+            <a href="/diagnostic" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>Diagnostic</a>
+            <a href="/practice-questions" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>Practice Qs</a>
+            <a href="/blog" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>Blog</a>
+            <a href="/faq" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>FAQ</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="auth-header-wrap">
+        <button class="auth-header-btn" id="auth-header-btn" aria-label="Sign in or view account">Sign In</button>
+        <div class="user-menu hidden" id="user-menu" role="menu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="user-menu-name"></div>
+            <div class="user-menu-email" id="user-menu-email"></div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" id="user-menu-logout" role="menuitem">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </header>
+
+  <noscript>
+    <style>
+      /* No-JS fallback: abandon collapsible/hover interactions and force
+         the full nav, including Resources sub-items, permanently visible. */
+      .mobile-menu-btn { display: none !important; }
+      .header-nav { display: flex !important; position: static !important; flex-wrap: wrap; box-shadow: none !important; }
+      .nav-dropdown-panel { display: flex !important; position: static !important; box-shadow: none !important; border: none !important; background: transparent !important; padding-left: 0 !important; }
+      .nav-caret { display: none !important; }
+    </style>
+  </noscript>
+
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="blog-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span>
+        <a href="/blog">Blog</a><span class="sep" aria-hidden="true">›</span>
+        <span>AWS Storage Services Compared: S3 vs EBS vs EFS</span>
+      </nav>
+
+      <!-- Post header -->
+      <header class="blog-header">
+        <h1>AWS Storage Services Compared: S3 vs EBS vs EFS</h1>
+        <div class="blog-meta">
+          <span>Published 19 August 2026</span>
+          <span class="dot">&middot;</span>
+          <span>8 min read</span>
+        </div>
+      </header>
+
+      <!-- Table of contents — TODO: one <li><a href="#anchor-id"> per H2/H3 below -->
+      <nav class="blog-toc" aria-label="Table of contents">
+        <div class="blog-toc-title">In this article</div>
+        <ol>
+          <li><a href="#the-big-picture-three-different-storage-models">The Big Picture: Three Different Storage Models</a></li>
+          <li class="toc-h3"><a href="#object-storage-flat-scalable-and-durable">Object Storage: Flat, Scalable, and Durable</a></li>
+          <li class="toc-h3"><a href="#block-storage-fast-low-latency-attached">Block Storage: Fast, Low-Latency, Attached</a></li>
+          <li class="toc-h3"><a href="#file-storage-shared-hierarchical-and-familiar">File Storage: Shared, Hierarchical, and Familiar</a></li>
+          <li><a href="#amazon-s3-simple-storage-service">Amazon S3 (Simple Storage Service)</a></li>
+          <li class="toc-h3"><a href="#key-characteristics">Key Characteristics</a></li>
+          <li class="toc-h3"><a href="#s3-storage-classes">S3 Storage Classes</a></li>
+          <li class="toc-h3"><a href="#when-to-choose-s3">When to Choose S3</a></li>
+          <li><a href="#amazon-ebs-elastic-block-store">Amazon EBS (Elastic Block Store)</a></li>
+          <li class="toc-h3"><a href="#key-characteristics">Key Characteristics</a></li>
+          <li class="toc-h3"><a href="#ebs-volume-types">EBS Volume Types</a></li>
+          <li class="toc-h3"><a href="#when-to-choose-ebs">When to Choose EBS</a></li>
+          <li><a href="#amazon-efs-elastic-file-system">Amazon EFS (Elastic File System)</a></li>
+          <li class="toc-h3"><a href="#key-characteristics">Key Characteristics</a></li>
+          <li class="toc-h3"><a href="#when-to-choose-efs">When to Choose EFS</a></li>
+          <li><a href="#side-by-side-comparison">Side-by-Side Comparison</a></li>
+          <li><a href="#how-this-appears-on-the-clf-c02-exam">How This Appears on the CLF-C02 Exam</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#putting-it-all-together">Putting It All Together</a></li>
+        </ol>
+      </nav>
+
+      <!-- Article body — TODO: replace with real content. Each H2/H3 needs a
+           matching id="" that the ToC links to. Insert the diagnostic CTA
+           block partway through (example below). -->
+      <article class="blog-body">
+        <p>Storage questions are a reliable fixture on the AWS Certified Cloud Practitioner (CLF-C02) exam. The exam falls under Domain 3: Cloud Technology and Services, which carries a 34% weighting — the heaviest of all four domains. That means understanding <em>when</em> to use Amazon S3, Amazon EBS, or Amazon EFS isn't optional; it's essential.</p>
+        <p>The good news: once you understand what each service is fundamentally designed for, choosing between them becomes straightforward. This guide breaks down all three, compares them side by side, and walks through the kinds of scenario-based questions you'll see on exam day.</p>
+        <blockquote><p><strong>Disclaimer:</strong> This site is an independent exam-prep resource and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or its affiliates.</p></blockquote>
+        <hr>
+
+        <h2 id="the-big-picture-three-different-storage-models">The Big Picture: Three Different Storage Models</h2>
+        <p>AWS offers three broad types of storage, and each of these services represents one of them:</p>
+        <ul>
+          <li><strong>Object storage</strong> — Amazon S3</li>
+          <li><strong>Block storage</strong> — Amazon EBS</li>
+          <li><strong>File storage</strong> — Amazon EFS</li>
+        </ul>
+        <p>Understanding <em>why</em> these categories exist is more useful than memorising product names.</p>
+        <h3 id="object-storage-flat-scalable-and-durable">Object Storage: Flat, Scalable, and Durable</h3>
+        <p>In object storage, data is stored as individual objects — think of each file bundled with its metadata and a unique identifier. There's no folder hierarchy at the operating system level (though S3 supports prefixes that <em>look</em> like folders). Objects are retrieved via a URL or API, not a file path.</p>
+        <h3 id="block-storage-fast-low-latency-attached">Block Storage: Fast, Low-Latency, Attached</h3>
+        <p>Block storage breaks data into fixed-size blocks, each with its own address. Your operating system treats it like a physical hard drive — it can be formatted, partitioned, and mounted. This is what your laptop's SSD does, and it's what EC2 instances need to run their operating systems.</p>
+        <h3 id="file-storage-shared-hierarchical-and-familiar">File Storage: Shared, Hierarchical, and Familiar</h3>
+        <p>File storage sits between object and block. It uses a familiar directory structure and is accessed over a network using standard protocols. Multiple clients can connect to the same file system simultaneously — something block storage can't do natively.</p>
+        <hr>
+
+        <h2 id="amazon-s3-simple-storage-service">Amazon S3 (Simple Storage Service)</h2>
+        <p>Amazon S3 is AWS's object storage service and one of the oldest and most widely used services in the entire AWS portfolio.</p>
+        <h3 id="key-characteristics">Key Characteristics</h3>
+        <ul>
+          <li><strong>Virtually unlimited storage capacity</strong> — you don't provision a volume size in advance.</li>
+          <li><strong>Accessed via HTTP/HTTPS</strong> — through the AWS Management Console, SDKs, CLI, or direct URL.</li>
+          <li><strong>Highly durable</strong> — S3 is designed to deliver very high durability for stored objects (verify current durability SLA against AWS S3 documentation before publishing).</li>
+          <li><strong>Not attached to a specific EC2 instance</strong> — any authorised user, application, or service can access it from anywhere.</li>
+          <li><strong>Not a file system</strong> — you cannot mount S3 as a drive your EC2 operating system reads from natively.</li>
+        </ul>
+        <h3 id="s3-storage-classes">S3 Storage Classes</h3>
+        <p>S3 offers multiple storage classes, letting you balance cost against access frequency. From most to least frequently accessed:</p>
+        <ol>
+          <li><strong>S3 Standard</strong> — general-purpose, low latency, high availability.</li>
+          <li><strong>S3 Intelligent-Tiering</strong> — automatically moves objects between tiers based on usage patterns.</li>
+          <li><strong>S3 Standard-IA (Infrequent Access)</strong> — lower storage cost, but a retrieval fee applies.</li>
+          <li><strong>S3 One Zone-IA</strong> — same as Standard-IA but stored in a single Availability Zone; lower cost, less resilience.</li>
+          <li><strong>S3 Glacier Instant Retrieval</strong> — archival storage with millisecond retrieval.</li>
+          <li><strong>S3 Glacier Flexible Retrieval</strong> — archival with retrieval times ranging from minutes to hours.</li>
+          <li><strong>S3 Glacier Deep Archive</strong> — lowest cost; retrieval can take up to 12 hours.</li>
+        </ol>
+        <h3 id="when-to-choose-s3">When to Choose S3</h3>
+        <p>S3 is the right answer when the question involves: - Storing images, videos, documents, or backups - Hosting static website assets - Data lake storage for analytics - Log archiving - Sharing files across the internet or between services without a shared file system</p>
+        <hr>
+
+        <div class="blog-cta">
+          <h3>Not sure where you stand?</h3>
+          <p>Take the free 10-question CLF-C02 diagnostic and get an instant score, your weakest domain, and a study plan.</p>
+          <a href="/diagnostic" class="btn btn-primary btn-lg" data-cta="primary">Take the free diagnostic</a>
+        </div>
+
+        <h2 id="amazon-ebs-elastic-block-store">Amazon EBS (Elastic Block Store)</h2>
+        <p>Amazon EBS provides block storage volumes that attach to EC2 instances. Think of it as the virtual hard drive for your virtual server.</p>
+        <h3 id="key-characteristics">Key Characteristics</h3>
+        <ul>
+          <li><strong>Attached to a single EC2 instance at a time</strong> (with some exceptions for Multi-Attach on specific volume types — verify current Multi-Attach availability in AWS EBS documentation before publishing).</li>
+          <li><strong>Provisioned in advance</strong> — you choose a volume size (e.g., 20 GB, 500 GB) when you create it.</li>
+          <li><strong>Persists independently of the instance</strong> — if you stop or terminate your EC2 instance, the EBS volume (and its data) can survive if configured to do so.</li>
+          <li><strong>Lives in a single Availability Zone</strong> — an EBS volume is tied to the AZ where it was created. To use it in another AZ, you'd create a snapshot and restore it there.</li>
+          <li><strong>Low latency</strong> — designed for workloads that require consistent, low-latency I/O, such as databases and boot volumes.</li>
+        </ul>
+        <h3 id="ebs-volume-types">EBS Volume Types</h3>
+        <p>EBS offers several volume types optimised for different workloads — general-purpose SSD (gp2/gp3), provisioned IOPS SSD (io1/io2), and magnetic (st1, sc1, standard). For the CLF-C02 exam, you don't need to memorise every volume type, but understanding that options exist for different performance needs is useful.</p>
+        <h3 id="when-to-choose-ebs">When to Choose EBS</h3>
+        <p>EBS is the right answer when the question involves: - The root volume (OS disk) of an EC2 instance - A relational database running on EC2 that needs fast, consistent disk I/O - Any workload that requires a formatted, mountable file system on a single server</p>
+        <hr>
+
+        <h2 id="amazon-efs-elastic-file-system">Amazon EFS (Elastic File System)</h2>
+        <p>Amazon EFS is a managed network file system that multiple EC2 instances can access simultaneously.</p>
+        <h3 id="key-characteristics">Key Characteristics</h3>
+        <ul>
+          <li><strong>Shared access</strong> — dozens, hundreds, or even thousands of EC2 instances can mount the same EFS file system at the same time.</li>
+          <li><strong>Fully managed and elastic</strong> — capacity grows and shrinks automatically as you add or remove files. You don't provision a size in advance.</li>
+          <li><strong>Accessible across multiple AZs</strong> — unlike EBS, EFS is a regional resource (for standard storage class) and can be mounted by instances in different Availability Zones within the same region.</li>
+          <li><strong>Uses NFS protocol</strong> — it appears to your Linux EC2 instances as a standard network file system.</li>
+          <li><strong>Linux-only</strong> — EFS is designed for Linux workloads. For Windows shared file storage, AWS offers Amazon FSx (not covered on CLF-C02 at the same depth, but worth knowing exists).</li>
+        </ul>
+        <h3 id="when-to-choose-efs">When to Choose EFS</h3>
+        <p>EFS is the right answer when the question involves: - A web application where multiple web servers need to read and write to a shared set of files - A content management system where editors on different servers upload media - Machine learning workflows sharing a large dataset across many compute nodes - Any scenario explicitly mentioning "shared file system" or "concurrent access from multiple instances"</p>
+        <hr>
+
+        <h2 id="side-by-side-comparison">Side-by-Side Comparison</h2>
+        <table>
+        <thead><tr><th>Feature</th><th>S3</th><th>EBS</th><th>EFS</th></tr></thead>
+        <tbody>
+        <tr><td>Storage type</td><td>Object</td><td>Block</td><td>File</td></tr>
+        <tr><td>Capacity</td><td>Unlimited (no provisioning)</td><td>Provisioned in advance</td><td>Elastic (auto-scales)</td></tr>
+        <tr><td>Access</td><td>Via API/URL</td><td>Attached to one EC2</td><td>Mounted by many EC2s</td></tr>
+        <tr><td>Availability Zone</td><td>Regional</td><td>Single AZ</td><td>Regional (multi-AZ)</td></tr>
+        <tr><td>Use case</td><td>Backups, media, data lakes</td><td>EC2 boot/data volumes</td><td>Shared file systems</td></tr>
+        <tr><td>OS mount</td><td>No</td><td>Yes (one instance)</td><td>Yes (many instances)</td></tr>
+        </tbody>
+      </table>
+        <hr>
+
+        <h2 id="how-this-appears-on-the-clf-c02-exam">How This Appears on the CLF-C02 Exam</h2>
+        <p>The CLF-C02 exam won't ask you to recite specs from memory. Instead, it presents short scenarios and asks which service fits best. Here's how to think through them:</p>
+        <p><strong>"A company needs to store customer-uploaded photos and serve them via a web application."</strong> → S3. It's object storage, cost-effective at scale, and accessible over HTTP.</p>
+        <p><strong>"A developer is launching an EC2 instance running a MySQL database and needs persistent storage."</strong> → EBS. The database needs a mounted, low-latency block device attached to that specific instance.</p>
+        <p><strong>"A company runs a fleet of 50 web servers that all need to read from the same configuration files."</strong> → EFS. Shared file access across multiple instances is the hallmark of EFS.</p>
+        <p>If you want to test your instincts on these scenario types right now, our <a href="/practice-questions">practice questions</a> include a dedicated set covering AWS storage services.</p>
+        <p>Before your exam, it's also worth checking your current knowledge level with our <a href="/diagnostic">diagnostic quiz</a> — it'll highlight any gaps across all four exam domains.</p>
+        <hr>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>What is the main difference between S3 and EBS?</h3>
+        <p>S3 is object storage accessed via an API or URL — it's not mounted as a drive. EBS is block storage that attaches directly to a single EC2 instance and behaves like a physical hard disk. Use S3 for storing files, backups, and media at scale; use EBS when an EC2 instance needs a disk to run its operating system or database.</p>
+        <h3>Can multiple EC2 instances use the same EBS volume at the same time?</h3>
+        <p>Generally, no. Standard EBS volumes are attached to one EC2 instance at a time. EFS is the correct choice when you need shared, concurrent access across multiple instances.</p>
+        <h3>Is S3 cheaper than EBS?</h3>
+        <p>S3 storage generally costs less per GB than EBS, but the right choice is always based on the use case rather than price alone. EBS is necessary for block-level workloads (like running a database), where S3 simply isn't a substitute. For archiving or large-scale object storage, S3's various storage classes (especially Glacier) make it very cost-effective.</p>
+        <h3>Do I need to choose an S3 capacity size in advance, like I do with EBS?</h3>
+        <p>No. S3 scales automatically — you just upload objects and pay for what you use. With EBS, you provision a specific volume size (like 100 GB) when you create it, though you can modify the size later.</p>
+        <h3>How does EFS differ from EBS for Linux workloads?</h3>
+        <p>Both can be mounted on Linux EC2 instances, but EBS attaches to one instance at a time and lives in a single Availability Zone, while EFS is a shared network file system that can be mounted by many instances across multiple Availability Zones simultaneously.</p>
+        <h3>Which storage service questions are most likely to appear on the CLF-C02 exam?</h3>
+        <p>The exam focuses on scenario-based questions — matching a business requirement to the right service. You're most likely to see questions contrasting S3 (object, scalable, shared access via URL) with EBS (block, single instance, provisioned) and EFS (file, shared among many instances). Review the <a href="/exam-guide">exam guide</a> to see exactly how storage fits into the Domain 3 objectives.</p>
+        <hr>
+
+        <h2 id="putting-it-all-together">Putting It All Together</h2>
+        <p>AWS storage isn't complicated once you anchor each service to its storage model: S3 for objects, EBS for blocks, EFS for shared files. The CLF-C02 exam rewards this kind of conceptual clarity — not rote memorisation of gigabyte prices or IOPS limits.</p>
+        <p>When you see a storage question on exam day, ask yourself three things: 1. Does this need to be mounted as a disk on a single server? → <strong>EBS</strong> 2. Does this need to be shared across multiple servers simultaneously? → <strong>EFS</strong> 3. Is this about storing files, backups, or media that are accessed via the internet or APIs? → <strong>S3</strong></p>
+        <p>With that mental model in place, you'll navigate storage scenarios with confidence.</p>
+
+      </article>
+
+      <!-- Author / disclaimer line -->
+      <div class="blog-author">
+        Written for CloudPractitionerPrep. Independent resource, not affiliated with or endorsed by Amazon Web Services. Verify exam details against official AWS documentation before relying on them.
+      </div>
+
+      <!-- Related resources — TODO: replace with real related posts once more exist -->
+      <section class="blog-related">
+        <h2>Related resources</h2>
+        <div class="blog-related-grid">
+          <a href="/exam-guide" class="blog-related-card">
+            <div class="rc-title">CLF-C02 Exam Guide</div>
+            <div class="rc-desc">All four domains, scoring, and registration steps.</div>
+          </a>
+          <a href="/diagnostic" class="blog-related-card">
+            <div class="rc-title">Free Readiness Diagnostic</div>
+            <div class="rc-desc">10 questions, instant score, weakest domain.</div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
+  <script src="/firebase-auth.js"></script>
+  <script>CTA.initSticky({ text: 'Test your CLF-C02 readiness', threshold: 600 });</script>
+
+</body>
+</html>

@@ -115,7 +115,7 @@
       targetKeyword: 'AWS pricing models explained',
       category: 'billing-pricing',
       slug: 'aws-pricing-models-on-demand-reserved-spot',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: 'Understanding AWS Support Plans',

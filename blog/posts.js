@@ -110,5 +110,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Confused by AWS storage options? Learn how S3, EBS, and EFS differ and which one to choose for any scenario on the CLF-C02 exam.',
     category: 'cloud-technology'
+  },
+  {
+    slug: 'aws-pricing-models-on-demand-reserved-spot',
+    title: 'AWS Pricing Models: On-Demand vs Reserved vs Spot',
+    date: '2026-08-26',
+    readingTime: '8 min read',
+    excerpt: 'Learn how AWS EC2 pricing models work—On-Demand, Reserved, Spot, and more—and what you need to know for the CLF-C02 exam.',
+    category: 'billing-pricing'
   }
 ];

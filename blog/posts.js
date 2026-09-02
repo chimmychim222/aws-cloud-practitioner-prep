@@ -118,5 +118,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Learn how AWS EC2 pricing models work—On-Demand, Reserved, Spot, and more—and what you need to know for the CLF-C02 exam.',
     category: 'billing-pricing'
+  },
+  {
+    slug: 'understanding-aws-support-plans',
+    title: 'AWS Support Plans Explained for CLF-C02',
+    date: '2026-09-02',
+    readingTime: '8 min read',
+    excerpt: 'A clear breakdown of all five AWS Support plan tiers—what each includes, who it\'s for, and what you need to know for the CLF-C02 exam.',
+    category: 'billing-pricing'
   }
 ];

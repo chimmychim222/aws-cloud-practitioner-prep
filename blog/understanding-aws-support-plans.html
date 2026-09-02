@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<!--
+  BLOG POST TEMPLATE — copy this file for every new post.
+  Built from /page-template.html — shares header, footer, nav, and design system.
+  Search for every "TODO:" comment and fill it in before publishing.
+  File naming: blog/[slug].html — resolves to the clean URL /blog/[slug]
+  via the same GitHub Pages URL normalization used by every other page.
+  Do NOT modify index.html, app.js, or the SPA views.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- TODO: post title (keep under 60 chars) -->
+  <title>AWS Support Plans Explained for CLF-C02 — Cloud Practitioner Prep</title>
+
+  <!-- TODO: unique description for this post (120–155 chars, no outcome claims) -->
+  <meta name="description" content="A clear breakdown of all five AWS Support plan tiers—what each includes, who it's for, and what you need to know for the CLF-C02 exam.">
+
+  <!-- TODO: replace todo-slug with the post's slug (must match the filename) -->
+  <link rel="canonical" href="https://cloudpractitionerprep.com/blog/understanding-aws-support-plans">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="article">
+  <!-- TODO -->
+  <meta property="og:title"       content="AWS Support Plans Explained for CLF-C02 — Cloud Practitioner Prep">
+  <meta property="og:description" content="A clear breakdown of all five AWS Support plan tiers—what each includes, who it's for, and what you need to know for the CLF-C02 exam.">
+  <meta property="og:url"         content="https://cloudpractitionerprep.com/blog/understanding-aws-support-plans">
+  <meta property="og:site_name"   content="Cloud Practitioner Prep">
+  <meta property="og:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <!-- TODO -->
+  <meta name="twitter:title"       content="AWS Support Plans Explained for CLF-C02 — Cloud Practitioner Prep">
+  <meta name="twitter:description" content="A clear breakdown of all five AWS Support plan tiers—what each includes, who it's for, and what you need to know for the CLF-C02 exam.">
+  <meta name="twitter:image"       content="https://cloudpractitionerprep.com/og-image.png">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- TODO: Article + BreadcrumbList + FAQPage JSON-LD — fill in headline/description/dates/url/questions.
+       Delete the FAQPage block entirely if this post has no FAQ section. -->
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AWS Support Plans Explained for CLF-C02",
+    "description": "A clear breakdown of all five AWS Support plan tiers—what each includes, who it's for, and what you need to know for the CLF-C02 exam.",
+    "url": "https://cloudpractitionerprep.com/blog/understanding-aws-support-plans",
+    "datePublished": "2026-09-02",
+    "dateModified": "2026-09-02",
+    "author": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "url": "https://cloudpractitionerprep.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Cloud Practitioner Prep",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cloudpractitionerprep.com/og-image.png"
+      }
+    },
+    "image": "https://cloudpractitionerprep.com/og-image.png",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://cloudpractitionerprep.com/blog/understanding-aws-support-plans"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://cloudpractitionerprep.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://cloudpractitionerprep.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "AWS Support Plans Explained for CLF-C02 — Cloud Practitioner Prep",
+        "item": "https://cloudpractitionerprep.com/blog/understanding-aws-support-plans"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does the Basic Support plan include any technical support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Basic Support does not include access to AWS support engineers for technical issues. You can access documentation, community forums, and billing support, but you cannot open technical support cases."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which AWS Support plan is the minimum tier for 24/7 phone and chat access?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Business Support is the minimum tier that includes 24/7 phone, email, and chat access to Cloud Support Engineers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a Technical Account Manager (TAM), and which plan includes one?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A TAM is a dedicated AWS resource assigned to your account who provides proactive guidance, operational reviews, and advocacy within AWS. A *dedicated* TAM is exclusive to the Enterprise Support plan. Enterprise On-Ramp provides access to a shared pool of TAMs, not a dedicated individual."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which support plans give access to full AWS Trusted Advisor checks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Business, Enterprise On-Ramp, and Enterprise plans all include full access to Trusted Advisor checks across all five categories. Basic and Developer plans only include a limited set of core checks."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are paid AWS Support plans priced?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paid plans are typically calculated as a percentage of your monthly AWS usage, with a minimum monthly charge. The exact percentages vary by tier and usage level. Check the AWS Support pricing page for current rates, as prices are subject to change."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the CLF-C02 exam likely to ask about specific support plan pricing percentages?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Generally, no. The exam focuses on which features and response times belong to which tier, not on memorizing exact pricing percentages. Focus your study time on the feature differences between plans—especially around TAMs, Trusted Advisor access, and response times."
+        }
+      }
+    ]
+  }
+]
+  </script>
+
+  <!-- Google tag (gtag.js) | G-069J7PEMGM -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-069J7PEMGM"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-069J7PEMGM');</script>
+  <link rel="stylesheet" href="/styles.css?v=7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/site-config.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%234A90D9'/><text x='50' y='72' font-size='55' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'>C</text></svg>">
+
+  <style>
+    /* ── Breadcrumb ── */
+    .blog-bc { padding: var(--sp-4) 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-bc a { color: var(--text-muted); text-decoration: none; }
+    .blog-bc a:hover { color: var(--aws-orange); }
+    .blog-bc .sep { margin: 0 var(--sp-2); }
+
+    /* ── Post header ── */
+    .blog-header { max-width: 760px; margin: 0 auto; padding: var(--sp-8) 0 var(--sp-6); }
+    .blog-header h1 { font-size: var(--fs-3xl); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; margin-bottom: var(--sp-3); }
+    .blog-meta { display: flex; gap: var(--sp-3); flex-wrap: wrap; font-size: var(--fs-sm); color: var(--text-muted); }
+    .blog-meta .dot { opacity: .5; }
+
+    /* ── Table of contents ── */
+    .blog-toc { max-width: 760px; margin: 0 auto var(--sp-8); background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5) var(--sp-6); box-shadow: var(--shadow-sm); }
+    .blog-toc-title { font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: var(--sp-3); }
+    .blog-toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+    .blog-toc li.toc-h3 { margin-left: var(--sp-5); }
+    .blog-toc a { color: var(--color-info); font-size: var(--fs-sm); text-decoration: none; }
+    .blog-toc a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+
+    /* ── Article body ── */
+    .blog-body { max-width: 760px; margin: 0 auto; padding-bottom: var(--sp-10); }
+    .blog-body h2 { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -.02em; margin: var(--sp-10) 0 var(--sp-4); scroll-margin-top: 80px; }
+    .blog-body h3 { font-size: var(--fs-lg); font-weight: 700; margin: var(--sp-6) 0 var(--sp-3); scroll-margin-top: 80px; }
+    .blog-body p { color: var(--text-secondary); line-height: 1.85; margin-bottom: var(--sp-4); font-size: var(--fs-base); }
+    .blog-body ul, .blog-body ol { color: var(--text-secondary); padding-left: var(--sp-6); line-height: 1.9; margin-bottom: var(--sp-4); }
+    .blog-body li { list-style: disc; margin-bottom: var(--sp-1); }
+    .blog-body ol li { list-style: decimal; }
+    .blog-body strong { color: var(--text-primary); }
+    .blog-body a { color: var(--color-info); }
+    .blog-body a:hover { color: var(--aws-orange-hover); text-decoration: underline; }
+    .blog-body table { width: 100%; border-collapse: collapse; margin-bottom: var(--sp-5); font-size: var(--fs-sm); }
+    .blog-body th, .blog-body td { padding: var(--sp-3) var(--sp-4); border: 1px solid var(--border-light); text-align: left; }
+    .blog-body th { background: var(--bg-page); font-weight: 700; }
+
+    /* ── Inline diagnostic CTA ── */
+    .blog-cta { background: linear-gradient(135deg, var(--aws-squid-ink), var(--aws-ink-dark)); border-radius: var(--r-xl); padding: var(--sp-7); margin: var(--sp-8) 0; text-align: center; }
+    .blog-cta h3 { color: #fff; font-size: var(--fs-lg); font-weight: 800; margin-bottom: var(--sp-2); }
+    .blog-cta p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: var(--sp-5); }
+
+    /* ── Author / disclaimer line ── */
+    .blog-author { max-width: 760px; margin: 0 auto var(--sp-10); padding-top: var(--sp-5); border-top: 1px solid var(--border-light); font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.7; }
+
+    /* ── Related resources ── */
+    .blog-related { max-width: 760px; margin: 0 auto var(--sp-12); }
+    .blog-related h2 { font-size: var(--fs-xl); font-weight: 800; margin-bottom: var(--sp-5); }
+    .blog-related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+    .blog-related-card { display: block; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--r-lg); padding: var(--sp-5); text-decoration: none; transition: box-shadow var(--t-fast), transform var(--t-fast); }
+    .blog-related-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); text-decoration: none; }
+    .blog-related-card .rc-title { font-weight: 700; color: var(--text-primary); font-size: var(--fs-base); margin-bottom: var(--sp-1); }
+    .blog-related-card .rc-desc { font-size: var(--fs-sm); color: var(--text-secondary); }
+
+    @media (max-width: 640px) {
+      .blog-header h1 { font-size: var(--fs-2xl); }
+      .blog-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ========== SITE HEADER — static nav for crawlability. header.js only
+       ADDS BEHAVIOR (active-state highlighting, Resources dropdown toggle,
+       mobile hamburger menu) — it does NOT build this markup. To change a
+       nav link, edit this block and propagate the identical block to every
+       other page (see CLAUDE.md "Shared Header" section). ========== -->
+  <header id="site-header">
+    <div class="header-inner">
+
+      <a href="/" class="header-logo" aria-label="CLF-C02 Prep — Home">
+        <svg class="logo-cloud" width="32" height="20" viewBox="0 0 32 20" fill="rgba(255,255,255,0.9)" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="16" cy="9" r="7"/><circle cx="23" cy="14" r="5"/><rect x="4" y="14" width="24" height="5" rx="1"/></svg>
+        <span class="logo-text">CLF-C02 <span class="logo-accent">Prep</span></span>
+      </a>
+
+      <nav class="header-nav" id="header-nav" aria-label="Main navigation">
+        <a href="/" class="nav-link" id="nav-home-btn" data-view="home"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.3L1 7v7.5c0 .3.2.5.5.5H6V10h4v5h4.5c.3 0 .5-.2.5-.5V7L8 1.3z"/></svg>Home</a>
+        <a href="/" class="nav-link" id="nav-training-btn" data-view="training"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 5h8v2H2V7zm0 5h12v2H2v-2z"/></svg>Training</a>
+        <a href="/" class="nav-link" id="nav-test-btn" data-view="test"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12H7V7h1.5v5zM8 5.5a1 1 0 110-2 1 1 0 010 2z"/><path d="M8 3v5l3.5 2-.5 1L7 9V3h1z"/></svg>Practice Test</a>
+
+        <div class="nav-dropdown" id="nav-resources-dropdown">
+          <button type="button" class="nav-link nav-dropdown-trigger" id="nav-resources-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-resources-panel">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3a1 1 0 011-1h4l1.5 1.5H14a1 1 0 011 1V12a1 1 0 01-1 1H2a1 1 0 01-1-1V3z"/></svg>Resources<svg class="nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 3.5L5 6.5L8 3.5"/></svg>
+          </button>
+          <div class="nav-dropdown-panel" id="nav-resources-panel" role="menu" aria-label="Resources">
+            <a href="/exam-guide" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 2a1 1 0 011-1h8a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V2zm2 1v10h6V3H5zm1 2h4v1H6V5zm0 2h4v1H6V7zm0 2h2v1H6V9z"/></svg>Exam Guide</a>
+            <a href="/study-plan" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 2a1 1 0 011-1h12a1 1 0 011 1v2H1V2zm0 3h14v9a1 1 0 01-1 1H2a1 1 0 01-1-1V5zm4 2v1h6V7H5zm0 2v1h4V9H5z"/></svg>Study Plan</a>
+            <a href="/diagnostic" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 11l3-4 3 2 3-5 3 3M1 14h14"/></svg>Diagnostic</a>
+            <a href="/practice-questions" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1a1 1 0 011-1h7l3 3v11a1 1 0 01-1 1H3a1 1 0 01-1-1V1zm8 0v3h3M5 7h6M5 9h6M5 11h4"/></svg>Practice Qs</a>
+            <a href="/blog" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 1h7l4 4v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1zm7 1.5V5h2.5L9 2.5zM3 7h7v1H3V7zm0 2.5h7v1H3v-1zm0 2.5h4v1H3v-1z"/></svg>Blog</a>
+            <a href="/faq" class="nav-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM7.25 5a.75.75 0 011.5 0c0 .69-1 1.13-1 2.25h-1C6.75 5.88 7.25 5.63 7.25 5zm-.5 5.25h1.5v1.5h-1.5v-1.5z" clip-rule="evenodd"/></svg>FAQ</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="auth-header-wrap">
+        <button class="auth-header-btn" id="auth-header-btn" aria-label="Sign in or view account">Sign In</button>
+        <div class="user-menu hidden" id="user-menu" role="menu">
+          <div class="user-menu-info">
+            <div class="user-menu-name" id="user-menu-name"></div>
+            <div class="user-menu-email" id="user-menu-email"></div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" id="user-menu-logout" role="menuitem">Sign Out</button>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+    </div>
+  </header>
+
+  <noscript>
+    <style>
+      /* No-JS fallback: abandon collapsible/hover interactions and force
+         the full nav, including Resources sub-items, permanently visible. */
+      .mobile-menu-btn { display: none !important; }
+      .header-nav { display: flex !important; position: static !important; flex-wrap: wrap; box-shadow: none !important; }
+      .nav-dropdown-panel { display: flex !important; position: static !important; box-shadow: none !important; border: none !important; background: transparent !important; padding-left: 0 !important; }
+      .nav-caret { display: none !important; }
+    </style>
+  </noscript>
+
+  <script src="/components/header.js"></script>
+
+  <main id="app-main">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <nav class="blog-bc" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep" aria-hidden="true">›</span>
+        <a href="/blog">Blog</a><span class="sep" aria-hidden="true">›</span>
+        <span>AWS Support Plans Explained for CLF-C02</span>
+      </nav>
+
+      <!-- Post header -->
+      <header class="blog-header">
+        <h1>AWS Support Plans Explained for CLF-C02</h1>
+        <div class="blog-meta">
+          <span>Published 2 September 2026</span>
+          <span class="dot">&middot;</span>
+          <span>8 min read</span>
+        </div>
+      </header>
+
+      <!-- Table of contents — TODO: one <li><a href="#anchor-id"> per H2/H3 below -->
+      <nav class="blog-toc" aria-label="Table of contents">
+        <div class="blog-toc-title">In this article</div>
+        <ol>
+          <li><a href="#the-five-aws-support-plan-tiers">The Five AWS Support Plan Tiers</a></li>
+          <li class="toc-h3"><a href="#basic-support">Basic Support</a></li>
+          <li class="toc-h3"><a href="#developer-support">Developer Support</a></li>
+          <li class="toc-h3"><a href="#business-support">Business Support</a></li>
+          <li class="toc-h3"><a href="#enterprise-on-ramp-support">Enterprise On-Ramp Support</a></li>
+          <li class="toc-h3"><a href="#enterprise-support">Enterprise Support</a></li>
+          <li><a href="#aws-trusted-advisor-and-support-plans">AWS Trusted Advisor and Support Plans</a></li>
+          <li><a href="#comparing-the-plans-side-by-side">Comparing the Plans Side by Side</a></li>
+          <li><a href="#how-support-plans-are-priced">How Support Plans Are Priced</a></li>
+          <li><a href="#what-this-means-for-the-clf-c02-exam">What This Means for the CLF-C02 Exam</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+
+      <!-- Article body — TODO: replace with real content. Each H2/H3 needs a
+           matching id="" that the ToC links to. Insert the diagnostic CTA
+           block partway through (example below). -->
+      <article class="blog-body">
+        <p>If you're preparing for the AWS Certified Cloud Practitioner (CLF-C02) exam, AWS Support plans are one of those topics that seem straightforward—until you sit down and realize there are five tiers, each with overlapping but distinct features, and the exam loves to test the specific differences between them. This guide cuts through the noise and gives you exactly what you need to know.</p>
+        <p>Support plans fall under <strong>Domain 4: Billing, Pricing, and Support</strong>, which accounts for 12% of your scored exam questions. It's one of the smaller domains, but the questions it contains tend to be very concrete and testable—making this a high-value topic to nail.</p>
+        <hr>
+
+        <h2 id="the-five-aws-support-plan-tiers">The Five AWS Support Plan Tiers</h2>
+        <p>AWS offers five support tiers, listed here from least to most comprehensive:</p>
+        <ol>
+          <li><strong>Basic</strong> (free)</li>
+          <li><strong>Developer</strong></li>
+          <li><strong>Business</strong></li>
+          <li><strong>Enterprise On-Ramp</strong></li>
+          <li><strong>Enterprise</strong></li>
+        </ol>
+        <p>Each successive tier adds capabilities, faster response times, and more direct access to AWS expertise. Let's walk through each one.</p>
+        <hr>
+        <h3 id="basic-support">Basic Support</h3>
+        <p>Basic Support is included automatically with every AWS account at no additional cost. It gives you access to:</p>
+        <ul>
+          <li><strong>AWS Trusted Advisor</strong> — but only the core checks (more on this below)</li>
+          <li><strong>AWS Personal Health Dashboard</strong>, which shows the health of AWS services and alerts you to issues that may affect your specific resources</li>
+          <li><strong>Documentation, whitepapers, and community forums</strong></li>
+          <li>Billing and account support</li>
+        </ul>
+        <p>What Basic does <em>not</em> give you: any access to AWS support engineers for technical questions. If you open a technical support case, you simply won't get a response. This plan is fine for experimenting with AWS, but it's not suitable for production workloads.</p>
+        <p><strong>Exam tip:</strong> Basic is the only plan with no paid technical support. Know this distinction cold.</p>
+        <hr>
+        <h3 id="developer-support">Developer Support</h3>
+        <p>Developer Support is the first paid tier. It's designed for individuals or teams who are actively building on AWS but aren't yet running production workloads at scale.</p>
+        <p>Key features: - <strong>Business hours email access</strong> to Cloud Support Associates (not engineers) - <strong>One primary contact</strong> can open an unlimited number of support cases - Response time for general guidance: <strong>within 24 business hours</strong> - Response time for impaired systems: <strong>within 12 business hours</strong></p>
+        <p>Note that "business hours" here means AWS business hours—this is not 24/7 access. If your system goes down at 2 a.m. on a Sunday, you're waiting until Monday morning.</p>
+        <hr>
+        <h3 id="business-support">Business Support</h3>
+        <p>Business Support is where things change significantly, and the exam frequently tests the jump from Developer to Business.</p>
+        <p>Key features: - <strong>24/7 phone, email, and chat access</strong> to Cloud Support Engineers (a step up from Associates) - <strong>Unlimited contacts</strong> can open support cases (vs. one primary on Developer) - <strong>Full Trusted Advisor checks</strong> across all five categories - Response time for production system impaired: <strong>within 4 hours</strong> - Response time for production system down: <strong>within 1 hour</strong> - Access to <strong>Infrastructure Event Management</strong> (for an additional fee)</p>
+        <p>Business Support is the minimum tier recommended for production workloads. The 1-hour response for a down production system is a meaningful guarantee that lower tiers simply don't offer.</p>
+        <p><strong>Exam tip:</strong> "24/7 phone and chat support" begins at <strong>Business</strong>, not Developer. This is a very common exam trap.</p>
+        <hr>
+        <h3 id="enterprise-on-ramp-support">Enterprise On-Ramp Support</h3>
+        <p>Enterprise On-Ramp is a relatively newer tier positioned between Business and Enterprise. It's aimed at organizations that need enterprise-grade support but aren't quite ready for the full Enterprise commitment.</p>
+        <p>Key features: - Everything in Business, plus: - Access to a <strong>pool of Technical Account Managers (TAMs)</strong>—note this is a pool, not a dedicated TAM - <strong>Consultative guidance</strong> and proactive reviews - Response time for business-critical system down: <strong>within 30 minutes</strong> (for business-critical issues) - Access to AWS Incident Detection and Response (for an additional fee)</p>
+        <p>The key distinction here vs. full Enterprise: you get access to <em>a</em> TAM from a shared pool rather than a dedicated one assigned to your account.</p>
+        <hr>
+        <h3 id="enterprise-support">Enterprise Support</h3>
+        <p>Enterprise Support is AWS's top tier, designed for organizations with mission-critical workloads that demand the highest level of attention.</p>
+        <p>Key features: - Everything in Enterprise On-Ramp, plus: - A <strong>dedicated Technical Account Manager (TAM)</strong> assigned to your account - Response time for business-critical system down: <strong>within 15 minutes</strong> - <strong>Proactive programs</strong> including Well-Architected Reviews, operational reviews, and training - Access to AWS Incident Detection and Response (included, not just available for a fee)</p>
+        <p><strong>Exam tip:</strong> The TAM is the signature differentiator for the Enterprise tier. If an exam question asks which support plan includes a dedicated Technical Account Manager, the answer is <strong>Enterprise</strong>.</p>
+        <hr>
+
+        <h2 id="aws-trusted-advisor-and-support-plans">AWS Trusted Advisor and Support Plans</h2>
+        <p>Trusted Advisor deserves its own mention here because the exam tests it in the context of support plans specifically.</p>
+        <p>Trusted Advisor automatically inspects your AWS environment and provides recommendations across <strong>five categories</strong>:</p>
+        <ol>
+          <li><strong>Cost Optimization</strong> — Are you paying for things you don't need?</li>
+          <li><strong>Security</strong> — Are you leaving unnecessary doors open?</li>
+          <li><strong>Fault Tolerance</strong> — Is your architecture resilient?</li>
+          <li><strong>Performance</strong> — Are you getting the most out of your resources?</li>
+          <li><strong>Service Limits</strong> — Are you approaching AWS service quotas?</li>
+        </ol>
+        <p>Here's the critical exam distinction:</p>
+        <ul>
+          <li><strong>All plans</strong> (including Basic) get access to a limited set of <strong>core Trusted Advisor checks</strong>—a handful of foundational security and service limit checks.</li>
+          <li><strong>Business, Enterprise On-Ramp, and Enterprise</strong> plans get <strong>full access to all Trusted Advisor checks</strong> across all five categories.</li>
+        </ul>
+        <p>If an exam question asks which support plan unlocks full Trusted Advisor checks, the answer is <strong>Business</strong> (the lowest tier that qualifies).</p>
+        <hr>
+
+        <div class="blog-cta">
+          <h3>Not sure where you stand?</h3>
+          <p>Take the free 10-question CLF-C02 diagnostic and get an instant score, your weakest domain, and a study plan.</p>
+          <a href="/diagnostic" class="btn btn-primary btn-lg" data-cta="primary">Take the free diagnostic</a>
+        </div>
+
+        <h2 id="comparing-the-plans-side-by-side">Comparing the Plans Side by Side</h2>
+        <table>
+        <thead><tr><th>Feature</th><th>Basic</th><th>Developer</th><th>Business</th><th>Enterprise On-Ramp</th><th>Enterprise</th></tr></thead>
+        <tbody>
+        <tr><td>Cost</td><td>Free</td><td>Paid</td><td>Paid</td><td>Paid</td><td>Paid</td></tr>
+        <tr><td>24/7 Phone &amp; Chat</td><td>✗</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Full Trusted Advisor</td><td>✗</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Dedicated TAM</td><td>✗</td><td>✗</td><td>✗</td><td>✗ (pool)</td><td>✓</td></tr>
+        <tr><td>Critical response time</td><td>—</td><td>12 hrs (biz hrs)</td><td>1 hr</td><td>30 min</td><td>15 min</td></tr>
+        </tbody>
+      </table>
+        <hr>
+
+        <h2 id="how-support-plans-are-priced">How Support Plans Are Priced</h2>
+        <p>AWS prices paid support plans as a <strong>percentage of your monthly AWS usage</strong>, subject to a minimum monthly fee. The percentage decreases as your spend increases, which means very large AWS customers pay a smaller percentage of their bill.</p>
+        <p>Rather than list specific percentages that are subject to change, the exam doesn't require you to memorize exact pricing percentages—it focuses on the <em>features and response times</em> associated with each tier. Always check the current <a href="https://aws.amazon.com/premiumsupport/plans/">AWS Support pricing page</a> for up-to-date figures before making any real purchasing decisions.</p>
+        <hr>
+
+        <h2 id="what-this-means-for-the-clf-c02-exam">What This Means for the CLF-C02 Exam</h2>
+        <p>Support plans show up in Domain 4, which is 12% of the scored exam. That's a relatively small slice, but the questions are very direct—there's rarely ambiguity. They tend to follow these patterns:</p>
+        <ul>
+          <li>"Which support plan is the minimum that provides X feature?"</li>
+          <li>"A company needs a dedicated TAM. Which plan should they choose?"</li>
+          <li>"Which plan offers 24/7 phone support?"</li>
+        </ul>
+        <p>Before your exam, make sure you've taken our <a href="/diagnostic">diagnostic quiz</a> to gauge how well you know Domain 4 topics. When you're ready to practice under realistic conditions, our <a href="/practice-questions">practice questions</a> include scenario-based support plan questions similar to what you'll see on exam day. You can also review the full topic breakdown in our <a href="/exam-guide">exam guide</a>.</p>
+        <hr>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Does the Basic Support plan include any technical support?</h3>
+        <p>No. Basic Support does not include access to AWS support engineers for technical issues. You can access documentation, community forums, and billing support, but you cannot open technical support cases.</p>
+        <h3>Which AWS Support plan is the minimum tier for 24/7 phone and chat access?</h3>
+        <p>Business Support is the minimum tier that includes 24/7 phone, email, and chat access to Cloud Support Engineers.</p>
+        <h3>What is a Technical Account Manager (TAM), and which plan includes one?</h3>
+        <p>A TAM is a dedicated AWS resource assigned to your account who provides proactive guidance, operational reviews, and advocacy within AWS. A <em>dedicated</em> TAM is exclusive to the Enterprise Support plan. Enterprise On-Ramp provides access to a shared pool of TAMs, not a dedicated individual.</p>
+        <h3>Which support plans give access to full AWS Trusted Advisor checks?</h3>
+        <p>Business, Enterprise On-Ramp, and Enterprise plans all include full access to Trusted Advisor checks across all five categories. Basic and Developer plans only include a limited set of core checks.</p>
+        <h3>How are paid AWS Support plans priced?</h3>
+        <p>Paid plans are typically calculated as a percentage of your monthly AWS usage, with a minimum monthly charge. The exact percentages vary by tier and usage level. Check the AWS Support pricing page for current rates, as prices are subject to change.</p>
+        <h3>Is the CLF-C02 exam likely to ask about specific support plan pricing percentages?</h3>
+        <p>Generally, no. The exam focuses on which features and response times belong to which tier, not on memorizing exact pricing percentages. Focus your study time on the feature differences between plans—especially around TAMs, Trusted Advisor access, and response times.</p>
+
+      </article>
+
+      <!-- Author / disclaimer line -->
+      <div class="blog-author">
+        Written for CloudPractitionerPrep. Independent resource, not affiliated with or endorsed by Amazon Web Services. Verify exam details against official AWS documentation before relying on them.
+      </div>
+
+      <!-- Related resources — TODO: replace with real related posts once more exist -->
+      <section class="blog-related">
+        <h2>Related resources</h2>
+        <div class="blog-related-grid">
+          <a href="/exam-guide" class="blog-related-card">
+            <div class="rc-title">CLF-C02 Exam Guide</div>
+            <div class="rc-desc">All four domains, scoring, and registration steps.</div>
+          </a>
+          <a href="/diagnostic" class="blog-related-card">
+            <div class="rc-title">Free Readiness Diagnostic</div>
+            <div class="rc-desc">10 questions, instant score, weakest domain.</div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="site-footer-mount"></div>
+  <script src="/components/footer.js"></script>
+
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="auth-modal-close">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Welcome</h2>
+        <p class="auth-modal-subtitle">Sign in to access practice tests</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <form class="auth-form" id="auth-form-login">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="login-submit">Sign In</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <button type="button" class="auth-forgot-btn" id="forgot-password-btn">Forgot password?</button>
+      </form>
+      <form class="auth-form hidden" id="auth-form-signup">
+        <div class="auth-error hidden"></div>
+        <div class="auth-field">
+          <label for="signup-name">Your Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg auth-submit" id="signup-submit">Create Account</button>
+        <div class="auth-divider"><span>or</span></div>
+        <button type="button" class="btn-google google-signin-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/components/payment.js"></script>
+  <script src="/components/cta.js"></script>
+  <script src="/firebase-auth.js"></script>
+  <script>CTA.initSticky({ text: 'Test your CLF-C02 readiness', threshold: 600 });</script>
+
+</body>
+</html>

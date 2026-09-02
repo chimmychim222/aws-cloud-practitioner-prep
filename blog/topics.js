@@ -122,7 +122,7 @@
       targetKeyword: 'AWS support plans explained',
       category: 'billing-pricing',
       slug: 'understanding-aws-support-plans',
-      status: 'queued'
+      status: 'published'
     },
 
     // AWS Basics

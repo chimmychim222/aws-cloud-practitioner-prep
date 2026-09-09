@@ -126,5 +126,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'A clear breakdown of all five AWS Support plan tiers—what each includes, who it\'s for, and what you need to know for the CLF-C02 exam.',
     category: 'billing-pricing'
+  },
+  {
+    slug: 'aws-free-tier-explained',
+    title: 'AWS Free Tier Explained: What\'s Actually Free',
+    date: '2026-09-09',
+    readingTime: '8 min read',
+    excerpt: 'Not everything labeled "free" on AWS works the same way. Learn the three types of AWS Free Tier offers and what to watch out for.',
+    category: 'aws-basics'
   }
 ];

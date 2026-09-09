@@ -131,7 +131,7 @@
       targetKeyword: 'AWS free tier explained',
       category: 'aws-basics',
       slug: 'aws-free-tier-explained',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: 'How to Create an AWS Account: Step-by-Step',

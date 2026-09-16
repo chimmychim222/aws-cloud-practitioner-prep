@@ -138,7 +138,7 @@
       targetKeyword: 'how to create an AWS account',
       category: 'aws-basics',
       slug: 'how-to-create-an-aws-account',
-      status: 'queued'
+      status: 'published'
     },
 
     // Exam Prep & Tips

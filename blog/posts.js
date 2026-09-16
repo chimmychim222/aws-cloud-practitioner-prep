@@ -134,5 +134,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Not everything labeled "free" on AWS works the same way. Learn the three types of AWS Free Tier offers and what to watch out for.',
     category: 'aws-basics'
+  },
+  {
+    slug: 'how-to-create-an-aws-account',
+    title: 'How to Create an AWS Account: Step-by-Step',
+    date: '2026-09-16',
+    readingTime: '7 min read',
+    excerpt: 'A clear, step-by-step guide to setting up your AWS account safely — plus the security best practices every Cloud Practitioner exam candidate should know.',
+    category: 'aws-basics'
   }
 ];

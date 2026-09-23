@@ -147,7 +147,7 @@
       targetKeyword: 'how to study for CLF-C02',
       category: 'exam-prep-tips',
       slug: 'how-to-study-for-aws-cloud-practitioner-in-4-weeks',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: 'CLF-C02 Exam Day: What to Expect and How to Prepare',

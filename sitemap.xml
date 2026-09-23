@@ -160,6 +160,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+
+  <url>
+    <loc>https://cloudpractitionerprep.com/blog/how-to-study-for-aws-cloud-practitioner-in-4-weeks</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <!-- Legal -->
   <url>
     <loc>https://cloudpractitionerprep.com/privacy</loc>

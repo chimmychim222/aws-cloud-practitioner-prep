@@ -142,5 +142,13 @@ window.BlogPosts = [
     readingTime: '7 min read',
     excerpt: 'A clear, step-by-step guide to setting up your AWS account safely — plus the security best practices every Cloud Practitioner exam candidate should know.',
     category: 'aws-basics'
+  },
+  {
+    slug: 'how-to-study-for-aws-cloud-practitioner-in-4-weeks',
+    title: 'How to Study for CLF-C02 in 4 Weeks',
+    date: '2026-09-23',
+    readingTime: '8 min read',
+    excerpt: 'A practical, week-by-week study plan to help you pass the AWS Certified Cloud Practitioner (CLF-C02) exam in one month.',
+    category: 'exam-prep-tips'
   }
 ];

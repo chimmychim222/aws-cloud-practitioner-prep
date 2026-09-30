@@ -150,5 +150,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'A practical, week-by-week study plan to help you pass the AWS Certified Cloud Practitioner (CLF-C02) exam in one month.',
     category: 'exam-prep-tips'
+  },
+  {
+    slug: 'clf-c02-exam-day-what-to-expect',
+    title: 'CLF-C02 Exam Day: What to Expect and How to Prepare',
+    date: '2026-09-30',
+    readingTime: '7 min read',
+    excerpt: 'Everything you need to know about exam day for the AWS Certified Cloud Practitioner (CLF-C02): format, timing, question types, and last-minute strategies.',
+    category: 'exam-prep-tips'
   }
 ];

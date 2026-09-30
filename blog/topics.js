@@ -154,7 +154,7 @@
       targetKeyword: 'CLF-C02 exam day tips',
       category: 'exam-prep-tips',
       slug: 'clf-c02-exam-day-what-to-expect',
-      status: 'queued'
+      status: 'published'
     },
 
     // Career & Salary

@@ -158,5 +158,13 @@ window.BlogPosts = [
     readingTime: '7 min read',
     excerpt: 'Everything you need to know about exam day for the AWS Certified Cloud Practitioner (CLF-C02): format, timing, question types, and last-minute strategies.',
     category: 'exam-prep-tips'
+  },
+  {
+    slug: 'aws-cloud-practitioner-salary-what-to-expect',
+    title: 'AWS Cloud Practitioner Salary: What to Expect',
+    date: '2026-10-07',
+    readingTime: '8 min read',
+    excerpt: 'Wondering what an AWS Cloud Practitioner certification can do for your paycheck? Here\'s an honest look at salary trends, career paths, and realistic expectations.',
+    category: 'career-salary'
   }
 ];

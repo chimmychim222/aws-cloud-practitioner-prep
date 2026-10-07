@@ -163,7 +163,7 @@
       targetKeyword: 'AWS Cloud Practitioner salary',
       category: 'career-salary',
       slug: 'aws-cloud-practitioner-salary-what-to-expect',
-      status: 'queued'
+      status: 'published'
     },
     {
       topic: 'AWS Cloud Practitioner vs Solutions Architect: Which Certification First?',

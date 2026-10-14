@@ -166,5 +166,13 @@ window.BlogPosts = [
     readingTime: '8 min read',
     excerpt: 'Wondering what an AWS Cloud Practitioner certification can do for your paycheck? Here\'s an honest look at salary trends, career paths, and realistic expectations.',
     category: 'career-salary'
+  },
+  {
+    slug: 'aws-cloud-practitioner-vs-solutions-architect',
+    title: 'AWS Cloud Practitioner vs Solutions Architect',
+    date: '2026-10-14',
+    readingTime: '8 min read',
+    excerpt: 'Deciding between AWS Cloud Practitioner and Solutions Architect? Learn which certification fits your experience level and career goals.',
+    category: 'career-salary'
   }
 ];

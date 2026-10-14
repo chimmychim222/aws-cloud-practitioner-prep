@@ -170,7 +170,7 @@
       targetKeyword: 'AWS Cloud Practitioner vs Solutions Architect',
       category: 'career-salary',
       slug: 'aws-cloud-practitioner-vs-solutions-architect',
-      status: 'queued'
+      status: 'published'
     }
   ];
 
